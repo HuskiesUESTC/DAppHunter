@@ -1,0 +1,38 @@
+intention:
+  # 意图名
+  name: input-form
+  # 前置条件，指向该节点关系上的约束条件
+  pre-requirements:
+  # 后置条件，指向下一节点关系上的约束条件
+  after-requirements:
+  # 子路径
+  sub-path:
+  # 全路径
+  full-path:
+    full-path1:
+      - click-select-currency
+      - select-currency
+      - input-amount
+  # 前端操作实现
+  actions:
+    click-select-currency:
+      operation: click
+      scope: web
+      keywords:
+        - select a currency
+    select-currency:
+      operation: click
+      scope: web
+      keywords:
+        - USDT
+        - ETH
+        - BUSD
+        - DOGE
+      filters:
+        - BNB
+    input-amount:
+      operation: input
+      scope: web
+      keywords:
+        - input amount
+        - '0.0'

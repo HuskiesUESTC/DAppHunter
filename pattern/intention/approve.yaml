@@ -1,0 +1,26 @@
+intention:
+  # 意图名
+  name: approve
+  # 前置条件，指向该节点关系上的约束条件
+  pre-requirements:
+  # 后置条件，指向下一节点关系上的约束条件
+  after-requirements:
+  # 子路径
+  sub-path:
+  # 全路径
+  full-path:
+    full-path1:
+      - click-approve-button
+      - click-confirm-approve-button
+  # 前端操作实现
+  actions:
+    click-approve-button:
+      operation: click
+      scope: web
+      keywords:
+        - approve
+    click-confirm-approve-button:
+      operation: click
+      scope: web
+      keywords:
+        - confirm approve

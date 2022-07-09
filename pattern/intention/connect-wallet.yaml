@@ -1,0 +1,75 @@
+intention:
+  # 意图名
+  name: connect-wallet
+  # 前置条件，指向该节点关系上的约束条件
+  pre-requirements:
+  # 后置条件，指向下一节点关系上的约束条件
+  after-requirements:
+  # 子路径
+  sub-path:
+    sub-path1:
+      - select-dapp-protocols
+      - confirm-dapp-protocols
+  # 全路径
+  full-path:
+    full-path1:
+      - check-account
+    full-path2:
+      - click-connect-wallet
+      - send-signature-request
+      - confirm-signature-request
+      - check-account
+    full-path3:
+      - click-connect-wallet
+      - select-metamask-wallet
+      - check-account
+    full-path4:
+      - click-connect-wallet
+      - select-metamask-wallet
+      - select-account
+      - connect-account
+      - check-account
+    full-path5:
+      # 使用子路径
+      - link-sub-path1
+      # 使用全路径
+      - link-full-path2
+    full-path6:
+      - link-sub-path1
+      - link-full-path3
+    full-path7:
+      - link-sub-path1
+      - link-full-path4
+  # 基础操作
+  actions:
+    select-dapp-protocols:
+      operation: click
+      scope: web
+    confirm-dapp-protocols:
+      operation: click
+      scope: web
+    check-account:
+      operation: exist
+      scope: web
+      data: account
+    click-connect-wallet:
+      operation: click
+      scope: web
+      keywords:
+        - connect wallet
+        - connect
+    send-signature-request:
+      operation: click
+      scope: web
+    confirm-signature-request:
+      operation: click
+      scope: web
+    select-metamask-wallet:
+      operation: click
+      scope: web
+    select-account:
+      operation: click
+      scope: wallet
+    connect-account:
+      operation: click
+      scope: wallet

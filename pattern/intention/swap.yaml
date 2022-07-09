@@ -1,0 +1,28 @@
+intention:
+  # 意图名
+  name: swap
+  # 前置条件，指向该节点关系上的约束条件
+  pre-requirements:
+  # 后置条件，指向下一节点关系上的约束条件
+  after-requirements:
+  # 子路径
+  sub-path:
+  # 全路径
+  full-path:
+    full-path1:
+      - click-swap-button
+      - click-confirm-swap-button
+    full-path2:
+      - click-swap-button
+  # 前端操作实现
+  actions:
+    click-swap-button:
+      scope: web
+      operation: click
+      keywords:
+        - swap
+    click-confirm-swap-button:
+      scope: web
+      operation: click
+      keywords:
+        - swap-comfirm
