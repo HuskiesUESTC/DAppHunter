@@ -1,6 +1,5 @@
 import os.path
-
-from config import get_config, config
+from util.config import get_config, config
 from py2neo import Graph, Node, Relationship, Transaction
 
 
@@ -99,6 +98,8 @@ def insert_intention_nodes(tx: Transaction, intention_name: str, intention_info:
                 action_node.setdefault('data', action['data'])
             if 'tags' in action:
                 action_node.setdefault('tags', action['tags'])
+            if 'bias' in action:
+                action_node.setdefault('bias', action['bias'])
             tx.create(action_node)
             action_nodes[action_name] = action_node
 

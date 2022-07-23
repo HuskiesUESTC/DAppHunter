@@ -2,6 +2,7 @@ from lxml.etree import _Element
 import copy
 import difflib
 from nltk import word_tokenize, corpus, stem
+import functools
 
 SKIP_TAGS = ['image', 'svg']
 
@@ -115,8 +116,9 @@ def match_text_constraint(element: _Element, tags: [str], keyword_stem_word_list
 
 # placeholder匹配约束
 def match_placeholder_constraint(element: _Element, tags: [str], keyword_stem_word_list: [list]) -> float:
-    if element.tag not in ['input'] and not element.attrib.get('placeholder', None):
+    if element.tag not in ['input'] or not element.attrib.get('placeholder', None):
         return 0
+    print(element.attrib.get('placeholder'))
     placeholder_stem_words = extract_stem_words(element.attrib.get('placeholder'))
     max_similarity = 0
     for keyword_stem_words in keyword_stem_word_list:
@@ -185,7 +187,7 @@ def find_suitable_elements(root: _Element, tags: [str] = None, keyword_stem_word
     for sub_element in root.getchildren():
         # 如果找到了与keyword相似的元素，则停止向下递归
         similarity = check_element(sub_element, tags, keyword_stem_word_list)
-        if similarity > 0:
+        if similarity > 0.8:
             attr_key = '-'.join(sub_element.attrib.keys())
             result.append({
                 'element': sub_element,
@@ -224,7 +226,14 @@ def recommend_elements(root: _Element, tags: [str] = None,
         item['similarity'] = calculate_score(text_similarity, attr_similarity)
         return item
 
+    # 按照相似度进行排序，同时相同分数增加顺序约束
+    def sort(item1, item2):
+        score_offset = item1['similarity'] - item2['similarity']
+        if score_offset != 0:
+            return 1 if score_offset > 0 else -1
+        return -1
+
     # 按照相似度进行排序并返回
     return sorted([change_similarity(item) for item in suitable_elements],
-                  key=lambda item: item['similarity'],
+                  key=functools.cmp_to_key(sort),
                   reverse=True)

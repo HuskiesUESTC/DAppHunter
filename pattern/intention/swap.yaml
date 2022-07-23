@@ -27,5 +27,6 @@ intention:
       scope: web
       operation: click
       keywords:
-        - swap-confirm
+        - swap confirm
+      tags:
         - button

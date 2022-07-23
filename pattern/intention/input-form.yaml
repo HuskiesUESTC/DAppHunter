@@ -20,6 +20,7 @@ intention:
       scope: web
       keywords:
         - select a currency
+        - open-currency-select-button
     select-currency:
       operation: click
       scope: web
@@ -28,9 +29,9 @@ intention:
         - ETH
         - BUSD
         - DOGE
+        - AMPLE
     input-amount:
       operation: input
       scope: web
       keywords:
-        - input amount
-        - '0.0'
+        - token-amount-input

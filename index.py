@@ -1,18 +1,15 @@
 import time
 
-from util.chrome import Chrome
-from util.parser import Parser
-
+from util import Chrome, Parser, bnb_exchanges
 
 if __name__ == '__main__':
     chrome = Chrome()
-    try:
-        chrome.unlock_metamask()
-        chrome.url = "https://ampleswap.com/swap"
-        parser = Parser(chrome)
+    parser = Parser(chrome)
+
+    chrome.unlock_metamask()
+    for dapp, url in bnb_exchanges.items():
+        print(dapp)
+        chrome.url = url
         time.sleep(1)
         parser.handle()
-        print("end")
-    except Exception as e:
-        print(e)
     chrome.driver.close()

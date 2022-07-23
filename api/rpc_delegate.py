@@ -5,7 +5,7 @@ import web3
 
 app = Flask(__name__)
 verbose = False
-rpc_url = 'https://bsc-dataseed1.ninicoin.io'
+rpc_url = 'https://bsc-dataseed4.ninicoin.io/'
 
 
 def eth_getBalance(j):

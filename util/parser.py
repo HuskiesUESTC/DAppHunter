@@ -1,9 +1,9 @@
 import time
-from util.chrome import Chrome
 from selenium.webdriver.common.by import By
-from util.utils import detect_path_trace
-from util.config import config
 from py2neo import Graph, NodeMatcher, RelationshipMatcher, Node
+from util.config import config
+from util.utils import detect_path_trace
+from util import Chrome
 
 
 class Parser:
@@ -11,7 +11,6 @@ class Parser:
     def __init__(self, chrome: Chrome):
         self.driver = chrome.driver
         self.chrome = chrome
-
         graph = Graph(config['neo4j']['host'],
                       auth=(config['neo4j']['username'], config['neo4j']['password']),
                       name=config['neo4j']['name'])
@@ -62,9 +61,11 @@ class Parser:
         current_operate_status = False
         current_operate_node = None
         next_r_type = 'next'
-        for cur_rel in self.relationship_matcher.match((prev_node, None), r_type=next_r_type).all():
+        next_nodes = sorted([next_rel.end_node for next_rel in
+                             self.relationship_matcher.match((prev_node, None), r_type=next_r_type).all()],
+                            key=lambda x: x.get('bias') or 100)
+        for cur_node in next_nodes:
             # 判断是否满足当前关系成立的条件
-            cur_node = cur_rel.end_node
             execute_operation_status = self.execute_operation(cur_node)
             if execute_operation_status:
                 current_operate_node = cur_node
@@ -99,13 +100,12 @@ class Parser:
             return False
 
         # 如果scope为钱包，判断是否需打开新的window
-        origin_window_handle = None
+        origin_window_handle = self.chrome.driver.current_window_handle
         if node.get('scope') == "wallet":
             current_url = self.driver.current_url
             wallet_id = config['chrome']['metamask']['id']
             wallet_page_url = 'chrome-extension://{}/home.html'.format(wallet_id)
             if wallet_id not in current_url:
-                origin_window_handle = self.chrome.driver.current_window_handle
                 self.chrome.driver.switch_to.new_window(wallet_page_url)
 
         # 如果是exist需要提前从data中取出关键字，然后作为关键字进行查找
@@ -127,22 +127,22 @@ class Parser:
         # 根据xpath或keywords查找相关元素
         result = False
         executable_elements = []
+        step_info_frame = False
         if node.get('xpath') is not None:
             executable_elements.append(self.chrome.get_element(By.XPATH, node.get('xpath')))
         elif keywords is not None:
-            executable_elements = self.chrome.get_target_executable_elements(keywords=keywords,
-                                                                             tags=node.get('tags'))
-        print(executable_elements)
+            executable_elements, step_info_frame = self.chrome.get_target_executable_elements(keywords=keywords,
+                                                                                              tags=node.get('tags'))
         # 根据operation类型进行相关处理
         if len(executable_elements) > 0:
             if operation_type == 'click':
                 result = self.execute_click(executable_elements, keywords)
             elif operation_type == 'input':
                 result = self.execute_input(executable_elements, keywords)
-            elif operation_type == 'select':
-                result = self.execute_select(executable_elements, keywords)
             elif operation_type == 'exist':
                 result = self.execute_exist(executable_elements, keywords)
+
+        step_info_frame and self.chrome.driver.switch_to.window(origin_window_handle)
         return result
 
     # 执行点击操作
@@ -174,10 +174,6 @@ class Parser:
                 if config['debug']['display-exception']:
                     print(e)
         return False
-
-    # 执行选择操作
-    def execute_select(self, element_info_list: [{}], keywords: [str]) -> bool:
-        return True
 
     # 执行判断存在操作
     def execute_exist(self, element_info_list: [{}], keywords: [str]) -> bool:

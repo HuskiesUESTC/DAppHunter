@@ -80,7 +80,7 @@ class Method:
         dataToDecode = bytes.fromhex(rawDataWithOutSig)
         # print(self.__methodName)
         tx = {}
-        tx['method_name'] = self.methodName__methodName
+        tx['method_name'] = self.__methodName
         tx['params'] = {}
         tx['decode_success'] = False
         try:

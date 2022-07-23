@@ -52,9 +52,11 @@ intention:
       operation: exist
       scope: web
       data: account
+      bias: 1
     click-connect-wallet:
       operation: click
       scope: web
+      bias: 2
       keywords:
         - connect wallet
         - connect
