@@ -21,8 +21,11 @@ intention:
       operation: click
       keywords:
         - swap
+      tags:
+        - button
     click-confirm-swap-button:
       scope: web
       operation: click
       keywords:
-        - swap-comfirm
+        - swap-confirm
+        - button

@@ -91,14 +91,14 @@ def insert_intention_nodes(tx: Transaction, intention_name: str, intention_info:
             # 设置关键字
             if 'keywords' in action:
                 action_node.setdefault('keywords', action['keywords'])
-            if 'filters' in action:
-                action_node.setdefault('filters', action['filters'])
             # 设置xpath
             if 'xpath' in action:
                 action_node.setdefault('xpath', action['xpath'])
             # 设置data
             if 'data' in action:
                 action_node.setdefault('data', action['data'])
+            if 'tags' in action:
+                action_node.setdefault('tags', action['tags'])
             tx.create(action_node)
             action_nodes[action_name] = action_node
 

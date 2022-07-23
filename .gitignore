@@ -1,0 +1,10 @@
+.DS_Store
+.idea
+.ipynb_checkpoints
+__pycache__
+chrome
+config.yaml
+*.ipynb
+python3_sudo.sh
+venv
+dump.rdb

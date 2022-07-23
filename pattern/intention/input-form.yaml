@@ -28,8 +28,6 @@ intention:
         - ETH
         - BUSD
         - DOGE
-      filters:
-        - BNB
     input-amount:
       operation: input
       scope: web
