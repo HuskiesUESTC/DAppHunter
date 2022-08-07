@@ -31,6 +31,7 @@ intention:
         - BUSD
         - DOGE
         - AMPLE
+        - WBNB
     input-amount:
       operation: input
       scope: web

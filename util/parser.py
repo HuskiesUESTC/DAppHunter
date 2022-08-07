@@ -150,7 +150,6 @@ class Parser:
         # 执行之前记录页面html
         self.chrome.record_page_html()
         for element_info in element_info_list:
-            print(element_info)
             if self.chrome.click_element(executable_element=element_info['element'], xpath=element_info['xpath'],
                                          check_change=True):
                 return True

@@ -21,6 +21,7 @@ intention:
       operation: click
       keywords:
         - swap
+        - 换行
       tags:
         - button
     click-confirm-swap-button:

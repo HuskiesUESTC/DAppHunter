@@ -7,9 +7,8 @@ if __name__ == '__main__':
     parser = Parser(chrome)
 
     chrome.unlock_metamask()
-    for dapp, url in bnb_exchanges.items():
-        print(dapp)
-        chrome.url = url
-        time.sleep(1)
-        parser.handle()
+    # for dapp, url in bnb_exchanges.items():
+    chrome.url = "https://swap.app.sokuswap.finance/swap"
+    time.sleep(1)
+    parser.handle()
     chrome.driver.close()
