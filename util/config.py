@@ -18,7 +18,7 @@ bnb_exchanges = {
     'Bunicorn': 'https://bunicorn.exchange/#/trade/tokens',
     'Transit Swap': 'https://swap.transit.finance/?locale=zh#/',
     'Bogged': 'https://app.bogged.finance/bsc/trade?type=buy&tokenIn=BNB&tokenOut',
-    'XY Finance': 'https://app.xy.finance/',
+    'XY Finance xx': 'https://app.xy.finance/',
     'DonkSwap': 'https://www.donkswap.com/#/swap',
     'BenSwap': 'https://dex.benswap.finance/#/swap',
     'NeverSwap': 'https://neverswap.com/#/swap',

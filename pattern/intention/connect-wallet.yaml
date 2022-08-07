@@ -60,6 +60,7 @@ intention:
       keywords:
         - connect wallet
         - connect
+        - unlock wallet
     send-signature-request:
       operation: click
       scope: web

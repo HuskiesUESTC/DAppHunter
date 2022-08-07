@@ -118,7 +118,6 @@ def match_text_constraint(element: _Element, tags: [str], keyword_stem_word_list
 def match_placeholder_constraint(element: _Element, tags: [str], keyword_stem_word_list: [list]) -> float:
     if element.tag not in ['input'] or not element.attrib.get('placeholder', None):
         return 0
-    print(element.attrib.get('placeholder'))
     placeholder_stem_words = extract_stem_words(element.attrib.get('placeholder'))
     max_similarity = 0
     for keyword_stem_words in keyword_stem_word_list:

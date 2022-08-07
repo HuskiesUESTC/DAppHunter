@@ -21,6 +21,7 @@ intention:
       keywords:
         - select a currency
         - open-currency-select-button
+        - select your token
     select-currency:
       operation: click
       scope: web
@@ -35,3 +36,5 @@ intention:
       scope: web
       keywords:
         - token-amount-input
+        - form-amount-in
+        - Token Amount

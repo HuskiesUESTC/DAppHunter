@@ -1,9 +1,9 @@
 import time
 from selenium.webdriver.common.by import By
 from py2neo import Graph, NodeMatcher, RelationshipMatcher, Node
+from util import Chrome
 from util.config import config
 from util.utils import detect_path_trace
-from util import Chrome
 
 
 class Parser:
@@ -119,7 +119,7 @@ class Parser:
                 account = self.driver.execute_script('return window.ethereum.selectedAddress')
                 if account is None:
                     return False
-                keywords = ['...' + account[len(account) - 4:]]
+                keywords = ['...' + account[len(account) - 4:], account[:5]]
             # 其他情况暂时忽略
             else:
                 return True
@@ -134,13 +134,12 @@ class Parser:
             executable_elements, step_info_frame = self.chrome.get_target_executable_elements(keywords=keywords,
                                                                                               tags=node.get('tags'))
         # 根据operation类型进行相关处理
-        if len(executable_elements) > 0:
-            if operation_type == 'click':
-                result = self.execute_click(executable_elements, keywords)
-            elif operation_type == 'input':
-                result = self.execute_input(executable_elements, keywords)
-            elif operation_type == 'exist':
-                result = self.execute_exist(executable_elements, keywords)
+        if operation_type == 'click':
+            result = len(executable_elements) > 0 and self.execute_click(executable_elements, keywords)
+        elif operation_type == 'input':
+            result = len(executable_elements) > 0 and self.execute_input(executable_elements, keywords)
+        elif operation_type == 'exist':
+            result = self.execute_exist(executable_elements, keywords)
 
         step_info_frame and self.chrome.driver.switch_to.window(origin_window_handle)
         return result
@@ -161,13 +160,12 @@ class Parser:
     def execute_input(self, element_info_list: [{}], keywords: [str]) -> bool:
         # 执行之前记录页面html
         self.chrome.record_page_html()
-        amount = 0.01
         for element_info in element_info_list:
             executable_element = element_info['element']
             if executable_element.tag_name != 'input':
                 continue
             try:
-                executable_element.send_keys(amount)
+                executable_element.send_keys(config['dapp']['input-amount'])
                 if self.chrome.is_page_change:
                     return True
             except Exception as e:
@@ -181,4 +179,8 @@ class Parser:
             for element_info in element_info_list:
                 if element_info['text_similarity'] == 1:
                     return True
+        html = self.chrome.html
+        for keyword in keywords:
+            if keyword in html:
+                return True
         return False

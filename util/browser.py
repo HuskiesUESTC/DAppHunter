@@ -11,7 +11,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from util import config, locator, ocr
 from util.config import config
-from util.utils import retry
 
 
 class Chrome:
@@ -25,7 +24,6 @@ class Chrome:
         self._driver = webdriver.Chrome(options=options, executable_path=config['chrome']['webdriver'])
 
     # 获取元素
-    @retry
     def get_element(self, by=By.ID, value=None) -> WebElement:
         return WebDriverWait(self.driver, config['chrome']['wait-time']).until(
             ec.presence_of_element_located(
@@ -37,7 +35,7 @@ class Chrome:
 
     # 获取可执行元素
     def get_executable_element(self, html_element: HtmlElement) -> (WebElement, str):
-        xpath = self.get_html_element_xpath(html_element)
+        xpath = self.get_html_element_xpath(html_element).replace('/noscript', '')
         return self.get_element(By.XPATH, xpath), xpath
 
     # 获取指定的html元素
@@ -97,7 +95,6 @@ class Chrome:
         return result, step_info_iframe
 
     # 点击元素
-    @retry
     def click_element(self, executable_element: WebElement, xpath: str, check_change: False, ancestor_level: int = 0):
         if config['debug']['display-click-element-xpath']:
             print(xpath)
@@ -143,7 +140,6 @@ class Chrome:
         return True
 
     # 为 metamask 钱包插件解锁
-    @retry
     def unlock_metamask(self) -> None:
         id = config['chrome']['metamask']['id']
         password = config['chrome']['metamask']['password']
@@ -158,7 +154,6 @@ class Chrome:
         submit_button.send_keys(Keys.ENTER)
 
     # 切换 metamask 网络
-    @retry
     def switch_metamask_network(self, network_type: str) -> bool:
         id = config['chrome']['metamask']['id']
         home_page = 'chrome-extension://' + id + '/home.html'
@@ -217,7 +212,6 @@ class Chrome:
         return self._url
 
     @url.setter
-    @retry
     def url(self, url: str):
         self._url = url
         self._driver.get(url)
