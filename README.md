@@ -1,23 +1,32 @@
 # ScamHunter项目部署
 
 ---
+
 ### 1. 安装 docker 环境
+
 ### 2. 拉取 Ethereum 容器化部署库（[LocalNode](https://github.com/HuskiesUESTC/LocalNode)）
+
 ### 3. 查看 Chrome 浏览器 用户Profile 文件夹地址
 
-- 在Chrome地址栏中，输入chrome://version  
+- 在Chrome地址栏中，输入chrome://version
 - 在个人资料路径一行，可得到Chrome配置文件所在路径 ，例如：
+
 ```
 /Users/jiangtianxing/Library/Application Support/Google/Chrome/Profile 1
 ```
+
 - 记录除最后一级的文件夹路径复制下来(`Profile 1`不需要)，例如：
+
 ```
 /Users/jiangtianxing/Library/Application Support/Google/Chrome
 ```
 
 ### 4. [下载 Chrome Driver 并将其部署至全局环境](https://chromedriver.chromium.org/downloads)
+
 ### 5. 在自动化测试环境下打开浏览器，安装 MetaMask 钱包
+
 - 通过以下脚本在自动化测试环境下打开 Chrome 浏览器
+
 ```Python
 from selenium import webdriver
 
@@ -28,14 +37,19 @@ if __name__ == '__main__':
     option.add_argument('--user-data-dir=/Users/jiangtianxing/Desktop/Chrome')
     driver = webdriver.Chrome(options=option)
 ```
+
 - 安装MetaMask钱包插件，并记录其浏览器插件id
 - 创建钱包账户，并导入私钥（该地址是以太坊本地节点coinbase的地址）
+
 ```
 e6a6c3d551247545f311d8a7080d92df990b08d93c95b8393f3b7c260252b2e2
 ```
+
 ### 6. 配置文件 config.yml
+
 - 需要将 **chrome.profile.dir** 修改为 **用户Profile 文件夹地址；**
 - 需要将 **chrome.metamask.id** 修改为 自动化测试环境下 **MetaMask钱包插件id.**
+
 ```YAML
 # chrome 环境配置
 # chrome 环境配置
@@ -111,13 +125,13 @@ python3 main.py -url http://localhost/apporve/
 ```
 
 ### Results
-Inconsistent DApps
 
+Inconsistent DApps
 
 | Symbol        | Name          | Address                            | Website       |
 | ------------- | ------------- | ---------------------------------- | ------------- |
 | Velo  | Velochain.io  | 0xc7ef1bff46cd025509cf5e55fa5cd5c14793cbff | DEAD
-| FLUX  | GoFlux.io  | 0xb16600c510b0f323dee2cb212924d90e58864421 | DEAD 
+| FLUX  | GoFlux.io  | 0xb16600c510b0f323dee2cb212924d90e58864421 | DEAD
 | VERA | TheVera.io |  0x0df62d2cd80591798721ddc93001afe868c367ff | DEAD
 | ALICE | Alicedrop.com | 0x89e0262ec34311564b4e43d416218d38d4db879c | DEAD
 | EVER | TheEver.io | 0x5190b01965b6e3d786706fd4a999978626c19880 | DEAD
