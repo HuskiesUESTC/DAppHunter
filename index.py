@@ -8,7 +8,7 @@ if __name__ == '__main__':
 
     chrome.unlock_metamask()
     # for dapp, url in bnb_exchanges.items():
-    chrome.url = "https://www.pandaswap.xyz/#/swap"
+    chrome.url = "https://ampleswap.com/swap"
     time.sleep(1)
     parser.handle()
     chrome.driver.close()

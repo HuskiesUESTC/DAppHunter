@@ -104,6 +104,9 @@ def insert_intention_nodes(tx: Transaction, intention_info: {}) -> Node:
             # select 元素时设置选择顺序，默认为正序
             if 'sort' in action:
                 action_node.setdefault('sort', action['sort'])
+            # 当前操作执行成功等待时间
+            if 'wait-time' in action:
+                action_node.setdefault('wait-time', action['wait-time'])
             if 'bias' not in action:
                 action['bias'] = 0
             action_node.setdefault('bias', action['bias'])

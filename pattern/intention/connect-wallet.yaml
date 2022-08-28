@@ -71,10 +71,14 @@ intention:
       scope: web
     select-metamask-wallet:
       operation: click
+      keywords:
+        - MetaMask
       scope: web
     select-account:
       operation: click
       scope: wallet
+      xpath: /html/body/div[1]/div/div[2]/div/div[2]/div[4]/div[2]/button[2]
     connect-account:
       operation: click
       scope: wallet
+      xpath: /html/body/div[1]/div/div[2]/div/div[2]/div[2]/div[2]/footer/button[2]

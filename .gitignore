@@ -9,3 +9,4 @@ python3_sudo.sh
 venv
 dump.rdb
 util/*_tmp.py
+chromedriver

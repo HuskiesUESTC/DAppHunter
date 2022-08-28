@@ -1,6 +1,10 @@
 import time
+
+from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 from py2neo import Graph, NodeMatcher, RelationshipMatcher, Node
+from selenium.webdriver.remote.webelement import WebElement
+
 from util import Chrome
 from util.config import config
 from util.utils import detect_path_trace
@@ -79,8 +83,9 @@ class Parser:
         # 如果检测成功，且当前节点为end
         if current_operate_node.get('name') == 'end':
             return True
-        # 方法执行成功后，如果是普通操作，且不是start、end，需要等待0.5s
-        time.sleep(config['dapp']['wait-time'])
+        # 方法执行成功后，如果是普通操作，且不是start、end，需要等待一定时间
+        wait_time = current_operate_node.get('wait-time', config['dapp']['wait-time'])
+        time.sleep(wait_time)
         # 如果检测成功，当前节点不为end则继续执行
         return self.execute_basic_step(current_operate_node)
 
@@ -102,18 +107,32 @@ class Parser:
             return False
 
         # 如果scope为钱包，判断是否需打开新的window
-        origin_window_handle = self.chrome.driver.current_window_handle
+        origin_window_handle = self.driver.current_window_handle
         if node.get('scope') == "wallet":
+            # 如果当前只有handle则直接返回false
+            if len(self.driver.window_handles) == 1:
+                return False
             current_url = self.driver.current_url
             wallet_id = config['chrome']['metamask']['id']
-            wallet_page_url = 'chrome-extension://{}/home.html'.format(wallet_id)
-            if wallet_id not in current_url:
-                self.chrome.driver.switch_to.new_window(wallet_page_url)
+            # wallet_page_url = 'chrome-extension://{}/home.html'.format(wallet_id)
+            all_handles = self.driver.window_handles
+            if wallet_id not in current_url and len(all_handles) > 1:
+                self.chrome.driver.switch_to.window(all_handles[-1])
 
         # 如果是exist需要提前从data中取出关键字，然后作为关键字进行查找
         keywords = node.get('keywords')
         operation_type = node.get("operation")
         sort = node.get("sort") or 'asc'
+        # 根据xpath或keywords查找相关元素
+        result = False
+        executable_elements = []
+        step_info_frame = False
+        if node.get('xpath') is not None:
+            executable_elements.append(self.chrome.get_element(By.XPATH, node.get('xpath')))
+        elif keywords is not None:
+            executable_elements, step_info_frame = self.chrome.get_target_executable_elements(keywords=keywords,
+                                                                                              tags=node.get('tags'),
+                                                                                              sort=sort)
         if operation_type == 'exist' and node.get('data') is not None:
             extra_data = node.get('data')
             # 如果是account，且data为account
@@ -132,16 +151,6 @@ class Parser:
             else:
                 return True
 
-        # 根据xpath或keywords查找相关元素
-        result = False
-        executable_elements = []
-        step_info_frame = False
-        if node.get('xpath') is not None:
-            executable_elements.append(self.chrome.get_element(By.XPATH, node.get('xpath')))
-        elif keywords is not None:
-            executable_elements, step_info_frame = self.chrome.get_target_executable_elements(keywords=keywords,
-                                                                                              tags=node.get('tags'),
-                                                                                              sort=sort)
         # 根据operation类型进行相关处理
         if operation_type == 'click':
             result = len(executable_elements) > 0 and self.execute_click(executable_elements, keywords)
@@ -150,7 +159,8 @@ class Parser:
         elif operation_type == 'exist':
             result = self.execute_exist(executable_elements, keywords)
 
-        step_info_frame and self.chrome.driver.switch_to.window(origin_window_handle)
+        if step_info_frame or self.driver.current_window_handle != origin_window_handle:
+            self.chrome.driver.switch_to.window(origin_window_handle)
         return result
 
     # 执行点击操作
@@ -159,6 +169,10 @@ class Parser:
         # 执行之前记录页面html
         self.chrome.record_page_html()
         for element_info in element_info_list:
+            # 如果使用了 xpath
+            if keywords is None and isinstance(element_info, WebElement):
+                element_info.send_keys(Keys.ENTER)
+                return True
             if self.chrome.click_element(executable_element=element_info['element'], xpath=element_info['xpath'],
                                          check_change=True):
                 return True

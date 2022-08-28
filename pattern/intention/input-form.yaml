@@ -27,8 +27,10 @@ intention:
         - open-currency-select-button
         - select your token
         - 选择通证
+        - 选择代币
       sort: desc
       bias: 2
+      wait-time: 10
     select-currency:
       operation: click
       scope: web
@@ -39,6 +41,7 @@ intention:
         - DOGE
         - AMPLE
         - ANKR
+        - WBNB
       sort: desc
     input-amount:
       operation: input
@@ -50,3 +53,4 @@ intention:
         - swap-input
       bias: 1
       sort: bias
+      wait-time: 15
