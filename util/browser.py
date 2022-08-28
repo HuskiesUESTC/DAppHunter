@@ -1,3 +1,4 @@
+import time
 from io import StringIO
 import lxml.etree
 from lxml.html import HtmlElement
@@ -39,17 +40,19 @@ class Chrome:
         return self.get_element(By.XPATH, xpath), xpath
 
     # 获取指定的html元素
-    def get_target_html_elements(self, keywords: [str], tags: [str], context: str = 'text') -> [{}]:
+    def get_target_html_elements(self, keywords: [str], tags: [str], context: str = 'text', sort: str = "asc") -> [{}]:
         root = self.dom
         locator.CONTEXT = context
-        result = locator.recommend_elements(root, tags, keywords)
+        reverse = (sort == 'desc')
+        result = locator.recommend_elements(root, tags, keywords, reverse)
         # 返回 text相似度在0.8以上，综合相似度在0.7以上的元素
         return list(filter(lambda x: x['text_similarity'] > 0.8 and x['similarity'] > 0.7, result))
 
     # 获取指定的可执行元素
-    def get_target_executable_elements(self, keywords: [str], tags: [str], context: str = 'text') -> ([{}], bool):
+    def get_target_executable_elements(self, keywords: [str], tags: [str], context: str = 'text',
+                                       sort: str = 'asc') -> ([{}], bool):
         def _get_current_page_target_executable_elements():
-            result = self.get_target_html_elements(keywords, tags, context)
+            result = self.get_target_html_elements(keywords, tags, context, sort=sort)
 
             def __convert_element(item):
                 item['element'], item['xpath'] = self.get_executable_element(item['element'])
@@ -152,6 +155,7 @@ class Chrome:
         # 提交按钮 button
         submit_button = self.get_element(By.XPATH, '/html/body/div[1]/div/div[3]/div/div/button')
         submit_button.send_keys(Keys.ENTER)
+        time.sleep(5)
 
     # 切换 metamask 网络
     def switch_metamask_network(self, network_type: str) -> bool:

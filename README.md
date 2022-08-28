@@ -38,20 +38,21 @@ e6a6c3d551247545f311d8a7080d92df990b08d93c95b8393f3b7c260252b2e2
 - 需要将 **chrome.metamask.id** 修改为 自动化测试环境下 **MetaMask钱包插件id.**
 ```YAML
 # chrome 环境配置
+# chrome 环境配置
 chrome:
   # webdriver 路径
-  webdriver: /Users/bytedance/code/webdriver/chromedriver
+  webdriver: /Users/jiangtianxing/code/DAppHunter/chromedriver
   # 获取元素默认等待相应时间，显示等待
   wait-time: 20
   # 配置了 MetaMask 钱包插件的谷歌浏览器 Profile 目录
   profile:
-    dir: /Users/bytedance/Library/Application Support/Google/Chrome
+    dir: /Users/jiangtianxing/Library/Application Support/Google/Chrome
   # MeatMask 钱包插件配置
   metamask:
     # 浏览器插件ID
-    id: dmdjkekhkjhehoiledkimbnaddcbencl
+    id: obdlokclfmbpnnhgpdihalflheoafeme
     # 钱包密码
-    password: jxx970224
+    password: jiangtianxing
     # 钱包助记词（项目中未使用，此处仅为方便记忆）
     phrase: rigid pool noise wasp toast entry entire jump visual invite avocado hotel
     # 钱包倒入私钥（项目中未使用，此处仅为方便记忆）
@@ -68,18 +69,22 @@ ali-ocr:
 
 # 文件目录配置
 dir:
-  pattern: /Users/bytedance/code/ScamHunter/pattern
+  pattern: /Users/jiangtianxing/code/DAppHunter/pattern
 
 neo4j:
   host: bolt://localhost:7687
-  name: dapphunter
-  username: jiangtianxing
+  name:
+  username: neo4j
   password: jiangtianxing
 
 mysql:
   user: root
   password: jiangtianxing
   database: dapp
+
+dapp:
+  input-amount: 0.01
+  wait-time: 7
 
 # 是否为调试模式
 debug:
@@ -91,7 +96,7 @@ debug:
   debug-node:
     status: True
     names:
-      - click-swap-button
+      - input-amount
   # 检测是否输出exception信息
   display-exception: True
   # 显示click元素的xpath

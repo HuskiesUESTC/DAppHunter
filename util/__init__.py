@@ -1,5 +1,4 @@
 from util.browser import Chrome
-from util.database import Database
 from util.environment import Environment
 from util.parser import Parser
 from util.const import Category, Protocol

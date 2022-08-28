@@ -12,22 +12,35 @@ intention:
     full-path1:
       - click-swap-button
       - click-confirm-swap-button
+      - click-confirm-transaction-button
     full-path2:
       - click-swap-button
+      - click-confirm-transaction-button
   # 前端操作实现
   actions:
     click-swap-button:
       scope: web
       operation: click
       keywords:
+        - swap-button
         - swap
         - 换行
+        - wrap
+        - swap anyway
       tags:
         - button
+      bias: 1
     click-confirm-swap-button:
       scope: web
       operation: click
       keywords:
         - swap confirm
+        - confirm swap
       tags:
         - button
+      bias: 2
+    click-confirm-transaction-button:
+      scope: wallet
+      operation: click
+      xpath: /html/body/div[1]/div/div[2]/div/div[4]/div[3]/footer/button[2]
+      bias: 1

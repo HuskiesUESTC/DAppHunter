@@ -45,6 +45,12 @@ def calculate_text_similarity(text_stem_words: [], keyword_stem_words: []) -> fl
                 matched_keyword_item = keyword_stem_word
                 matched_text_item = keyword_stem_word
                 break
+            for text_stem_word in text_stem_words:
+                if keyword_stem_word in text_stem_word:
+                    max_similarity = 1
+                    matched_keyword_item = keyword_stem_word
+                    matched_text_item = text_stem_word
+                    break
         # 如果完全匹配上，则删除相关word
         if max_similarity == 1:
             matched_count += 1
@@ -202,8 +208,8 @@ def find_suitable_elements(root: _Element, tags: [str] = None, keyword_stem_word
 
 
 # 综合单词相似度与属性相似度推荐元素
-def recommend_elements(root: _Element, tags: [str] = None,
-                       keywords: [list] = None) -> [{}]:
+def recommend_elements(root: _Element, tags: [str] = None, keywords: [list] = None,
+                       reverse: bool = False) -> [{}]:
     # 提取词干
     keyword_stem_word_list = []
     for keyword in keywords:
@@ -227,12 +233,17 @@ def recommend_elements(root: _Element, tags: [str] = None,
 
     # 按照相似度进行排序，同时相同分数增加顺序约束
     def sort(item1, item2):
-        score_offset = item1['similarity'] - item2['similarity']
-        if score_offset != 0:
-            return 1 if score_offset > 0 else -1
-        return -1
+        text_similarity_offset = item1['similarity'] - item2['similarity']
+        if text_similarity_offset != 0:
+            return 1 if text_similarity_offset > 0 else -1
+        attr_similarity_offset = item1['attr_similarity'] - item2['attr_similarity']
+        if abs(attr_similarity_offset) > 0.3:
+            return 1 if attr_similarity_offset > 0 else -1
+        if reverse:
+            return -1
+        return 1
 
     # 按照相似度进行排序并返回
     return sorted([change_similarity(item) for item in suitable_elements],
                   key=functools.cmp_to_key(sort),
-                  reverse=True)
+                  reverse=reverse)
