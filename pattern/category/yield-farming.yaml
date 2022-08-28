@@ -1,0 +1,11 @@
+# 类型
+category:
+  # 名称
+  name: yield-farming
+  # 意图序列
+  intention-sequences:
+    # 只需要写核心步骤，不需要写start、end
+    # swap
+    -
+      - connect-wallet
+      - invest-project

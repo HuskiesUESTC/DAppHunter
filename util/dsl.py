@@ -34,12 +34,15 @@ def parse_single_intention(intention_file_path: str) -> {}:
     for full_path_name in full_paths:
         actions = get_actions(full_path_name)
         action_paths.append(actions)
+    if 'bias' not in intention_data:
+        intention_data['bias'] = 0
     return {
         'name': intention_data['name'],
         'actions': intention_data['actions'],
         'action_paths': action_paths,
         'pre_requirements': intention_data['pre-requirements'],
-        'after_requirements': intention_data['after-requirements']
+        'after_requirements': intention_data['after-requirements'],
+        'bias': intention_data['bias']
     }
 
 
@@ -50,7 +53,7 @@ def parse_all_intentions(intention_dir: str) -> {}:
     for intention_file_name in intention_file_list:
         intention_file_path = intention_dir + '/' + intention_file_name
         intention_data = parse_single_intention(intention_file_path)
-        intentions[intention_data['name']] = parse_single_intention(intention_file_path)
+        intentions[intention_data['name']] = intention_data
     return intentions
 
 
@@ -67,9 +70,9 @@ def insert_flag_intention_nodes(tx: Transaction):
 
 
 # 插入单个意图节点
-def insert_intention_nodes(tx: Transaction, intention_name: str, intention_info: {}) -> Node:
+def insert_intention_nodes(tx: Transaction, intention_info: {}) -> Node:
     intention_label = 'Intention'
-    action_label = intention_name
+    action_label = intention_info['name']
     action_relation_label = 'next'
     impl_relation_label = 'impl'
     action_nodes = {}
@@ -98,8 +101,12 @@ def insert_intention_nodes(tx: Transaction, intention_name: str, intention_info:
                 action_node.setdefault('data', action['data'])
             if 'tags' in action:
                 action_node.setdefault('tags', action['tags'])
-            if 'bias' in action:
-                action_node.setdefault('bias', action['bias'])
+            # select 元素时设置选择顺序，默认为正序
+            if 'sort' in action:
+                action_node.setdefault('sort', action['sort'])
+            if 'bias' not in action:
+                action['bias'] = 0
+            action_node.setdefault('bias', action['bias'])
             tx.create(action_node)
             action_nodes[action_name] = action_node
 
@@ -131,7 +138,8 @@ def insert_intention_nodes(tx: Transaction, intention_name: str, intention_info:
 
     # 创建意图与前端实现节点
     def insert_intention_node():
-        intention_node = Node(intention_label, name=intention_name)
+        intention_node = Node(intention_label, name=intention_info['name'])
+        intention_node.setdefault('bias', intention_info['bias'])
         tx.create(intention_node)
         start_action_node = action_nodes['start']
         impl_relationship = Relationship(intention_node, impl_relation_label, start_action_node)
@@ -203,8 +211,8 @@ def load_graph_from_pattern():
         graph.run('match (n) detach delete n')
         # 逐个插入意图节点
         intention_nodes = {}
-        for intention_name in intentions:
-            intention_node = insert_intention_nodes(tx, intention_name, intentions[intention_name])
+        for intention_name, intention_info in intentions.items():
+            intention_node = insert_intention_nodes(tx, intention_info)
             intention_nodes[intention_name] = intention_node
         intention_nodes.update(insert_flag_intention_nodes(tx))
 

@@ -1,6 +1,6 @@
 import time
 
-from util import Chrome, Parser, bnb_exchanges
+from util import Chrome, Parser
 
 if __name__ == '__main__':
     chrome = Chrome()
@@ -8,7 +8,7 @@ if __name__ == '__main__':
 
     chrome.unlock_metamask()
     # for dapp, url in bnb_exchanges.items():
-    chrome.url = "https://swap.app.sokuswap.finance/swap"
+    chrome.url = "https://www.pandaswap.xyz/#/swap"
     time.sleep(1)
     parser.handle()
     chrome.driver.close()

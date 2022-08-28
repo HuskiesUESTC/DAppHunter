@@ -6,7 +6,7 @@ def get_config(filepath):
         return yaml.load(config_file, Loader=yaml.FullLoader)
 
 
-config = get_config('./config.yaml')
+config = get_config('/Volumes/data/code/DAppHunter/config.yaml')
 
 bnb_exchanges = {
     'Knight': 'https://dex.knightswap.financial/#/swap',
@@ -60,4 +60,9 @@ other_exchanges = {
     'BloctoSwap': 'https://swap.blocto.app/#/swap',
     'Jswap Finance': 'https://app.jswap.finance/#/swap',
     'dForce DApp': 'https://trade.dforce.network/#/Bridge/mainnet?AssetsType=Lend&currentPool=general'
+}
+
+bnb_yield_farming = {
+    'cairo finance': 'https://horusfarm.cairo.finance/',
+    'jurassic': 'https://jurassicbusd.cropsfarmer.online/?utm_source=DappRadar&utm_medium=deeplink&utm_campaign=visit-website'
 }

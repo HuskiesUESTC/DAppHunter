@@ -28,9 +28,11 @@ class Parser:
         r_type = 'next'
         current_detect_status = False
         current_detect_node = None
-        for cur_rel in self.relationship_matcher.match((prev_node, None), r_type=r_type).all():
+        next_intention_nodes = sorted([next_rel.end_node for next_rel in
+                                       self.relationship_matcher.match((prev_node, None), r_type=r_type).all()],
+                                      key=lambda x: x.get('bias') or 100, reverse=True)
+        for cur_node in next_intention_nodes:
             # 判断是否满足当前关系成立的条件
-            cur_node = cur_rel.end_node
             execute_real_step_result = self.execute_real_step(cur_node)
             if execute_real_step_result:
                 current_detect_node = cur_node
@@ -63,7 +65,7 @@ class Parser:
         next_r_type = 'next'
         next_nodes = sorted([next_rel.end_node for next_rel in
                              self.relationship_matcher.match((prev_node, None), r_type=next_r_type).all()],
-                            key=lambda x: x.get('bias') or 100)
+                            key=lambda x: x.get('bias') or 100, reverse=True)
         for cur_node in next_nodes:
             # 判断是否满足当前关系成立的条件
             execute_operation_status = self.execute_operation(cur_node)
@@ -78,7 +80,7 @@ class Parser:
         if current_operate_node.get('name') == 'end':
             return True
         # 方法执行成功后，如果是普通操作，且不是start、end，需要等待0.5s
-        time.sleep(7)
+        time.sleep(config['dapp']['wait-time'])
         # 如果检测成功，当前节点不为end则继续执行
         return self.execute_basic_step(current_operate_node)
 
@@ -111,6 +113,7 @@ class Parser:
         # 如果是exist需要提前从data中取出关键字，然后作为关键字进行查找
         keywords = node.get('keywords')
         operation_type = node.get("operation")
+        sort = node.get("sort") or 'asc'
         if operation_type == 'exist' and node.get('data') is not None:
             extra_data = node.get('data')
             # 如果是account，且data为account
@@ -119,7 +122,12 @@ class Parser:
                 account = self.driver.execute_script('return window.ethereum.selectedAddress')
                 if account is None:
                     return False
-                keywords = ['...' + account[len(account) - 4:], account[:5]]
+                keywords = [
+                    '...' + account[len(account) - 4:],
+                    account[:5],
+                    account[:3] + '...' + account[len(account) - 4:]
+                ]
+
             # 其他情况暂时忽略
             else:
                 return True
@@ -132,7 +140,8 @@ class Parser:
             executable_elements.append(self.chrome.get_element(By.XPATH, node.get('xpath')))
         elif keywords is not None:
             executable_elements, step_info_frame = self.chrome.get_target_executable_elements(keywords=keywords,
-                                                                                              tags=node.get('tags'))
+                                                                                              tags=node.get('tags'),
+                                                                                              sort=sort)
         # 根据operation类型进行相关处理
         if operation_type == 'click':
             result = len(executable_elements) > 0 and self.execute_click(executable_elements, keywords)
