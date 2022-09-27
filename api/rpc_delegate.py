@@ -1,10 +1,14 @@
 import json
 from flask import Flask, jsonify, make_response, request
 import requests
+import web3_util
+import receipt_fetcher
 
 app = Flask(__name__)
 verbose = False
 rpc_url = 'https://bsc-dataseed1.ninicoin.io'
+ganache_url = 'http://localhost:8545'
+# rpc_url = 'http://localhost:8545'
 
 
 def eth_getBalance(j):
@@ -18,16 +22,23 @@ def rpc_delegate():
         data = request.get_data()
         dic = json.loads(data)
         # print(dic)
-        response = requests.post(rpc_url, data, proxies={
-            "http:": "http://localhost:1087",
-            "https": "http://localhost:1087",
-        })
-        print(response.json())
+        if dic['method'] == 'eth_sendTransaction' or dic['method'] == 'eth_sendRawTransaction':
+            response = requests.post(ganache_url, data)
+            tx_hash = response.json()['result']
+            receipt_fetcher.get_receipts(tx_hash)
+        else:
+            response = requests.post(rpc_url, data)
         if dic['method'] == 'eth_getBalance':
             response = eth_getBalance(response.json())
             return response
         elif dic['method'] == 'eth_estimateGas':
-            print(dic)
+            # print('request from front-end: ', dic)
+            # forward to ganache
+            # dic['method'] = 'eth_sendTransaction'
+            # data = json.dumps(dic)
+            # print('requist ganache: ', data)
+            # resp = requests.post(ganache_url, data)
+            # print('resp from ganache: ', resp.json())
             data = {}
             gas = response.json()['result']
             tx = {}
@@ -38,19 +49,21 @@ def rpc_delegate():
             tx['gas'] = gas
             tx['from'] = data['from']
             tx['to'] = data['to']
-            if not data['data']:
-                tx['method_name'] = 'transfer'
-                tx['value'] = data['value']
-                print(tx)
-            else:
-                hexSig = data['data'][:10]
-                # textSigs = web3.fetchTextSig(hexSig)
-                # methods = web3.txDecoders(textSigs)
+            # if not data['data']:
+            #     tx['method_name'] = 'transfer'
+            #     tx['value'] = data['value']
+            #     print(tx)
+            # else:
+            #     hexSig = data['data'][:10]
+            #     textSigs = web3.fetchTextSig(hexSig)
+            #     methods = web3.txDecoders(textSigs)
                 # for method in methods:
                 #     tx.update(method.decodeTx(data['data']))
                 #     if tx['decode_success']:
                 #         print(tx)
             # print(response.json())
+        # else:
+        #     print(dic)
         return response.json()
     elif request.method == 'OPTIONS':
         response = requests.options(rpc_url)
@@ -63,4 +76,4 @@ if __name__ == '__main__':
     # 0x72ac0dac4784d1b0f6f15ceb4ee918c40aada55b
     # [pepper tackle dragon enlist mad group pass pyramid august reward sound juice]
     # curl -X POST --data="{'id': 2303581418713179, 'jsonrpc': '2.0', 'method': 'eth_getBalance', 'params': ['0x72aC0daC4784d1B0F6F15cEB4eE918c40AAda55b', '0x108e79a']}" http://bscrpc.com
-    app.run(port=8545)
+    app.run(port=8546)
