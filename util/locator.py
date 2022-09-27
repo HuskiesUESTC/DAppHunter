@@ -2,6 +2,7 @@ from lxml.etree import _Element
 import copy
 import difflib
 from nltk import word_tokenize, corpus, stem
+import functools
 
 SKIP_TAGS = ['image', 'svg']
 
@@ -44,6 +45,12 @@ def calculate_text_similarity(text_stem_words: [], keyword_stem_words: []) -> fl
                 matched_keyword_item = keyword_stem_word
                 matched_text_item = keyword_stem_word
                 break
+            for text_stem_word in text_stem_words:
+                if keyword_stem_word in text_stem_word:
+                    max_similarity = 1
+                    matched_keyword_item = keyword_stem_word
+                    matched_text_item = text_stem_word
+                    break
         # 如果完全匹配上，则删除相关word
         if max_similarity == 1:
             matched_count += 1
@@ -115,7 +122,7 @@ def match_text_constraint(element: _Element, tags: [str], keyword_stem_word_list
 
 # placeholder匹配约束
 def match_placeholder_constraint(element: _Element, tags: [str], keyword_stem_word_list: [list]) -> float:
-    if element.tag not in ['input'] and not element.attrib.get('placeholder', None):
+    if element.tag not in ['input'] or not element.attrib.get('placeholder', None):
         return 0
     placeholder_stem_words = extract_stem_words(element.attrib.get('placeholder'))
     max_similarity = 0
@@ -185,7 +192,7 @@ def find_suitable_elements(root: _Element, tags: [str] = None, keyword_stem_word
     for sub_element in root.getchildren():
         # 如果找到了与keyword相似的元素，则停止向下递归
         similarity = check_element(sub_element, tags, keyword_stem_word_list)
-        if similarity > 0:
+        if similarity > 0.8:
             attr_key = '-'.join(sub_element.attrib.keys())
             result.append({
                 'element': sub_element,
@@ -201,8 +208,8 @@ def find_suitable_elements(root: _Element, tags: [str] = None, keyword_stem_word
 
 
 # 综合单词相似度与属性相似度推荐元素
-def recommend_elements(root: _Element, tags: [str] = None,
-                       keywords: [list] = None) -> [{}]:
+def recommend_elements(root: _Element, tags: [str] = None, keywords: [list] = None,
+                       reverse: bool = False) -> [{}]:
     # 提取词干
     keyword_stem_word_list = []
     for keyword in keywords:
@@ -224,7 +231,19 @@ def recommend_elements(root: _Element, tags: [str] = None,
         item['similarity'] = calculate_score(text_similarity, attr_similarity)
         return item
 
+    # 按照相似度进行排序，同时相同分数增加顺序约束
+    def sort(item1, item2):
+        text_similarity_offset = item1['similarity'] - item2['similarity']
+        if text_similarity_offset != 0:
+            return 1 if text_similarity_offset > 0 else -1
+        attr_similarity_offset = item1['attr_similarity'] - item2['attr_similarity']
+        if abs(attr_similarity_offset) > 0.3:
+            return 1 if attr_similarity_offset > 0 else -1
+        if reverse:
+            return -1
+        return 1
+
     # 按照相似度进行排序并返回
     return sorted([change_similarity(item) for item in suitable_elements],
-                  key=lambda item: item['similarity'],
-                  reverse=True)
+                  key=functools.cmp_to_key(sort),
+                  reverse=reverse)

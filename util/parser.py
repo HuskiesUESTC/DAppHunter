@@ -1,9 +1,9 @@
 import time
-from util.chrome import Chrome
 from selenium.webdriver.common.by import By
-from util.utils import detect_path_trace
-from util.config import config
 from py2neo import Graph, NodeMatcher, RelationshipMatcher, Node
+from util import Chrome
+from util.config import config
+from util.utils import detect_path_trace
 
 
 class Parser:
@@ -11,7 +11,6 @@ class Parser:
     def __init__(self, chrome: Chrome):
         self.driver = chrome.driver
         self.chrome = chrome
-
         graph = Graph(config['neo4j']['host'],
                       auth=(config['neo4j']['username'], config['neo4j']['password']),
                       name=config['neo4j']['name'])
@@ -29,9 +28,11 @@ class Parser:
         r_type = 'next'
         current_detect_status = False
         current_detect_node = None
-        for cur_rel in self.relationship_matcher.match((prev_node, None), r_type=r_type).all():
+        next_intention_nodes = sorted([next_rel.end_node for next_rel in
+                                       self.relationship_matcher.match((prev_node, None), r_type=r_type).all()],
+                                      key=lambda x: x.get('bias') or 100, reverse=True)
+        for cur_node in next_intention_nodes:
             # 判断是否满足当前关系成立的条件
-            cur_node = cur_rel.end_node
             execute_real_step_result = self.execute_real_step(cur_node)
             if execute_real_step_result:
                 current_detect_node = cur_node
@@ -62,9 +63,11 @@ class Parser:
         current_operate_status = False
         current_operate_node = None
         next_r_type = 'next'
-        for cur_rel in self.relationship_matcher.match((prev_node, None), r_type=next_r_type).all():
+        next_nodes = sorted([next_rel.end_node for next_rel in
+                             self.relationship_matcher.match((prev_node, None), r_type=next_r_type).all()],
+                            key=lambda x: x.get('bias') or 100, reverse=True)
+        for cur_node in next_nodes:
             # 判断是否满足当前关系成立的条件
-            cur_node = cur_rel.end_node
             execute_operation_status = self.execute_operation(cur_node)
             if execute_operation_status:
                 current_operate_node = cur_node
@@ -77,7 +80,7 @@ class Parser:
         if current_operate_node.get('name') == 'end':
             return True
         # 方法执行成功后，如果是普通操作，且不是start、end，需要等待0.5s
-        time.sleep(7)
+        time.sleep(config['dapp']['wait-time'])
         # 如果检测成功，当前节点不为end则继续执行
         return self.execute_basic_step(current_operate_node)
 
@@ -99,18 +102,18 @@ class Parser:
             return False
 
         # 如果scope为钱包，判断是否需打开新的window
-        origin_window_handle = None
+        origin_window_handle = self.chrome.driver.current_window_handle
         if node.get('scope') == "wallet":
             current_url = self.driver.current_url
             wallet_id = config['chrome']['metamask']['id']
             wallet_page_url = 'chrome-extension://{}/home.html'.format(wallet_id)
             if wallet_id not in current_url:
-                origin_window_handle = self.chrome.driver.current_window_handle
                 self.chrome.driver.switch_to.new_window(wallet_page_url)
 
         # 如果是exist需要提前从data中取出关键字，然后作为关键字进行查找
         keywords = node.get('keywords')
         operation_type = node.get("operation")
+        sort = node.get("sort") or 'asc'
         if operation_type == 'exist' and node.get('data') is not None:
             extra_data = node.get('data')
             # 如果是account，且data为account
@@ -119,7 +122,12 @@ class Parser:
                 account = self.driver.execute_script('return window.ethereum.selectedAddress')
                 if account is None:
                     return False
-                keywords = ['...' + account[len(account) - 4:]]
+                keywords = [
+                    '...' + account[len(account) - 4:],
+                    account[:5],
+                    account[:3] + '...' + account[len(account) - 4:]
+                ]
+
             # 其他情况暂时忽略
             else:
                 return True
@@ -127,22 +135,22 @@ class Parser:
         # 根据xpath或keywords查找相关元素
         result = False
         executable_elements = []
+        step_info_frame = False
         if node.get('xpath') is not None:
             executable_elements.append(self.chrome.get_element(By.XPATH, node.get('xpath')))
         elif keywords is not None:
-            executable_elements = self.chrome.get_target_executable_elements(keywords=keywords,
-                                                                             tags=node.get('tags'))
-        print(executable_elements)
+            executable_elements, step_info_frame = self.chrome.get_target_executable_elements(keywords=keywords,
+                                                                                              tags=node.get('tags'),
+                                                                                              sort=sort)
         # 根据operation类型进行相关处理
-        if len(executable_elements) > 0:
-            if operation_type == 'click':
-                result = self.execute_click(executable_elements, keywords)
-            elif operation_type == 'input':
-                result = self.execute_input(executable_elements, keywords)
-            elif operation_type == 'select':
-                result = self.execute_select(executable_elements, keywords)
-            elif operation_type == 'exist':
-                result = self.execute_exist(executable_elements, keywords)
+        if operation_type == 'click':
+            result = len(executable_elements) > 0 and self.execute_click(executable_elements, keywords)
+        elif operation_type == 'input':
+            result = len(executable_elements) > 0 and self.execute_input(executable_elements, keywords)
+        elif operation_type == 'exist':
+            result = self.execute_exist(executable_elements, keywords)
+
+        step_info_frame and self.chrome.driver.switch_to.window(origin_window_handle)
         return result
 
     # 执行点击操作
@@ -151,7 +159,6 @@ class Parser:
         # 执行之前记录页面html
         self.chrome.record_page_html()
         for element_info in element_info_list:
-            print(element_info)
             if self.chrome.click_element(executable_element=element_info['element'], xpath=element_info['xpath'],
                                          check_change=True):
                 return True
@@ -161,13 +168,12 @@ class Parser:
     def execute_input(self, element_info_list: [{}], keywords: [str]) -> bool:
         # 执行之前记录页面html
         self.chrome.record_page_html()
-        amount = 0.01
         for element_info in element_info_list:
             executable_element = element_info['element']
             if executable_element.tag_name != 'input':
                 continue
             try:
-                executable_element.send_keys(amount)
+                executable_element.send_keys(config['dapp']['input-amount'])
                 if self.chrome.is_page_change:
                     return True
             except Exception as e:
@@ -175,14 +181,14 @@ class Parser:
                     print(e)
         return False
 
-    # 执行选择操作
-    def execute_select(self, element_info_list: [{}], keywords: [str]) -> bool:
-        return True
-
     # 执行判断存在操作
     def execute_exist(self, element_info_list: [{}], keywords: [str]) -> bool:
         if element_info_list is not None:
             for element_info in element_info_list:
                 if element_info['text_similarity'] == 1:
                     return True
+        html = self.chrome.html
+        for keyword in keywords:
+            if keyword in html:
+                return True
         return False

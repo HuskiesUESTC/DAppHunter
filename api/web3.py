@@ -6,14 +6,15 @@ import queue
 from random import Random
 from hashlib import md5
 import redis
+from typing import List
 from cache import POOL
 import requests
 from eth_abi import decode_abi, encode_abi
 
-
 apiProvider = 'https://www.4byte.directory/api/v1/signatures/'
 rpcDelegate = 'http://localhost:8545'
-rpcProviders = ['https://bsc-dataseed.binance.org/',
+rpcProviders = [
+                'https://bsc-dataseed.binance.org/',
                 'https://bsc-dataseed1.defibit.io/',
                 'https://bsc-dataseed1.ninicoin.io/',
                 'https://bsc-dataseed2.defibit.io/',
@@ -46,7 +47,7 @@ class Method:
     __methodName = ''
     __paramList = []
 
-    def __init__(self, methodName: str = '', paramList: list[str] = []) -> None:
+    def __init__(self, methodName: str = '', paramList: List[str] = []) -> None:
         self.__methodName = methodName
         self.__paramList = paramList
 
@@ -63,7 +64,7 @@ class Method:
         return self.__paramList
 
     @paramList.setter
-    def paramList(self, paramList: list[str]):
+    def paramList(self, paramList: [str]):
         self.__paramList = paramList
 
     @property
@@ -80,7 +81,7 @@ class Method:
         dataToDecode = bytes.fromhex(rawDataWithOutSig)
         # print(self.__methodName)
         tx = {}
-        tx['method_name'] = self.methodName__methodName
+        tx['method_name'] = self.__methodName
         tx['params'] = {}
         tx['decode_success'] = False
         try:
@@ -129,7 +130,7 @@ def selectRPCProvider(req: str) -> str:
 
 
 @lru_cache(maxsize=128)
-def fetchTextSig(hexSig: str) -> list[str]:
+def fetchTextSig(hexSig: str) -> [str]:
     methods = []
     r = redis.StrictRedis(connection_pool=POOL)
     if r.llen(hexSig) != 0:
@@ -149,7 +150,7 @@ def fetchTextSig(hexSig: str) -> list[str]:
     return methods
 
 
-def txDecoders(textSigs: list[str]) -> list[Method]:
+def txDecoders(textSigs: [str]) -> [Method]:
     methods = []
     for ts in textSigs:
         methods.append(parseTextSig(ts))

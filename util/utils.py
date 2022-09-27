@@ -1,8 +1,7 @@
-# 加载配置文件
-import json
+import time
 from py2neo import Node
-import requests
 from util.config import config
+from exception import CustomError
 
 
 # 记录检测日志的执行路径
@@ -37,29 +36,20 @@ def detect_path_trace(fn):
     return log
 
 
-def ocr(base64_image: str) -> {str: [[int]]}:
-    url = "https://ocr.cn-south-1.myhuaweicloud.com/v2/07539468dc8026182f0fc004fb8d732f/ocr/web-image"
-    payload = {
-        'image': base64_image
-    }
-    headers = {
-        'X-Auth-Token': config['huawei-ocr']['token'],
-        'Content-Type': 'application/json'
-    }
+# 重试
+def retry(fn):
+    def execute(*args, **kwargs):
+        max_retry_time = 3
+        cnt = 0
+        while cnt < max_retry_time:
+            try:
+                result = fn(*args, **kwargs)
+                return result
+            except Exception as e:
+                print(e)
+                time.sleep(1)
+                cnt += 1
+        raise CustomError('Retry error!')
 
-    count = 3
-    for i in range(count):
-        try:
-            response = requests.request("POST", url, headers=headers, data=json.dumps(payload))
-            if response.status_code / 100 != 2:
-                print(response.text)
-                continue
-            data = json.loads(response.text)
-            result = {}
-            for word_info in data['result']['words_block_list']:
-                result[word_info['words']] = word_info['location']
-            return result
-        except Exception as e:
-            print(e)
-    return {}
+    return execute
 

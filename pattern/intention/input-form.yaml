@@ -7,11 +7,15 @@ intention:
   after-requirements:
   # 子路径
   sub-path:
+  # 设置权重
+  bias: 2
   # 全路径
   full-path:
     full-path1:
       - click-select-currency
       - select-currency
+      - input-amount
+    full-path2:
       - input-amount
   # 前端操作实现
   actions:
@@ -20,6 +24,11 @@ intention:
       scope: web
       keywords:
         - select a currency
+        - open-currency-select-button
+        - select your token
+        - 选择通证
+      sort: desc
+      bias: 2
     select-currency:
       operation: click
       scope: web
@@ -28,9 +37,16 @@ intention:
         - ETH
         - BUSD
         - DOGE
+        - AMPLE
+        - ANKR
+      sort: desc
     input-amount:
       operation: input
       scope: web
       keywords:
-        - input amount
-        - '0.0'
+        - token-amount-input
+        - form-amount-in
+        - Token Amount
+        - swap-input
+      bias: 1
+      sort: bias

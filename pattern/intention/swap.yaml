@@ -20,12 +20,19 @@ intention:
       scope: web
       operation: click
       keywords:
+        - swap-button
         - swap
+        - 换行
+        - wrap
+        - swap anyway
       tags:
         - button
     click-confirm-swap-button:
       scope: web
       operation: click
       keywords:
-        - swap-confirm
+        - swap confirm
+        - confirm swap
+      tags:
         - button
+      bias: 1

@@ -1,0 +1,47 @@
+intention:
+  # 意图名
+  name: invest-project
+  # 前置条件，指向该节点关系上的约束条件
+  pre-requirements:
+  # 后置条件，指向下一节点关系上的约束条件
+  after-requirements:
+  # 设置权重
+  bias: 1
+  # 子路径
+  sub-path:
+  # 全路径
+  full-path:
+    full-path1:
+      - click-invest-or-allocate-button
+      - input-supply
+      - click-supply-button
+    full-path2:
+      - click-approve-busd
+  # 前端操作实现
+  actions:
+    click-invest-or-allocate-button:
+      operation: click
+      scope: web
+      keywords:
+        - invest allocate
+    input-supply:
+      operation: input
+      scope: web
+      keywords:
+        - '0.000'
+      tags:
+        - input
+    click-supply-button:
+      operation: click
+      scope: web
+      keywords:
+        - supply
+      tags:
+        - button
+    click-approve-busd:
+      operation: click
+      scope: web
+      keywords:
+        - approve busd
+      tags:
+        - button

@@ -1,7 +1,6 @@
 import json
 from flask import Flask, jsonify, make_response, request
 import requests
-import web3
 
 app = Flask(__name__)
 verbose = False
@@ -9,7 +8,7 @@ rpc_url = 'https://bsc-dataseed1.ninicoin.io'
 
 
 def eth_getBalance(j):
-    j['result'] = '0xffe1626510267400'
+    j['result'] = 'ffffffe1626510267400'
     return j
 
 
@@ -19,7 +18,10 @@ def rpc_delegate():
         data = request.get_data()
         dic = json.loads(data)
         # print(dic)
-        response = requests.post(rpc_url, data)
+        response = requests.post(rpc_url, data, proxies={
+            "http:": "http://localhost:10080",
+            "https": "http://localhost:10080",
+        })
         if dic['method'] == 'eth_getBalance':
             response = eth_getBalance(response.json())
             return response
@@ -41,12 +43,12 @@ def rpc_delegate():
                 print(tx)
             else:
                 hexSig = data['data'][:10]
-                textSigs = web3.fetchTextSig(hexSig)
-                methods = web3.txDecoders(textSigs)
-                for method in methods:
-                    tx.update(method.decodeTx(data['data']))
-                    if tx['decode_success']:
-                        print(tx)
+                # textSigs = web3.fetchTextSig(hexSig)
+                # methods = web3.txDecoders(textSigs)
+                # for method in methods:
+                #     tx.update(method.decodeTx(data['data']))
+                #     if tx['decode_success']:
+                #         print(tx)
             # print(response.json())
         return response.json()
     elif request.method == 'OPTIONS':

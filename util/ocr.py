@@ -1,6 +1,7 @@
-from util.config import config
 import requests
 import json
+from util.config import config
+
 
 IMAGE_URL = 'url'
 IMAGE_ENCODE = 'img'

@@ -1,3 +1,4 @@
+import time
 from io import StringIO
 import lxml.etree
 from lxml.html import HtmlElement
@@ -9,8 +10,8 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
+from util import config, locator, ocr
 from util.config import config
-from util import locator
 
 
 class Chrome:
@@ -35,21 +36,23 @@ class Chrome:
 
     # 获取可执行元素
     def get_executable_element(self, html_element: HtmlElement) -> (WebElement, str):
-        xpath = self.get_html_element_xpath(html_element)
+        xpath = self.get_html_element_xpath(html_element).replace('/noscript', '')
         return self.get_element(By.XPATH, xpath), xpath
 
     # 获取指定的html元素
-    def get_target_html_elements(self, keywords: [str], tags: [str], context: str = 'text') -> [{}]:
+    def get_target_html_elements(self, keywords: [str], tags: [str], context: str = 'text', sort: str = "asc") -> [{}]:
         root = self.dom
         locator.CONTEXT = context
-        result = locator.recommend_elements(root, tags, keywords)
+        reverse = (sort == 'desc')
+        result = locator.recommend_elements(root, tags, keywords, reverse)
         # 返回 text相似度在0.8以上，综合相似度在0.7以上的元素
         return list(filter(lambda x: x['text_similarity'] > 0.8 and x['similarity'] > 0.7, result))
 
     # 获取指定的可执行元素
-    def get_target_executable_elements(self, keywords: [str], tags: [str], context: str = 'text') -> [{}]:
+    def get_target_executable_elements(self, keywords: [str], tags: [str], context: str = 'text',
+                                       sort: str = 'asc') -> ([{}], bool):
         def _get_current_page_target_executable_elements():
-            result = self.get_target_html_elements(keywords, tags, context)
+            result = self.get_target_html_elements(keywords, tags, context, sort=sort)
 
             def __convert_element(item):
                 item['element'], item['xpath'] = self.get_executable_element(item['element'])
@@ -57,17 +60,42 @@ class Chrome:
 
             return list(map(lambda x: __convert_element(x), result))
 
-        step_into_iframe = False
-        iframe_cnt = len(self._driver.find_elements(By.TAG_NAME, 'iframe'))
-        while True:
+        result = _get_current_page_target_executable_elements()
+        # 如果从当前text中没有找到元素，则从attr中找
+        if context != 'attr' and not result:
+            context = 'attr'
             result = _get_current_page_target_executable_elements()
-            if result or iframe_cnt == 0:
-                break
-            self.driver.switch_to.frame(--iframe_cnt)
-            step_into_iframe = True
-        if step_into_iframe:
-            self.driver.switch_to.default_content()
-        return result
+        iframe_cnt = len(self._driver.find_elements(By.TAG_NAME, 'iframe'))
+        step_info_iframe = False
+        # 如果定位到该元素，并且页面存在iframe
+        if not result and iframe_cnt > 0:
+            # 通过ocr扫描页面
+            words_info = ocr.recognize_image(ocr.IMAGE_ENCODE, self.driver.get_screenshot_as_base64())
+            # 计算words、keywords的stem_word
+            text_stem_words_list = list(map(lambda item: locator.extract_stem_words(item['word']), words_info))
+            keyword_stem_words_list = list(map(lambda item: locator.extract_stem_words(item), keywords))
+            # 逐一判断是否存在文本相似度为100%的词
+            max_similarity = 0
+            for text_stem_words in text_stem_words_list:
+                for keyword_stem_words in keyword_stem_words_list:
+                    max_similarity = max(locator.calculate_text_similarity(text_stem_words, keyword_stem_words),
+                                         max_similarity)
+                    if max_similarity == 1:
+                        break
+                if max_similarity == 1:
+                    break
+            # 判断是否需要进入iframe
+            need_step_into_iframe = max_similarity == 1
+            if need_step_into_iframe:
+                cur_iframe_cnt = 0
+                while cur_iframe_cnt < iframe_cnt:
+                    self.driver.switch_to.frame(cur_iframe_cnt)
+                    result = _get_current_page_target_executable_elements()
+                    cur_iframe_cnt += 1
+                    if result:
+                        step_info_iframe = True
+                        break
+        return result, step_info_iframe
 
     # 点击元素
     def click_element(self, executable_element: WebElement, xpath: str, check_change: False, ancestor_level: int = 0):
@@ -114,8 +142,7 @@ class Chrome:
             return self.click_element(parent_element, parent_xpath, check_change, ancestor_level + 1)
         return True
 
-        # 为 metamask 钱包插件解锁
-
+    # 为 metamask 钱包插件解锁
     def unlock_metamask(self) -> None:
         id = config['chrome']['metamask']['id']
         password = config['chrome']['metamask']['password']
@@ -128,6 +155,7 @@ class Chrome:
         # 提交按钮 button
         submit_button = self.get_element(By.XPATH, '/html/body/div[1]/div/div[3]/div/div/button')
         submit_button.send_keys(Keys.ENTER)
+        time.sleep(5)
 
     # 切换 metamask 网络
     def switch_metamask_network(self, network_type: str) -> bool:
@@ -163,10 +191,6 @@ class Chrome:
         return result
 
     @property
-    def url(self):
-        return self._url
-
-    @property
     def driver(self):
         return self._driver
 
@@ -186,6 +210,10 @@ class Chrome:
     @property
     def html(self):
         return self.driver.execute_script("return document.documentElement.outerHTML")
+
+    @property
+    def url(self):
+        return self._url
 
     @url.setter
     def url(self, url: str):
