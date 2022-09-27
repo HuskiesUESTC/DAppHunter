@@ -34,10 +34,13 @@ def rpc_delegate():
         elif dic['method'] == 'eth_estimateGas':
             # print('request from front-end: ', dic)
             # forward to ganache
-            # dic['method'] = 'eth_sendTransaction'
-            # data = json.dumps(dic)
+            dic['method'] = 'eth_sendTransaction'
+            dic['params'][0]['gasLimit'] = 5000000
+            data = json.dumps(dic)
             # print('requist ganache: ', data)
-            # resp = requests.post(ganache_url, data)
+            resp = requests.post(ganache_url, data)
+            tx_hash = resp.json()['result']
+            receipt_fetcher.get_receipts(tx_hash)
             # print('resp from ganache: ', resp.json())
             data = {}
             gas = response.json()['result']
