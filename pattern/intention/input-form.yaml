@@ -30,7 +30,6 @@ intention:
         - 选择代币
       sort: desc
       bias: 2
-      wait-time: 10
     select-currency:
       operation: click
       scope: web
@@ -53,4 +52,3 @@ intention:
         - swap-input
       bias: 1
       sort: bias
-      wait-time: 15

@@ -46,7 +46,7 @@ class Method:
     __methodName = ''
     __paramList = []
 
-    def __init__(self, methodName: str = '', paramList: list[str] = []) -> None:
+    def __init__(self, methodName: str = '', paramList: [str] = []) -> None:
         self.__methodName = methodName
         self.__paramList = paramList
 
@@ -63,7 +63,7 @@ class Method:
         return self.__paramList
 
     @paramList.setter
-    def paramList(self, paramList: list[str]):
+    def paramList(self, paramList: [str]):
         self.__paramList = paramList
 
     @property
@@ -149,14 +149,14 @@ def fetchTextSig(hexSig: str) -> list[str]:
     return methods
 
 
-def txDecoders(textSigs: list[str]) -> list[Method]:
+def txDecoders(textSigs: [str]) -> [Method]:
     methods = []
     for ts in textSigs:
         methods.append(parseTextSig(ts))
     return methods
 
 
-def eth_rpc(rpcProvider, payload) -> dict:
+def eth_rpc(rpcProvider, payload) -> {}:
     # 每进行100次rpc调用 清空失败次数
     global rpcCallCount
     if rpcCallCount % 100 == 0:
