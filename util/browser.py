@@ -1,3 +1,5 @@
+import copy
+import functools
 import time
 from io import StringIO
 import lxml.etree
@@ -44,11 +46,72 @@ class Chrome:
         return self.get_element(By.XPATH, xpath), xpath
 
     # 获取指定的html元素
-    def get_target_html_elements(self, keywords: [str], tags: [str], context: str = 'text', sort: str = "asc") -> [{}]:
+    def get_target_html_elements(self, keywords: [str], tags: [str], sort: str = "asc") -> [{}]:
         reverse = (sort == 'desc')
-        result = locator.recommend_elements(self.dom, tags, keywords, reverse, context)
+        result = []
+        retry_count = 0
+        max_count = 3
+        while retry_count < max_count and not result:
+            result = self.recommend_elements(tags, keywords, reverse)
+            if not result:
+                retry_count += 1
         # 返回 text相似度在0.8以上，综合相似度在0.7以上的元素
         return list(filter(lambda x: x['text_similarity'] > 0.8 and x['similarity'] > 0.7, result))
+
+    # 综合单词相似度与属性相似度推荐元素
+    def recommend_elements(self, tags: [str] = None, keywords: [str] = None,
+                           reverse: bool = False) -> [{}]:
+        # 提取词干
+        keyword_stem_word_list = []
+        for keyword in keywords:
+            keyword_stem_word_list.append(locator.extract_stem_words(keyword))
+        # 寻找合适的元素，并计算text相似度
+        suitable_elements = locator.find_suitable_elements(self.dom, keyword_stem_word_list, context='text')
+        if not suitable_elements:
+            suitable_elements = locator.find_suitable_elements(self.dom, keyword_stem_word_list, context='attr')
+        # 计算元素的attr-key，并计算attr相似度
+        attr_key_map = {}
+        attr_cnt = len(suitable_elements)
+        for element in suitable_elements:
+            attr_key = element['attr_key']
+            attr_key_map[attr_key] = 1 if attr_key not in attr_key_map else attr_key_map[attr_key] + 1
+
+        # 计算元素的相似度
+        def change_similarity(item):
+            text_similarity = item['text_similarity']
+            attr_similarity = locator.calculate_attr_similarity(attr_key_map[item['attr_key']], attr_cnt)
+            item['attr_similarity'] = attr_similarity
+            item['similarity'] = locator.calculate_score(text_similarity, attr_similarity)
+            return item
+
+        # 按照相似度进行排序，同时相同分数增加顺序约束
+        def sort(item1, item2):
+            text_similarity_offset = item1['similarity'] - item2['similarity']
+            if text_similarity_offset != 0:
+                return 1 if text_similarity_offset > 0 else -1
+            attr_similarity_offset = item1['attr_similarity'] - item2['attr_similarity']
+            if abs(attr_similarity_offset) > 0.3:
+                return 1 if attr_similarity_offset > 0 else -1
+            if reverse:
+                return -1
+            return 1
+
+        copied_suitable_elements = []
+        for suitable_element in suitable_elements:
+            xpath = self.get_html_element_xpath(suitable_element['element'])
+            suitable_element['xpath'] = xpath
+            if not tags:
+                copied_suitable_elements.append(suitable_element)
+            else:
+                for tag in tags:
+                    if tag in xpath:
+                        copied_suitable_elements.append(suitable_element)
+                        break
+
+        # 按照相似度进行排序并返回
+        return sorted([change_similarity(item) for item in copied_suitable_elements],
+                      key=functools.cmp_to_key(sort),
+                      reverse=reverse)
 
     # 获取指定xpath的可执行元素
     def get_target_executable_elements_by_xpath(self, xpath: str) -> ([{}], bool):
@@ -62,19 +125,16 @@ class Chrome:
     # 获取指定keywords的可执行元素
     def get_target_executable_elements_by_keywords(self, keywords: [str], tags: [str], sort: str = 'asc') -> (
             [{}], bool):
-        def _get_current_page_target_executable_elements(cur_context: str = 'text'):
+        def _get_current_page_target_executable_elements():
 
             def __convert_element(item):
                 item['element'], item['xpath'] = self.get_executable_element(item['element'])
                 return item
 
-            text_result = self.get_target_html_elements(keywords, tags, context=cur_context, sort=sort)
-            return list(map(lambda x: __convert_element(x), text_result))
+            html_result = self.get_target_html_elements(keywords, tags, sort=sort)
+            return list(map(lambda x: __convert_element(x), html_result))
 
-        result = _get_current_page_target_executable_elements(cur_context='text')
-        # 如果从当前text中没有找到元素，则从attr中找
-        if not result:
-            result = _get_current_page_target_executable_elements(cur_context='attr')
+        result = _get_current_page_target_executable_elements()
         iframe_cnt = len(self._driver.find_elements(By.TAG_NAME, 'iframe'))
         step_info_iframe = False
         # 如果没有定位到该元素，并且页面存在iframe
