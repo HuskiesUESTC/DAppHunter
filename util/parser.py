@@ -1,10 +1,8 @@
 import time
 
-from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver import Keys
+from selenium.common.exceptions import NoSuchElementException, JavascriptException
 from selenium.webdriver.common.by import By
 from py2neo import Graph, NodeMatcher, RelationshipMatcher, Node
-from selenium.webdriver.remote.webelement import WebElement
 
 from util import Chrome
 from util.config import config
@@ -21,9 +19,13 @@ class Parser:
                       name=config['neo4j']['name'])
         self.node_matcher = NodeMatcher(graph)
         self.relationship_matcher = RelationshipMatcher(graph)
+        self.display_element_xpath = config['debug']['display-element-xpath']
 
     # 执行抽象的检测过程
     def handle(self) -> bool:
+        window_handles = self.driver.window_handles
+        if len(window_handles) > 1:
+            self.driver.switch_to.window(window_handles[0])
         # 获取开始节点
         start_node = self.node_matcher.match('Intention', name='start').first()
         return self.execute_abstract_step(start_node)
@@ -95,10 +97,13 @@ class Parser:
         if len(next_nodes) == 1 and next_nodes[0].get('operation') in ['start', 'end']:
             return True
         count = 0
-        locate_wallet_element = False
-        origin_window_handle = self.driver.current_window_handle
 
-        while count < 20:
+        origin_window_handle = self.driver.current_window_handle
+        max_wait_time = config['dapp']['wait-time']
+        for next_node in next_nodes:
+            max_wait_time = max(next_node.get('wait-time', max_wait_time), max_wait_time)
+
+        while count < max_wait_time:
             for next_node in next_nodes:
                 operation = next_node.get('operation', 'start')
                 keywords = next_node.get('keywords', [])
@@ -122,12 +127,13 @@ class Parser:
                     try:
                         self.driver.find_element(By.XPATH, xpath)
                         find_elements = True
-                    except NoSuchElementException as e:
+                    except NoSuchElementException:
                         continue
                 elif keywords:
-                    executable_elements, step_info_frame = self.chrome.get_target_executable_elements(keywords=keywords,
-                                                                                                      tags=tags,
-                                                                                                      sort=sort)
+                    executable_elements, step_info_frame = self.chrome.get_target_executable_elements_by_keywords(
+                        keywords=keywords,
+                        tags=tags,
+                        sort=sort)
                     find_elements = len(executable_elements) > 0
                 if step_info_frame or switch_another_window:
                     self.chrome.driver.switch_to.window(origin_window_handle)
@@ -136,21 +142,22 @@ class Parser:
                     return
             time.sleep(1)
             count += 1
-        default_wait_time = config['dapp']['wait-time']
-        if locate_wallet_element and count < default_wait_time:
-            time.sleep(default_wait_time - count)
 
     def get_exist_keywords(self, extra_data):
         keywords = []
         if extra_data == 'account':
             # 获取钱包账户地址，如果不存在直接返回False，如果存在则截取最后四位
-            account = self.driver.execute_script('return window.ethereum.selectedAddress')
-            if account is not None:
-                keywords += [
-                    '...' + account[len(account) - 4:],
-                    account[:3] + '...' + account[len(account) - 4:],
-                    account[:5],
-                ]
+            try:
+                account = self.driver.execute_script('return window.ethereum.selectedAddress')
+                if account is not None:
+                    keywords += [
+                        'web3-status-connected',
+                        '...' + account[len(account) - 4:],
+                        account[:3] + '...' + account[len(account) - 4:],
+                        account[:5],
+                    ]
+            except JavascriptException:
+                pass
         return keywords
 
     def switch_to_wallet_window_handle(self):
@@ -170,22 +177,21 @@ class Parser:
         # 检测node是否合法
         if 'Action' not in node.labels:
             return False
-        if node.get('operation') is None:
-            return False
-        if node.get('operation') == 'start' or node.get('operation') == 'end':
-            return True
-        if node.get('scope') is None:
-            return False
-        if node.get('operation') == 'exist' and (not node.get('keywords') and node.get('data') is None):
-            return False
-        if node.get('operation') != 'exist' and (node.get('keywords') is None and node.get('xpath') is None):
-            return False
 
         # 如果是exist需要提前从data中取出关键字，然后作为关键字进行查找
-        keywords = node.get('keywords', [])
-        operation_type = node.get('operation', 'start')
+        operation = node.get('operation', 'start')
         sort = node.get('sort', 'asc')
         scope = node.get('scope', 'web')
+        xpath = node.get('xpath', None)
+        tags = node.get('tags', None)
+        keywords = node.get('keywords', None)
+
+        if operation in ['start', 'end']:
+            return True
+        if operation in ['exist'] and (not keywords and not node.get('data', None)):
+            return False
+        if operation not in ['exist'] and (not keywords and not xpath):
+            return False
 
         step_info_frame = False
         switch_another_window = False
@@ -206,65 +212,65 @@ class Parser:
         # 根据xpath或keywords查找相关元素
         result = False
         executable_elements = []
-        if node.get('xpath'):
-            executable_elements.append(self.chrome.get_element(By.XPATH, node.get('xpath')))
+
+        if xpath:
+            executable_elements, step_info_frame = self.chrome.get_target_executable_elements_by_xpath(xpath)
         elif keywords:
-            executable_elements, step_info_frame = self.chrome.get_target_executable_elements(keywords=keywords,
-                                                                                              tags=node.get('tags'),
-                                                                                              sort=sort)
+            executable_elements, step_info_frame = self.chrome.get_target_executable_elements_by_keywords(keywords,
+                                                                                                          tags,
+                                                                                                          sort)
         # 根据operation类型进行相关处理
-        if operation_type == 'exist':
+        if operation == 'exist':
             keywords = self.get_exist_keywords(node.get('extra_data', 'account'))
-            result = keywords and self.execute_exist(executable_elements, keywords)
-        elif operation_type == 'click':
-            result = len(executable_elements) > 0 and self.execute_click(executable_elements, keywords)
-        elif operation_type == 'input':
-            result = len(executable_elements) > 0 and self.execute_input(executable_elements, keywords)
+            result = keywords and self.execute_exist(keywords)
+        elif operation == 'click':
+            result = len(executable_elements) > 0 and self.execute_click(executable_elements)
+        elif operation == 'input':
+            result = len(executable_elements) > 0 and self.execute_input(executable_elements)
 
         if step_info_frame or switch_another_window:
             self.chrome.driver.switch_to.window(origin_window_handle)
         return result
 
     # 执行点击操作
-    def execute_click(self, element_info_list: [{}], keywords: [str]) -> bool:
-        # 打乱
+    def execute_click(self, element_info_list: [{}]) -> bool:
         # 执行之前记录页面html
         self.chrome.record_page_html()
+
+        def find_suitable_element(cur_executable_element, cur_xpath):
+            if cur_xpath.endswith('/button') or '/button/' not in cur_xpath:
+                return cur_executable_element, cur_xpath
+            suit_xpath = cur_xpath.split('/button/')[0] + '/button'
+            suit_element = self.chrome.get_element(By.XPATH, suit_xpath)
+            return suit_element, suit_xpath
+
         for element_info in element_info_list:
-            # 如果使用了 xpath
-            if not keywords and isinstance(element_info, WebElement):
-                element_info.send_keys(Keys.ENTER)
-                return True
-            if self.chrome.click_element(executable_element=element_info['element'], xpath=element_info['xpath'],
+            # 向上寻找合适的元素
+            element, xpath = find_suitable_element(element_info['element'], element_info['xpath'])
+            self.display_element_xpath and print(xpath)
+            if self.chrome.click_element(executable_element=element,
+                                         xpath=xpath,
                                          check_change=True):
                 return True
         return False
 
     # 执行输入操作
-    def execute_input(self, element_info_list: [{}], keywords: [str]) -> bool:
+    def execute_input(self, element_info_list: [{}]) -> bool:
         # 执行之前记录页面html
         self.chrome.record_page_html()
         for element_info in element_info_list:
-            executable_element = element_info['element']
-            if executable_element.tag_name != 'input':
-                continue
-            try:
-                executable_element.send_keys(config['dapp']['input-amount'])
-                if self.chrome.is_page_change:
-                    return True
-            except Exception as e:
-                if config['debug']['display-exception']:
-                    print(e)
+            self.display_element_xpath and print(element_info['xpath'])
+            if self.chrome.input_element(executable_element=element_info['element'],
+                                         xpath=element_info['xpath'],
+                                         input_value=config['dapp']['input-amount'],
+                                         check_change=True):
+                return True
         return False
 
     # 执行判断存在操作
-    def execute_exist(self, element_info_list: [{}], keywords: [str]) -> bool:
-        if element_info_list is not None:
-            for element_info in element_info_list:
-                if element_info['text_similarity'] == 1:
-                    return True
-        html = self.chrome.html
+    def execute_exist(self, keywords: [str]) -> bool:
+        html = self.chrome.html.lower()
         for keyword in keywords:
-            if keyword in html:
+            if keyword.lower() in html:
                 return True
         return False

@@ -129,7 +129,7 @@ def selectRPCProvider(req: str) -> str:
 
 
 @lru_cache(maxsize=128)
-def fetchTextSig(hexSig: str) -> list[str]:
+def fetchTextSig(hexSig: str) -> [str]:
     methods = []
     r = redis.StrictRedis(connection_pool=POOL)
     if r.llen(hexSig) != 0:

@@ -34,12 +34,12 @@ intention:
       operation: click
       scope: web
       keywords:
+        - SHIB
         - USDT
         - ETH
         - BUSD
         - DOGE
         - AMPLE
-        - ANKR
         - WBNB
       sort: desc
     input-amount:
@@ -50,5 +50,8 @@ intention:
         - form-amount-in
         - Token Amount
         - swap-input
+        - token-value-input
+      tags:
+        - input
       bias: 1
-      sort: bias
+      sort: desc

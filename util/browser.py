@@ -2,6 +2,9 @@ import time
 from io import StringIO
 import lxml.etree
 from lxml.html import HtmlElement
+from selenium.common.exceptions import ElementNotInteractableException, MoveTargetOutOfBoundsException, \
+    ElementClickInterceptedException, UnexpectedAlertPresentException
+from selenium.webdriver import ActionChains
 from selenium.webdriver.chrome import webdriver
 from selenium import webdriver
 from selenium.webdriver.remote.webelement import WebElement
@@ -9,7 +12,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.action_chains import ActionChains
 from util import config, locator, ocr
 from util.config import config
 
@@ -23,6 +25,8 @@ class Chrome:
         options = webdriver.ChromeOptions()
         options.add_argument('--user-data-dir=' + config['chrome']['profile']['dir'])
         self._driver = webdriver.Chrome(options=options, executable_path=config['chrome']['webdriver'])
+        # 配置项
+        self.display_exception = config['debug']['display-exception']
 
     # 获取元素
     def get_element(self, by=By.ID, value=None) -> WebElement:
@@ -41,33 +45,39 @@ class Chrome:
 
     # 获取指定的html元素
     def get_target_html_elements(self, keywords: [str], tags: [str], context: str = 'text', sort: str = "asc") -> [{}]:
-        root = self.dom
-        locator.CONTEXT = context
         reverse = (sort == 'desc')
-        result = locator.recommend_elements(root, tags, keywords, reverse)
+        result = locator.recommend_elements(self.dom, tags, keywords, reverse, context)
         # 返回 text相似度在0.8以上，综合相似度在0.7以上的元素
         return list(filter(lambda x: x['text_similarity'] > 0.8 and x['similarity'] > 0.7, result))
 
-    # 获取指定的可执行元素
-    def get_target_executable_elements(self, keywords: [str], tags: [str], context: str = 'text',
-                                       sort: str = 'asc') -> ([{}], bool):
-        def _get_current_page_target_executable_elements():
-            result = self.get_target_html_elements(keywords, tags, context, sort=sort)
+    # 获取指定xpath的可执行元素
+    def get_target_executable_elements_by_xpath(self, xpath: str) -> ([{}], bool):
+        element = self.get_element(By.XPATH, xpath)
+        item = {
+            'element': element,
+            'xpath': xpath
+        }
+        return [item], False
+
+    # 获取指定keywords的可执行元素
+    def get_target_executable_elements_by_keywords(self, keywords: [str], tags: [str], sort: str = 'asc') -> (
+            [{}], bool):
+        def _get_current_page_target_executable_elements(cur_context: str = 'text'):
 
             def __convert_element(item):
                 item['element'], item['xpath'] = self.get_executable_element(item['element'])
                 return item
 
-            return list(map(lambda x: __convert_element(x), result))
+            text_result = self.get_target_html_elements(keywords, tags, context=cur_context, sort=sort)
+            return list(map(lambda x: __convert_element(x), text_result))
 
-        result = _get_current_page_target_executable_elements()
+        result = _get_current_page_target_executable_elements(cur_context='text')
         # 如果从当前text中没有找到元素，则从attr中找
-        if context != 'attr' and not result:
-            context = 'attr'
-            result = _get_current_page_target_executable_elements()
+        if not result:
+            result = _get_current_page_target_executable_elements(cur_context='attr')
         iframe_cnt = len(self._driver.find_elements(By.TAG_NAME, 'iframe'))
         step_info_iframe = False
-        # 如果定位到该元素，并且页面存在iframe
+        # 如果没有定位到该元素，并且页面存在iframe
         if not result and iframe_cnt > 0:
             # 通过ocr扫描页面
             words_info = ocr.recognize_image(ocr.IMAGE_ENCODE, self.driver.get_screenshot_as_base64())
@@ -99,18 +109,10 @@ class Chrome:
 
     # 点击元素
     def click_element(self, executable_element: WebElement, xpath: str, check_change: False, ancestor_level: int = 0):
-        if config['debug']['display-click-element-xpath']:
-            print(xpath)
-
         def _check_click(func):
             def __execute(*args, **kwargs):
-                try:
-                    func(*args, **kwargs)
-                    return self.is_page_change
-                except Exception as e:
-                    if config['debug']['display-exception']:
-                        print(e)
-                    return False
+                func(*args, **kwargs)
+                return self.is_page_change
 
             return __execute
 
@@ -122,25 +124,51 @@ class Chrome:
         def click_by_send_keys():
             executable_element.send_keys(Keys.ENTER)
 
-        @_check_click
-        def click_by_pos():
-            (x, y) = executable_element.location.get('x'), executable_element.location.get('y')
-            ActionChains(self.driver).move_by_offset(x, y).click().perform()
+        # @_check_click
+        # def click_by_pos():
+        #     (x, y) = executable_element.location.get('x'), executable_element.location.get('y')
+        #     ActionChains(self.driver).move_by_offset(x, y).click().perform()
 
-        if click_direct() or click_by_send_keys() or click_by_pos():
-            return True
+        max_retry = 4
+        retry_count = 0
+        while retry_count < max_retry:
+            retry_count += 1
+            click_operations = [click_direct, click_by_send_keys]
+            for click_operation in click_operations:
+                try:
+                    click_operation()
+                    if not check_change or self.is_page_change:
+                        return True
+                except ElementNotInteractableException or UnexpectedAlertPresentException as e:
+                    self.display_exception and retry_count == max_retry and print(e)
+                except ElementClickInterceptedException as e:
+                    self.display_exception and print(e)
+                    return False
+            time.sleep(retry_count + 1)
 
-        if check_change:
-            # 如果当前页面发生了变化则跳转
-            if self.is_page_change:
-                return True
-            # 向上进行递归
-            if ancestor_level == 3:
-                return False
-            parent_xpath = xpath[0: xpath.rindex('/')]
-            parent_element = self.get_element(By.XPATH, parent_xpath)
-            return self.click_element(parent_element, parent_xpath, check_change, ancestor_level + 1)
-        return True
+        # 向上进行递归
+        if ancestor_level == 3:
+            return False
+        parent_xpath = xpath[0: xpath.rindex('/')]
+        parent_element = self.get_element(By.XPATH, parent_xpath)
+        return self.click_element(parent_element, parent_xpath, check_change, ancestor_level + 1)
+
+    # 输入元素
+    def input_element(self, executable_element: WebElement, xpath: str, input_value: str, check_change: False):
+        if not xpath.lower().endswith('input'):
+            return False
+        max_retry = 4
+        retry_count = 0
+        while retry_count < max_retry:
+            retry_count += 1
+            try:
+                executable_element.send_keys(input_value)
+                if not check_change or self.is_page_change:
+                    return True
+            except ElementNotInteractableException as e:
+                self.display_exception and retry_count == max_retry and print(e)
+            time.sleep(retry_count + 1)
+        return False
 
     # 为 metamask 钱包插件解锁
     def unlock_metamask(self) -> None:
@@ -176,8 +204,8 @@ class Chrome:
         result = False
         for accessible_type in accessible_network:
             if network_type.strip().lower() is accessible_type.strip().lower():
-                specific_network_elements, _ = self.get_target_executable_elements(keywords=[network_type],
-                                                                                   tags=['span'])
+                specific_network_elements, _ = self.get_target_executable_elements_by_keywords(keywords=[network_type],
+                                                                                               tags=['span'])
                 # 如果存在该元素，则执行找到的第一个
                 if len(specific_network_elements) > 0:
                     specific_network_ele, xpath = specific_network_elements[0]

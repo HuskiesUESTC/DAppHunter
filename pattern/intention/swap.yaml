@@ -30,12 +30,14 @@ intention:
       tags:
         - button
       bias: 1
+      wait-time: 30
     click-confirm-swap-button:
       scope: web
       operation: click
       keywords:
         - swap confirm
         - confirm swap
+        - confirm-swap-or-send
       tags:
         - button
       bias: 2
@@ -44,3 +46,4 @@ intention:
       operation: click
       xpath: /html/body/div[1]/div/div[2]/div/div[4]/div[3]/footer/button[2]
       bias: 1
+      wait-time: 15

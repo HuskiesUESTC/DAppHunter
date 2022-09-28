@@ -6,7 +6,7 @@ def get_config(filepath):
         return yaml.load(config_file, Loader=yaml.FullLoader)
 
 
-config = get_config('/Volumes/data/code/DAppHunter/config.yaml')
+config = get_config('/Users/bytedance/code/ScamHunter/config.yaml')
 
 bnb_exchanges = {
     'Knight': 'https://dex.knightswap.financial/#/swap',

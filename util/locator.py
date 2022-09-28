@@ -145,8 +145,6 @@ def match_attr_constraint(element: _Element, tags: [str], keyword_stem_word_list
     return max_similarity
 
 
-CONTEXT = 'text'
-
 HARD_CONSTRAINTS = [
     skip_tags_constraint,
     match_tag_constraint,
@@ -167,16 +165,16 @@ SOFT_CONSTRAINTS = {
 
 
 # 获取约束条件
-def get_constraints() -> {}:
+def get_constraints(context) -> {}:
     return {
         'hard': HARD_CONSTRAINTS,
-        'soft': SOFT_CONSTRAINTS[CONTEXT]
+        'soft': SOFT_CONSTRAINTS[context]
     }
 
 
 # 检查元素，返回检测结果，如果检测成功，其中包含相应关键字的匹配度
-def check_element(element: _Element, tags: [str], keyword_stem_word_list: [list]) -> float:
-    constraints = get_constraints()
+def check_element(element: _Element, tags: [str], keyword_stem_word_list: [list], context: str) -> float:
+    constraints = get_constraints(context)
     for hard_constraint in constraints['hard']:
         if not hard_constraint(element, tags, keyword_stem_word_list):
             return 0
@@ -187,11 +185,12 @@ def check_element(element: _Element, tags: [str], keyword_stem_word_list: [list]
 
 
 # 定位合适的元素
-def find_suitable_elements(root: _Element, tags: [str] = None, keyword_stem_word_list: [list] = None) -> [{}]:
+def find_suitable_elements(root: _Element, tags: [str] = None, keyword_stem_word_list: [list] = None,
+                           context: str = 'text') -> [{}]:
     result = []
     for sub_element in root.getchildren():
         # 如果找到了与keyword相似的元素，则停止向下递归
-        similarity = check_element(sub_element, tags, keyword_stem_word_list)
+        similarity = check_element(sub_element, tags, keyword_stem_word_list, context)
         if similarity > 0.8:
             attr_key = '-'.join(sub_element.attrib.keys())
             result.append({
@@ -203,19 +202,19 @@ def find_suitable_elements(root: _Element, tags: [str] = None, keyword_stem_word
             })
             continue
         # 继续向下递归
-        result += find_suitable_elements(sub_element, tags, keyword_stem_word_list)
+        result += find_suitable_elements(sub_element, tags, keyword_stem_word_list, context)
     return result
 
 
 # 综合单词相似度与属性相似度推荐元素
-def recommend_elements(root: _Element, tags: [str] = None, keywords: [list] = None,
-                       reverse: bool = False) -> [{}]:
+def recommend_elements(root: _Element, tags: [str] = None, keywords: [str] = None,
+                       reverse: bool = False, context: str = 'text') -> [{}]:
     # 提取词干
     keyword_stem_word_list = []
     for keyword in keywords:
         keyword_stem_word_list.append(extract_stem_words(keyword))
     # 寻找合适的元素，并计算text相似度
-    suitable_elements = find_suitable_elements(root, tags, keyword_stem_word_list)
+    suitable_elements = find_suitable_elements(root, tags, keyword_stem_word_list, context)
     # 计算元素的attr-key，并计算attr相似度
     attr_key_map = {}
     attr_cnt = len(suitable_elements)
