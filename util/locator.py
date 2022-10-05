@@ -178,22 +178,28 @@ def check_element(element: _Element, keyword_stem_word_list: [list], context: st
 
 
 # 定位合适的元素
-def find_suitable_elements(root: _Element, keyword_stem_word_list: [list] = None,
-                           context: str = 'text') -> [{}]:
+def find_suitable_elements(root: _Element, xpath_fetch_func, keyword_stem_word_list: [list] = None,
+                           tags: [str] = None, context: str = 'text') -> [{}]:
     result = []
     for sub_element in root.getchildren():
         # 如果找到了与keyword相似的元素，则停止向下递归
         similarity = check_element(sub_element, keyword_stem_word_list, context)
         if similarity > 0.8:
-            attr_key = '-'.join(sub_element.attrib.keys())
-            result.append({
-                'element': sub_element,
-                'text_similarity': similarity,
-                'attr_similarity': 0,
-                'attr_key': attr_key,
-                'xpath': ''
-            })
-            continue
+            xpath = xpath_fetch_func(sub_element)
+            if not tags or any(map(lambda tag: tag in xpath, tags)):
+                attr_key = '-'.join(sub_element.attrib.keys())
+                result.append({
+                    'html_element': sub_element,
+                    'text_similarity': similarity,
+                    'attr_similarity': 0,
+                    'attr_key': attr_key,
+                    'xpath': xpath
+                })
+                continue
         # 继续向下递归
-        result += find_suitable_elements(sub_element, keyword_stem_word_list, context)
+        result += find_suitable_elements(root=sub_element,
+                                         xpath_fetch_func=xpath_fetch_func,
+                                         keyword_stem_word_list=keyword_stem_word_list,
+                                         tags=tags,
+                                         context=context)
     return result

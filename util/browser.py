@@ -1,21 +1,22 @@
-import copy
 import functools
 import time
 from io import StringIO
-import lxml.etree
+
+from lxml import etree
 from lxml.html import HtmlElement
-from selenium.common.exceptions import ElementNotInteractableException, MoveTargetOutOfBoundsException, \
-    ElementClickInterceptedException, UnexpectedAlertPresentException
-from selenium.webdriver import ActionChains
-from selenium.webdriver.chrome import webdriver
+
 from selenium import webdriver
-from selenium.webdriver.remote.webelement import WebElement
-from selenium.webdriver.common.by import By
+from selenium.webdriver import ActionChains
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from util import config, locator, ocr
-from util.config import config
+from selenium.common.exceptions import ElementNotInteractableException, ElementClickInterceptedException, \
+    UnexpectedAlertPresentException, JavascriptException, StaleElementReferenceException
+from selenium.webdriver.remote.webelement import WebElement
+
+from util import locator, ocr
+from util.configuration import config
 
 
 class Chrome:
@@ -41,9 +42,8 @@ class Chrome:
         return html_element.getroottree().getpath(html_element)
 
     # 获取可执行元素
-    def get_executable_element(self, html_element: HtmlElement) -> (WebElement, str):
-        xpath = self.get_html_element_xpath(html_element).replace('/noscript', '')
-        return self.get_element(By.XPATH, xpath), xpath
+    def get_executable_element(self, xpath: str) -> (WebElement, str):
+        return self.get_element(By.XPATH, xpath)
 
     # 获取指定的html元素
     def get_target_html_elements(self, keywords: [str], tags: [str], sort: str = "asc") -> [{}]:
@@ -66,9 +66,17 @@ class Chrome:
         for keyword in keywords:
             keyword_stem_word_list.append(locator.extract_stem_words(keyword))
         # 寻找合适的元素，并计算text相似度
-        suitable_elements = locator.find_suitable_elements(self.dom, keyword_stem_word_list, context='text')
+        suitable_elements = locator.find_suitable_elements(root=self.dom,
+                                                           xpath_fetch_func=self.get_html_element_xpath,
+                                                           keyword_stem_word_list=keyword_stem_word_list,
+                                                           tags=tags,
+                                                           context='text')
         if not suitable_elements:
-            suitable_elements = locator.find_suitable_elements(self.dom, keyword_stem_word_list, context='attr')
+            suitable_elements = locator.find_suitable_elements(root=self.dom,
+                                                               xpath_fetch_func=self.get_html_element_xpath,
+                                                               keyword_stem_word_list=keyword_stem_word_list,
+                                                               tags=tags,
+                                                               context='attr')
         # 计算元素的attr-key，并计算attr相似度
         attr_key_map = {}
         attr_cnt = len(suitable_elements)
@@ -96,28 +104,16 @@ class Chrome:
                 return -1
             return 1
 
-        copied_suitable_elements = []
-        for suitable_element in suitable_elements:
-            xpath = self.get_html_element_xpath(suitable_element['element'])
-            suitable_element['xpath'] = xpath
-            if not tags:
-                copied_suitable_elements.append(suitable_element)
-            else:
-                for tag in tags:
-                    if tag in xpath:
-                        copied_suitable_elements.append(suitable_element)
-                        break
-
         # 按照相似度进行排序并返回
-        return sorted([change_similarity(item) for item in copied_suitable_elements],
-                      key=functools.cmp_to_key(sort),
-                      reverse=reverse)
+        return sorted([change_similarity(item) for item in suitable_elements],
+                        key=functools.cmp_to_key(sort),
+                        reverse=reverse)
 
     # 获取指定xpath的可执行元素
     def get_target_executable_elements_by_xpath(self, xpath: str) -> ([{}], bool):
         element = self.get_element(By.XPATH, xpath)
         item = {
-            'element': element,
+            'web_element': element,
             'xpath': xpath
         }
         return [item], False
@@ -128,7 +124,7 @@ class Chrome:
         def _get_current_page_target_executable_elements():
 
             def __convert_element(item):
-                item['element'], item['xpath'] = self.get_executable_element(item['element'])
+                item['web_element'] = self.get_executable_element(item['xpath'])
                 return item
 
             html_result = self.get_target_html_elements(keywords, tags, sort=sort)
@@ -138,33 +134,35 @@ class Chrome:
         iframe_cnt = len(self._driver.find_elements(By.TAG_NAME, 'iframe'))
         step_info_iframe = False
         # 如果没有定位到该元素，并且页面存在iframe
-        if not result and iframe_cnt > 0:
-            # 通过ocr扫描页面
-            words_info = ocr.recognize_image(ocr.IMAGE_ENCODE, self.driver.get_screenshot_as_base64())
-            # 计算words、keywords的stem_word
-            text_stem_words_list = list(map(lambda item: locator.extract_stem_words(item['word']), words_info))
-            keyword_stem_words_list = list(map(lambda item: locator.extract_stem_words(item), keywords))
-            # 逐一判断是否存在文本相似度为100%的词
-            max_similarity = 0
-            for text_stem_words in text_stem_words_list:
-                for keyword_stem_words in keyword_stem_words_list:
-                    max_similarity = max(locator.calculate_text_similarity(text_stem_words, keyword_stem_words),
-                                         max_similarity)
-                    if max_similarity == 1:
-                        break
-                if max_similarity == 1:
-                    break
-            # 判断是否需要进入iframe
-            need_step_into_iframe = max_similarity == 1
-            if need_step_into_iframe:
-                cur_iframe_cnt = 0
-                while cur_iframe_cnt < iframe_cnt:
-                    self.driver.switch_to.frame(cur_iframe_cnt)
-                    result = _get_current_page_target_executable_elements()
-                    cur_iframe_cnt += 1
-                    if result:
-                        step_info_iframe = True
-                        break
+        if not result:
+            return result, False
+        # if not result and iframe_cnt > 0:
+        #     # 通过ocr扫描页面
+        #     words_info = self.page_state
+        #     # 计算words、keywords的stem_word
+        #     text_stem_words_list = list(map(lambda item: locator.extract_stem_words(item['word']), words_info))
+        #     keyword_stem_words_list = list(map(lambda item: locator.extract_stem_words(item), keywords))
+        #     # 逐一判断是否存在文本相似度为100%的词
+        #     max_similarity = 0
+        #     for text_stem_words in text_stem_words_list:
+        #         for keyword_stem_words in keyword_stem_words_list:
+        #             max_similarity = max(locator.calculate_text_similarity(text_stem_words, keyword_stem_words),
+        #                                  max_similarity)
+        #             if max_similarity == 1:
+        #                 break
+        #         if max_similarity == 1:
+        #             break
+        #     # 判断是否需要进入iframe
+        #     need_step_into_iframe = max_similarity == 1
+        #     if need_step_into_iframe:
+        #         cur_iframe_cnt = 0
+        #         while cur_iframe_cnt < iframe_cnt:
+        #             self.driver.switch_to.frame(cur_iframe_cnt)
+        #             result = _get_current_page_target_executable_elements()
+        #             cur_iframe_cnt += 1
+        #             if result:
+        #                 step_info_iframe = True
+        #                 break
         return result, step_info_iframe
 
     # 点击元素
@@ -201,7 +199,7 @@ class Chrome:
                         return True
                 except ElementNotInteractableException or UnexpectedAlertPresentException as e:
                     self.display_exception and retry_count == max_retry and print(e)
-                except ElementClickInterceptedException as e:
+                except ElementClickInterceptedException or StaleElementReferenceException as e:
                     self.display_exception and print(e)
                     return False
             time.sleep(retry_count + 1)
@@ -279,13 +277,32 @@ class Chrome:
         return result
 
     @property
+    def page_state(self):
+        return ocr.recognize_image(ocr.IMAGE_ENCODE, self.driver.get_screenshot_as_base64())
+
+    @property
+    def is_alive(self):
+        if self.driver is not None:
+            try:
+                self.driver.execute_script('javascript:void(0);')
+                return True
+            except JavascriptException:
+                pass
+        return False
+
+    def close(self):
+        if self.is_alive:
+            self.driver.close()
+        self._driver = None
+
+    @property
     def driver(self):
         return self._driver
 
     @property
     def dom(self):
-        parser = lxml.etree.HTMLParser()
-        tree = lxml.etree.parse(StringIO(self.html), parser)
+        parser = etree.HTMLParser()
+        tree = etree.parse(StringIO(self.html), parser)
         return tree.getroot()
 
     def record_page_html(self):

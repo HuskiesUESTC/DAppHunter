@@ -1,6 +1,6 @@
 import os.path
-from util.config import get_config, config
 from py2neo import Graph, Node, Relationship, Transaction
+from util.configuration import get_config, config
 
 
 # 解析单个意图
@@ -107,8 +107,12 @@ def insert_intention_nodes(tx: Transaction, intention_info: {}) -> Node:
             # 当前操作执行成功等待时间
             if 'wait-time' in action:
                 action_node.setdefault('wait-time', action['wait-time'])
+            # 存在分支选择时，选择最优权重执行
             if 'bias' not in action:
                 action['bias'] = 0
+            # 记录状态操作时，设定相应的 key
+            if 'key' in action:
+                action_node.setdefault('key', action['key'])
             action_node.setdefault('bias', action['bias'])
             tx.create(action_node)
             action_nodes[action_name] = action_node

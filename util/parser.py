@@ -2,11 +2,13 @@ import time
 
 from selenium.common.exceptions import NoSuchElementException, JavascriptException
 from selenium.webdriver.common.by import By
+
 from py2neo import Graph, NodeMatcher, RelationshipMatcher, Node
 
-from util import Chrome
-from util.config import config
+from util.configuration import config
 from util.utils import detect_path_trace
+from util.browser import Chrome
+from util.environment import env, EnvKey
 
 
 class Parser:
@@ -185,12 +187,15 @@ class Parser:
         xpath = node.get('xpath', None)
         tags = node.get('tags', None)
         keywords = node.get('keywords', None)
+        key = node.get('key', None)
 
         if operation in ['start', 'end']:
             return True
         if operation in ['exist'] and (not keywords and not node.get('data', None)):
             return False
         if operation not in ['exist'] and (not keywords and not xpath):
+            return False
+        if operation in ['record'] and (not key):
             return False
 
         step_info_frame = False
@@ -222,18 +227,19 @@ class Parser:
         # 根据operation类型进行相关处理
         if operation == 'exist':
             keywords = self.get_exist_keywords(node.get('extra_data', 'account'))
-            result = keywords and self.execute_exist(keywords)
+            result = keywords and self.execute_exist(keywords, node)
         elif operation == 'click':
-            result = len(executable_elements) > 0 and self.execute_click(executable_elements)
+            result = len(executable_elements) > 0 and self.execute_click(executable_elements, node)
         elif operation == 'input':
-            result = len(executable_elements) > 0 and self.execute_input(executable_elements)
-
+            result = len(executable_elements) > 0 and self.execute_input(executable_elements, node)
+        elif operation == 'record':
+            result = len(executable_elements) > 0 and self.execute_record(executable_elements, node)
         if step_info_frame or switch_another_window:
             self.chrome.driver.switch_to.window(origin_window_handle)
         return result
 
     # 执行点击操作
-    def execute_click(self, element_info_list: [{}]) -> bool:
+    def execute_click(self, element_info_list: [{}], node: Node) -> bool:
         # 执行之前记录页面html
         self.chrome.record_page_html()
 
@@ -246,7 +252,7 @@ class Parser:
 
         for element_info in element_info_list:
             # 向上寻找合适的元素
-            element, xpath = find_suitable_element(element_info['element'], element_info['xpath'])
+            element, xpath = find_suitable_element(element_info['web_element'], element_info['xpath'])
             self.display_element_xpath and print(xpath)
             if self.chrome.click_element(executable_element=element,
                                          xpath=xpath,
@@ -255,20 +261,44 @@ class Parser:
         return False
 
     # 执行输入操作
-    def execute_input(self, element_info_list: [{}]) -> bool:
+    def execute_input(self, element_info_list: [{}], node: Node) -> bool:
         # 执行之前记录页面html
         self.chrome.record_page_html()
         for element_info in element_info_list:
             self.display_element_xpath and print(element_info['xpath'])
-            if self.chrome.input_element(executable_element=element_info['element'],
+            if self.chrome.input_element(executable_element=element_info['web_element'],
                                          xpath=element_info['xpath'],
                                          input_value=config['dapp']['input-amount'],
                                          check_change=True):
                 return True
         return False
 
+    # 执行记录操作
+    def execute_record(self, element_info_list: [{}], node: Node) -> bool:
+        key, result = node.get('key'), []
+        for element_info in element_info_list:
+            html_element, executable_element = element_info['html_element'], element_info['web_element']
+            if html_element.tag in ['input']:
+                wait_time = node.get('wait-time', config['dapp']['wait-time'])
+                retry_count = 0
+                value = None
+                while retry_count < wait_time and not value:
+                    value = executable_element.get_attribute('value')
+                    if not value or value in ['0', '0.0']:
+                        executable_element = self.driver.find_element(By.XPATH, element_info['xpath'])
+                        value = None
+                        time.sleep(1)
+                        retry_count += 1
+                result.append(value)
+            else:
+                result += list(html_element.itertext())
+        page_state = env.get(EnvKey.PAGE_STATE, {})
+        page_state[key] = result
+        env.set(EnvKey.PAGE_STATE, page_state)
+        return True
+
     # 执行判断存在操作
-    def execute_exist(self, keywords: [str]) -> bool:
+    def execute_exist(self, keywords: [str], node: Node) -> bool:
         html = self.chrome.html.lower()
         for keyword in keywords:
             if keyword.lower() in html:

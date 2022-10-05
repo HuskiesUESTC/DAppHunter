@@ -1,0 +1,33 @@
+intention:
+  # 意图名
+  name: record-state
+  # 全路径
+  full-path:
+    full-path1:
+      - record-currency
+      - record-amount
+  # 前端操作实现
+  actions:
+    record-currency:
+      key: currency
+      operation: record
+      scope: web
+      keywords:
+        - select a currency
+        - open-currency-select-button
+        - select your token
+      tags:
+        - button
+    record-amount:
+      key: amount
+      operation: record
+      scope: web
+      keywords:
+        - token-amount-input
+        - form-amount-in
+        - Token Amount
+        - swap-input
+        - token-value-input
+      tags:
+        - input
+      wait-time: 60
