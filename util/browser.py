@@ -131,11 +131,9 @@ class Chrome:
             return list(map(lambda x: __convert_element(x), html_result))
 
         result = _get_current_page_target_executable_elements()
-        iframe_cnt = len(self._driver.find_elements(By.TAG_NAME, 'iframe'))
         step_info_iframe = False
-        # 如果没有定位到该元素，并且页面存在iframe
-        if not result:
-            return result, False
+        # # 如果没有定位到该元素，并且页面存在iframe
+        # iframe_cnt = len(self._driver.find_elements(By.TAG_NAME, 'iframe'))
         # if not result and iframe_cnt > 0:
         #     # 通过ocr扫描页面
         #     words_info = self.page_state

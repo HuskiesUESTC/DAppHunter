@@ -35,13 +35,13 @@ intention:
       scope: web
       keywords:
         - SHIB
-        - USDT
         - DAI
         - SHIB
         - BUSD
         - DOGE
         - AMPLE
         - WBNB
+        - ANKR
       sort: desc
     input-amount:
       operation: input

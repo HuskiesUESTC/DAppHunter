@@ -1,9 +1,10 @@
 import enum
-from util.exception import CustomError
 
 
 class EnvKey(enum.Enum):
     PAGE_STATE = 'front_end_page_state',
+    WALLET_STATE = 'wallet_state'
+    BLOCKCHAIN_STATE = 'blockchain_state'
     TX_TYPE = 'transaction_type',
     CHAIN_TYPE = 'chain_type',
 

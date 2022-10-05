@@ -211,7 +211,7 @@ def load_graph_from_pattern():
                   name=config['neo4j']['name'])
     tx = graph.begin()
 
-    intention_dir = config['dir']['pattern'] + '/intention'
+    intention_dir = config['dirs']['pattern'] + '/intention'
     intentions = parse_all_intentions(intention_dir)
 
     try:
@@ -224,7 +224,7 @@ def load_graph_from_pattern():
         intention_nodes.update(insert_flag_intention_nodes(tx))
 
         # 更新意图节点之间的关系
-        category_dir = config['dir']['pattern'] + '/category'
+        category_dir = config['dirs']['pattern'] + '/category'
         insert_intention_relationships(tx, intention_nodes, category_dir)
 
         graph.commit(tx)

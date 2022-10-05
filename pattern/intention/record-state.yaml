@@ -30,4 +30,4 @@ intention:
         - token-value-input
       tags:
         - input
-      wait-time: 60
+      wait-time: 180

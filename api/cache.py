@@ -1,18 +1,9 @@
 import redis
 
-redisServer = 'localhost'
-redisPort = '6379'
-maxConnections = 64
+from util.configuration import config
 
-POOL = redis.ConnectionPool(
-    host=redisServer, port=redisPort, max_connections=maxConnections)
+_redis_config = config['redis']
 
-
-# hexSig: str -> Method: dict
-def get():
-    conn = redis.StrictRedis(connection_pool=POOL)
-    pass
-
-
-def set():
-    pass
+POOL = redis.ConnectionPool(host=_redis_config['host'],
+                            port=_redis_config['port'],
+                            max_connections=_redis_config['max-connections'])

@@ -2,230 +2,177 @@ from collections import defaultdict
 from functools import lru_cache
 import json
 import logging
-import queue
 from random import Random
 from hashlib import md5
 import redis
-from cache import POOL
 import requests
-from eth_abi import decode_abi, encode_abi
+from eth_abi import decode_abi
+from operator import itemgetter
 
+from api.cache import POOL
+from util.configuration import config
 
-apiProvider = 'https://www.4byte.directory/api/v1/signatures/'
-rpcDelegate = 'http://localhost:8545'
-rpcProviders = ['https://bsc-dataseed.binance.org/',
-                'https://bsc-dataseed1.defibit.io/',
-                'https://bsc-dataseed1.ninicoin.io/',
-                'https://bsc-dataseed2.defibit.io/',
-                'https://bsc-dataseed3.defibit.io/',
-                'https://bsc-dataseed4.defibit.io/',
-                'https://bsc-dataseed2.ninicoin.io/',
-                'https://bsc-dataseed3.ninicoin.io/',
-                'https://bsc-dataseed4.ninicoin.io/',
-                'https://bsc-dataseed1.binance.org/',
-                'https://bsc-dataseed2.binance.org/',
-                'https://bsc-dataseed3.binance.org/',
-                'https://bsc-dataseed4.binance.org/']
+SIGNATURE_PROVIDER, RPC_DELEGATE, RPC_PROVIDERS = \
+    itemgetter(*['signature-url', 'delegate-url', 'provider-urls'])(config['rpc'])
 
-fails = defaultdict(int)
-rpcCallCount = 0
-
-
-def load_balance(func):
-    def wrapper(*args, **kw):
-        try:
-            ret = func(*args, **kw)
-            return ret
-        except Exception:
-            return None
-
-    return wrapper
+fail_counts = defaultdict(int)
+rpc_call_count = 0
 
 
 class Method:
-    __methodName = ''
-    __paramList = []
 
-    def __init__(self, methodName: str = '', paramList: [str] = []) -> None:
-        self.__methodName = methodName
-        self.__paramList = paramList
+    def __init__(self, method_name: str, param_list: [str]) -> None:
+        self._method_name = method_name
+        self._param_list = param_list
 
     @property
-    def methodName(self):
-        return self.__methodName
+    def method_name(self):
+        return self._method_name
 
-    @methodName.setter
-    def methodName(self, name: str):
-        self.__methodName = name
-
-    @property
-    def paramList(self):
-        return self.__paramList
-
-    @paramList.setter
-    def paramList(self, paramList: [str]):
-        self.__paramList = paramList
+    @method_name.setter
+    def method_name(self, name: str):
+        self._method_name = name
 
     @property
-    def ABI(self):
-        return self.__paramList
+    def param_list(self):
+        return self._param_list
 
-    def fromTextSig(self, textSig: str):
-        sp = textSig.rstrip(')').split('(')
-        self.__methodName = sp[0]
-        self.__paramList = sp[1].split(',')
+    @param_list.setter
+    def param_list(self, param_list: [str]):
+        self._param_list = param_list
 
-    def decodeTx(self, rawData: str) -> dict:
-        rawDataWithOutSig = rawData[10:]
-        dataToDecode = bytes.fromhex(rawDataWithOutSig)
-        # print(self.__methodName)
-        tx = {}
-        tx['method_name'] = self.__methodName
-        tx['params'] = {}
-        tx['decode_success'] = False
+    @property
+    def abi(self):
+        return self._param_list
+
+    def from_text_sig(self, text_sig: str):
+        sp = text_sig.rstrip(')').split('(')
+        self._method_name = sp[0]
+        self._param_list = sp[1].split(',')
+
+    def decode_transaction(self, raw_data: str) -> (bool, {}):
+        tx = {
+            'method_name': self._method_name,
+            'params': {},
+        }
+        success = False
         try:
-            t = decode_abi(self.ABI, dataToDecode)
-            if len(t) == len(self.ABI):
-                tx['decode_success'] = True
-                for i in range(len(t)):
-                    tx['params'][self.ABI[i]] = t[i]
+            data_to_decode = bytes.fromhex(raw_data[10:])
+            decoded_abi = decode_abi(self.abi, data_to_decode)
+            if len(decoded_abi) == len(self.abi):
+                success = True
+                tx['params'] = []
+                for i in range(len(decoded_abi)):
+                    tx['params'].append({
+                        self.abi[i]: decoded_abi[i]
+                    })
         except Exception:
-            pass
-        return tx
+            success = False
+        return success, tx
+
+
+def select_rpc_provider(body: {}) -> str:
+    cur_hash = json.dumps(body)
+    candidates = set()
+    num_of_providers = len(RPC_PROVIDERS)
+    min_fail = 0
+    suitable_provider = ''
+    while len(candidates) < 4:
+        cur_hash = md5(cur_hash.encode('utf-8')).hexdigest()
+        cur_index = int(cur_hash, base=16) % num_of_providers
+        if cur_index not in candidates:
+            candidates.add(cur_index)
+            cur_provider = RPC_PROVIDERS[cur_index]
+            fail_count = fail_counts[cur_provider]
+            if min_fail > fail_count:
+                suitable_provider = cur_provider
+                min_fail = fail_count
+    return suitable_provider
 
 
 @lru_cache(maxsize=128)
-def parseTextSig(textSig: str) -> Method:
-    sp = textSig.rstrip(')').split('(')
-    methodName = sp[0]
-    paramList = []
-    if sp[1].find(',') != -1:
-        paramList = sp[1].split(',')
-    method = Method(methodName, paramList)
-    return method
-
-
-def selectRPCProvider(req: str) -> str:
-    # 哈希负载均衡 根据请求 映射到对应rpc服务器上
-    # 做4次哈希 映射到4个服务器上 再选择最近失败次数最少的
-    h1 = md5(req.encode('utf-8')).hexdigest()
-    h2 = md5(h1.encode('utf-8')).hexdigest()
-    h3 = md5(h2.encode('utf-8')).hexdigest()
-    h4 = md5(h3.encode('utf-8')).hexdigest()
-    numOfProviders = len(rpcProviders)
-    # print(h1, h2, h3, h4)
-    # 选择n<=4个服务器
-    q = queue.PriorityQueue()
-    candidates = [int(h1, base=16) % numOfProviders, int(h2, base=16) % numOfProviders, int(
-        h3, base=16) % numOfProviders, int(h4, base=16) % numOfProviders]
-    for c in candidates:
-        # 优先级-失败次数 值-rpc下标
-        provider = rpcProviders[c]
-        q.put((fails[provider], provider))
-    # 返回堆顶-失败次数最少的节点
-    if not q.empty():
-        return q.get()[1]
-    return None
-
-
-@lru_cache(maxsize=128)
-def fetchTextSig(hexSig: str) -> [str]:
+def fetch_text_signature(hex_sig: str) -> [str]:
     methods = []
     r = redis.StrictRedis(connection_pool=POOL)
-    if r.llen(hexSig) != 0:
-        for v in r.lrange(hexSig, 0, -1):
+    if r.llen(hex_sig) != 0:
+        for v in r.lrange(hex_sig, 0, -1):
             methods.append(v.decode('utf-8'))
         return methods
-    payload = {'hex_signature': hexSig}
-    resp = requests.get(apiProvider, params=payload)
-    if resp.status_code == 200:
-        j = resp.json()
-        for res in j['results']:
+    payload = {
+        'hex_signature': hex_sig
+    }
+    response = requests.get(SIGNATURE_PROVIDER, params=payload)
+    if response.status_code == 200:
+        result = response.json()
+        for res in result['results']:
             textSig = res['text_signature']
             methods.append(textSig)
             # 缓存函数签名到redis
             r = redis.StrictRedis(connection_pool=POOL)
-            r.lpush(hexSig, textSig)
+            r.lpush(hex_sig, textSig)
     return methods
-
-
-def txDecoders(textSigs: [str]) -> [Method]:
-    methods = []
-    for ts in textSigs:
-        methods.append(parseTextSig(ts))
-    return methods
-
-
-def eth_rpc(rpcProvider, payload) -> {}:
-    # 每进行100次rpc调用 清空失败次数
-    global rpcCallCount
-    if rpcCallCount % 100 == 0:
-        for k in fails:
-            fails[k] = 0
-    # 尝试调用rpc
-    rpcCallCount += 1
-    try:
-        response = requests.post(rpcProvider, payload)
-    except Exception:
-        # 如果失败 记录次数增加
-        fails[rpcProvider] += 1
-        logging.error('rpc call error', rpcProvider)
-        return None
-    return response
-
-
-def fetchBlockNumber() -> str:
-    payload = json.dumps({'id': randomID(),
-                          'jsonrpc': '2.0', 'method': 'eth_blockNumber', 'params': []})
-    rpcProvider = selectRPCProvider(payload)
-    response = eth_rpc(rpcProvider, payload)
-    if response is not None:
-        return response.json()['result']
 
 
 @lru_cache(maxsize=128)
-def fetchBlock(blockNumber: str, txs: bool = False) -> dict:
-    payload = json.dumps({'id': randomID(), 'jsonrpc': '2.0',
-                          'method': 'eth_getBlockByNumber', 'params': [blockNumber, txs]})
-    rpcProvider = selectRPCProvider(payload)
-    response = eth_rpc(rpcProvider, payload)
-    if response is not None:
-        blk = response.json()
-        # 处理异常
-        if 'result' in blk.keys():
-            return blk['result']
-        else:
-            return None
-    else:
-        return None
+def parse_text_sig(text_sig: str) -> Method:
+    sp = text_sig.rstrip(')').split('(')
+    method_name = sp[0]
+    param_list = sp[1].split(',')
+    return Method(method_name, param_list)
 
 
-def getTransactionByHash(txHash: str) -> dict:
-    payload = json.dumps({'id': randomID(), 'jsonrpc': '2.0', 'method': 'eth_getTransactionByHash',
-                          'params': [txHash]})
-    rpcProvider = selectRPCProvider(payload)
-    response = eth_rpc(rpcProvider, payload)
-    if response is not None:
-        return response.json()
-    else:
-        return None
+def tx_decoders(text_sigs: [str]) -> [Method]:
+    return list(map(lambda text_sig: parse_text_sig(text_sig), text_sigs))
 
 
-def getTransactionReceipt(txHash: str) -> dict:
-    payload = json.dumps({"id": randomID(), "method": "eth_getTransactionReceipt", "params": [
-        txHash], "jsonrpc": "2.0"})
-    rpcProvider = selectRPCProvider(payload)
-    response = eth_rpc(rpcProvider, payload)
-    if response is not None:
-        return response.json()
-    else:
-        return None
+def eth_rpc(method, params) -> {}:
+    # 使用全局变量
+    global rpc_call_count, fail_counts
+    rpc_call_count += 1
+    # 生成随机id
+    random = Random()
+    random_id = ''.join([str(random.randint(0, 9)) for _ in range(16)])
+    # 拼接body
+    request_body = {
+        'id': random_id,
+        'method': method,
+        'params': params,
+        'jsonrpc': '2.0'
+    }
+    # 选择provider
+    rpc_provider = select_rpc_provider(request_body)
+
+    # 每进行100次rpc调用 清空失败次数
+    if rpc_call_count % 100 == 0:
+        fail_counts = defaultdict(int)
+
+    result = {}
+    try:
+        response = requests.post(rpc_provider, json=request_body)
+        if response.status_code == 200:
+            result = response.json()
+    except Exception:
+        # 如果失败 记录次数增加
+        fail_counts[rpc_provider] += 1
+        logging.error('rpc call error', rpc_provider)
+
+    return result
 
 
-def randomID() -> str:
-    length = 16
-    table = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-    id = []
-    for i in range(length):
-        id.append(table[Random().randint(0, 9)])
-    return ''.join(id)
+def fetch_block_number() -> str:
+    result = eth_rpc(method='eth_blockNumber', params=[])
+    return result.get('result', None)
+
+
+@lru_cache(maxsize=128)
+def fetch_block(block_number: str, txs: bool = False) -> dict:
+    result = eth_rpc(method='eth_getBlockByNumber', params=[block_number, txs])
+    return result.get('result', None)
+
+
+def get_transaction_by_hash(tx_hash: str) -> dict:
+    return eth_rpc(method='eth_getTransactionByHash', params=[tx_hash])
+
+
+def get_transaction_receipt(tx_hash: str) -> {}:
+    return eth_rpc(method='eth_getTransactionReceipt', params=[tx_hash])

@@ -3,6 +3,11 @@ import yaml
 
 def get_config(filepath):
     with open(filepath, 'r', encoding="utf-8") as config_file:
+        def join(loader, node):
+            seq = loader.construct_sequence(node)
+            return ''.join([str(i) for i in seq])
+
+        yaml.add_constructor('!join', join)
         return yaml.load(config_file, Loader=yaml.FullLoader)
 
 
@@ -66,3 +71,6 @@ bnb_yield_farming = {
     'cairo finance': 'https://horusfarm.cairo.finance/',
     'jurassic': 'https://jurassicbusd.cropsfarmer.online/?utm_source=DappRadar&utm_medium=deeplink&utm_campaign=visit-website'
 }
+
+if __name__ == '__main__':
+    print(config)
