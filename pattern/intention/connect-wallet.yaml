@@ -27,17 +27,22 @@ intention:
       - click-connect-wallet
       - select-metamask-wallet
       - select-account
-      - connect-account
       - check-account
     full-path5:
+      - click-connect-wallet
+      - select-metamask-wallet
+      - select-account
+      - connect-account
+      - check-account
+    full-path6:
       # 使用子路径
       - link-sub-path1
       # 使用全路径
       - link-full-path2
-    full-path6:
+    full-path7:
       - link-sub-path1
       - link-full-path3
-    full-path7:
+    full-path8:
       - link-sub-path1
       - link-full-path4
   # 基础操作
@@ -61,6 +66,8 @@ intention:
         - connect wallet
         - connect
         - unlock wallet
+        - connectButton
+        - connect metamask
       tags:
         - button
     send-signature-request:
@@ -71,10 +78,14 @@ intention:
       scope: web
     select-metamask-wallet:
       operation: click
+      keywords:
+        - MetaMask
       scope: web
     select-account:
       operation: click
       scope: wallet
+      xpath: /html/body/div[1]/div/div[2]/div/div[2]/div[4]/div[2]/button[2]
     connect-account:
       operation: click
       scope: wallet
+      xpath: /html/body/div[1]/div/div[2]/div/div[2]/div[2]/div[2]/footer/button[2]

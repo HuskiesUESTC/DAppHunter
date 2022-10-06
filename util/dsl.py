@@ -1,6 +1,6 @@
 import os.path
-from util.config import get_config, config
 from py2neo import Graph, Node, Relationship, Transaction
+from util.configuration import get_config, config
 
 
 # 解析单个意图
@@ -104,8 +104,15 @@ def insert_intention_nodes(tx: Transaction, intention_info: {}) -> Node:
             # select 元素时设置选择顺序，默认为正序
             if 'sort' in action:
                 action_node.setdefault('sort', action['sort'])
+            # 当前操作执行成功等待时间
+            if 'wait-time' in action:
+                action_node.setdefault('wait-time', action['wait-time'])
+            # 存在分支选择时，选择最优权重执行
             if 'bias' not in action:
                 action['bias'] = 0
+            # 记录状态操作时，设定相应的 key
+            if 'key' in action:
+                action_node.setdefault('key', action['key'])
             action_node.setdefault('bias', action['bias'])
             tx.create(action_node)
             action_nodes[action_name] = action_node
@@ -204,7 +211,7 @@ def load_graph_from_pattern():
                   name=config['neo4j']['name'])
     tx = graph.begin()
 
-    intention_dir = config['dir']['pattern'] + '/intention'
+    intention_dir = config['dirs']['pattern'] + '/intention'
     intentions = parse_all_intentions(intention_dir)
 
     try:
@@ -217,7 +224,7 @@ def load_graph_from_pattern():
         intention_nodes.update(insert_flag_intention_nodes(tx))
 
         # 更新意图节点之间的关系
-        category_dir = config['dir']['pattern'] + '/category'
+        category_dir = config['dirs']['pattern'] + '/category'
         insert_intention_relationships(tx, intention_nodes, category_dir)
 
         graph.commit(tx)

@@ -27,17 +27,20 @@ intention:
         - open-currency-select-button
         - select your token
         - 选择通证
+        - 选择代币
       sort: desc
       bias: 2
     select-currency:
       operation: click
       scope: web
       keywords:
-        - USDT
-        - ETH
+        - SHIB
+        - DAI
+        - SHIB
         - BUSD
         - DOGE
         - AMPLE
+        - WBNB
         - ANKR
       sort: desc
     input-amount:
@@ -48,5 +51,8 @@ intention:
         - form-amount-in
         - Token Amount
         - swap-input
+        - token-value-input
+      tags:
+        - input
       bias: 1
-      sort: bias
+      sort: desc

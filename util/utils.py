@@ -1,7 +1,8 @@
 import time
 from py2neo import Node
-from util.config import config
-from exception import CustomError
+
+from util.configuration import config
+from util.exception import CustomError
 
 
 # 记录检测日志的执行路径
@@ -52,4 +53,3 @@ def retry(fn):
         raise CustomError('Retry error!')
 
     return execute
-

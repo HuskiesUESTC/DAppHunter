@@ -2,7 +2,6 @@ from lxml.etree import _Element
 import copy
 import difflib
 from nltk import word_tokenize, corpus, stem
-import functools
 
 SKIP_TAGS = ['image', 'svg']
 
@@ -85,17 +84,12 @@ def calculate_score(text_similarity: float, attr_similarity: float) -> float:
 
 
 # 跳过标签
-def skip_tags_constraint(element: _Element, tags: [str], keyword_stem_word_list: [list]) -> bool:
+def skip_tags_constraint(element: _Element, keyword_stem_word_list: [list]) -> bool:
     return element.tag not in SKIP_TAGS
 
 
-# 标签类型匹配约束
-def match_tag_constraint(element: _Element, tags: [str], keyword_stem_word_list: [list]) -> bool:
-    return not tags or element.tag in tags
-
-
 # 跳过包含url属性标签约束
-def skip_url_attr_tag_constraint(element: _Element, tags: [str], keyword_stem_word_list: [list]) -> bool:
+def skip_url_attr_tag_constraint(element: _Element, keyword_stem_word_list: [list]) -> bool:
     attributes = element.attrib
     for attr_key in attributes:
         attr_value = attributes[attr_key]
@@ -105,12 +99,12 @@ def skip_url_attr_tag_constraint(element: _Element, tags: [str], keyword_stem_wo
 
 
 # 文本长度约束
-def limit_text_length_constraint(element: _Element, tags: [str], keyword_stem_word_list: [list]) -> bool:
+def limit_text_length_constraint(element: _Element, keyword_stem_word_list: [list]) -> bool:
     return element.text is None or len(element.text) < 50
 
 
 # 文本匹配约束
-def match_text_constraint(element: _Element, tags: [str], keyword_stem_word_list: [list]) -> float:
+def match_text_constraint(element: _Element, keyword_stem_word_list: [list]) -> float:
     if element.text is None:
         return 0
     text_stem_words = extract_stem_words(element.text)
@@ -121,7 +115,7 @@ def match_text_constraint(element: _Element, tags: [str], keyword_stem_word_list
 
 
 # placeholder匹配约束
-def match_placeholder_constraint(element: _Element, tags: [str], keyword_stem_word_list: [list]) -> float:
+def match_placeholder_constraint(element: _Element, keyword_stem_word_list: [list]) -> float:
     if element.tag not in ['input'] or not element.attrib.get('placeholder', None):
         return 0
     placeholder_stem_words = extract_stem_words(element.attrib.get('placeholder'))
@@ -132,7 +126,7 @@ def match_placeholder_constraint(element: _Element, tags: [str], keyword_stem_wo
 
 
 # 属性匹配约束
-def match_attr_constraint(element: _Element, tags: [str], keyword_stem_word_list: [list]) -> float:
+def match_attr_constraint(element: _Element, keyword_stem_word_list: [list]) -> float:
     if not element.attrib:
         return 0
     max_similarity = 0
@@ -145,11 +139,8 @@ def match_attr_constraint(element: _Element, tags: [str], keyword_stem_word_list
     return max_similarity
 
 
-CONTEXT = 'text'
-
 HARD_CONSTRAINTS = [
     skip_tags_constraint,
-    match_tag_constraint,
     limit_text_length_constraint,
     skip_url_attr_tag_constraint,
 ]
@@ -167,83 +158,48 @@ SOFT_CONSTRAINTS = {
 
 
 # 获取约束条件
-def get_constraints() -> {}:
+def get_constraints(context) -> {}:
     return {
         'hard': HARD_CONSTRAINTS,
-        'soft': SOFT_CONSTRAINTS[CONTEXT]
+        'soft': SOFT_CONSTRAINTS[context]
     }
 
 
 # 检查元素，返回检测结果，如果检测成功，其中包含相应关键字的匹配度
-def check_element(element: _Element, tags: [str], keyword_stem_word_list: [list]) -> float:
-    constraints = get_constraints()
+def check_element(element: _Element, keyword_stem_word_list: [list], context: str) -> float:
+    constraints = get_constraints(context)
     for hard_constraint in constraints['hard']:
-        if not hard_constraint(element, tags, keyword_stem_word_list):
+        if not hard_constraint(element, keyword_stem_word_list):
             return 0
     max_similarity = 0
     for soft_constraint in constraints['soft']:
-        max_similarity = max(max_similarity, soft_constraint(element, tags, keyword_stem_word_list))
+        max_similarity = max(max_similarity, soft_constraint(element, keyword_stem_word_list))
     return max_similarity
 
 
 # 定位合适的元素
-def find_suitable_elements(root: _Element, tags: [str] = None, keyword_stem_word_list: [list] = None) -> [{}]:
+def find_suitable_elements(root: _Element, xpath_fetch_func, keyword_stem_word_list: [list] = None,
+                           tags: [str] = None, context: str = 'text') -> [{}]:
     result = []
     for sub_element in root.getchildren():
         # 如果找到了与keyword相似的元素，则停止向下递归
-        similarity = check_element(sub_element, tags, keyword_stem_word_list)
+        similarity = check_element(sub_element, keyword_stem_word_list, context)
         if similarity > 0.8:
-            attr_key = '-'.join(sub_element.attrib.keys())
-            result.append({
-                'element': sub_element,
-                'text_similarity': similarity,
-                'attr_similarity': 0,
-                'attr_key': attr_key,
-                'xpath': ''
-            })
-            continue
+            xpath = xpath_fetch_func(sub_element)
+            if not tags or any(map(lambda tag: tag in xpath, tags)):
+                attr_key = '-'.join(sub_element.attrib.keys())
+                result.append({
+                    'html_element': sub_element,
+                    'text_similarity': similarity,
+                    'attr_similarity': 0,
+                    'attr_key': attr_key,
+                    'xpath': xpath
+                })
+                continue
         # 继续向下递归
-        result += find_suitable_elements(sub_element, tags, keyword_stem_word_list)
+        result += find_suitable_elements(root=sub_element,
+                                         xpath_fetch_func=xpath_fetch_func,
+                                         keyword_stem_word_list=keyword_stem_word_list,
+                                         tags=tags,
+                                         context=context)
     return result
-
-
-# 综合单词相似度与属性相似度推荐元素
-def recommend_elements(root: _Element, tags: [str] = None, keywords: [list] = None,
-                       reverse: bool = False) -> [{}]:
-    # 提取词干
-    keyword_stem_word_list = []
-    for keyword in keywords:
-        keyword_stem_word_list.append(extract_stem_words(keyword))
-    # 寻找合适的元素，并计算text相似度
-    suitable_elements = find_suitable_elements(root, tags, keyword_stem_word_list)
-    # 计算元素的attr-key，并计算attr相似度
-    attr_key_map = {}
-    attr_cnt = len(suitable_elements)
-    for element in suitable_elements:
-        attr_key = element['attr_key']
-        attr_key_map[attr_key] = 1 if attr_key not in attr_key_map else attr_key_map[attr_key] + 1
-
-    # 计算元素的相似度
-    def change_similarity(item):
-        text_similarity = item['text_similarity']
-        attr_similarity = calculate_attr_similarity(attr_key_map[item['attr_key']], attr_cnt)
-        item['attr_similarity'] = attr_similarity
-        item['similarity'] = calculate_score(text_similarity, attr_similarity)
-        return item
-
-    # 按照相似度进行排序，同时相同分数增加顺序约束
-    def sort(item1, item2):
-        text_similarity_offset = item1['similarity'] - item2['similarity']
-        if text_similarity_offset != 0:
-            return 1 if text_similarity_offset > 0 else -1
-        attr_similarity_offset = item1['attr_similarity'] - item2['attr_similarity']
-        if abs(attr_similarity_offset) > 0.3:
-            return 1 if attr_similarity_offset > 0 else -1
-        if reverse:
-            return -1
-        return 1
-
-    # 按照相似度进行排序并返回
-    return sorted([change_similarity(item) for item in suitable_elements],
-                  key=functools.cmp_to_key(sort),
-                  reverse=reverse)

@@ -1,5 +1,5 @@
 import mysql.connector
-from util.config import config
+from util.configuration import config
 
 
 class Database:
@@ -13,7 +13,7 @@ class Database:
 
     def query_dapp_info(self, category: str, protocols: str):
         sql = "select * from dapp_radar where category = '{}' and alive = 1 and protocols like '%{}%'" \
-               .format(category, protocols)
+            .format(category, protocols)
         print(sql)
         return self._select(sql)
 

@@ -1,6 +1,6 @@
 import requests
 import json
-from util.config import config
+from util.configuration import config
 
 
 IMAGE_URL = 'url'
@@ -19,7 +19,6 @@ def recognize_image(image_type: str = None, value: str = None):
     }
     response = requests.request("POST", url, headers=headers, data=json.dumps(payload))
     data = json.loads(response.text)
-    print(data)
     result = []
     for item in data['prism_wordsInfo']:
         word = item['word']
