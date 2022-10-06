@@ -9,9 +9,11 @@ category:
     -
       - connect-wallet
       - input-form
+      - record-state
       - swap
     # approve
     -
       - connect-wallet
       - input-form
+      - record-state
       - approve
