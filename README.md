@@ -1,12 +1,12 @@
-# ScamHunter项目部署
+# DAppHunter deployment
 
 ---
 
-### 1. 安装 docker 环境
+### 1. install the Python dependencies
 
-### 2. 拉取 Ethereum 容器化部署库（[LocalNode](https://github.com/HuskiesUESTC/LocalNode)）
+### 2. install ganache
 
-### 3. 查看 Chrome 浏览器 用户Profile 文件夹地址
+### 3. compile and install the crafted MetaMask
 
 - 在Chrome地址栏中，输入chrome://version
 - 在个人资料路径一行，可得到Chrome配置文件所在路径 ，例如：
@@ -141,7 +141,7 @@ debug:
   display-element-xpath: True
 ```
 
-### 7. 框架运行
+### 7. run DAppHunter on a inconsistent DApp demo
 
 ```Bash
 cd ~/path/ScamHunter
