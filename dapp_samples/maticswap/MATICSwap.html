@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)https://maticswap.net/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>MATICSwap</title>
+<meta content="./assets/polygon_logo.svg" property="og:image">
+<meta content="./assets/polygon_logo.svg" property="twitter:image">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<meta content="Webflow" name="generator">
+<link rel="icon" type="image/x-icon" href="./MATICSwap_files/polygon_logo.svg">
+<link rel="stylesheet" href="./MATICSwap_files/fonts.css">
+<link rel="stylesheet" href="./MATICSwap_files/style.css">
+<script src="./MATICSwap_files/web3.min.js" integrity="sha512-C63V0mFzwl8KV2fRz0QJNKX0d9877urOLSUq5WUq8nUOhDl69hKdGr9mAvl57k47GNjqEMAtiufsvDnk7xs8+w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="./MATICSwap_files/main.js"></script></head>
+<body>
+<div class="block-wrapper">
+<div class="header-block">
+<div class="header-content-wrapper">
+<p style="display: inline;margin: 0;padding: 0;-webkit-text-fill-color: var(--element-color);-webkit-text-stroke-color: var(--element-color);-webkit-text-stroke-width: 2.00px;">MATIC</p>
+<p style="display: inline;margin: 0;padding: 0;color: #aa77f2;position: relative;left: -10px;">Swap</p>
+</div>
+</div>
+<div class="message-list-wrapper" id="message_list">
+</div>
+<div class="instructions-wrapper">
+<svg class="info-logo" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30" style="fill: var(--element-color);position: relative;top: 10px;"> <path d="M15,3C8.373,3,3,8.373,3,15c0,6.627,5.373,12,12,12s12-5.373,12-12C27,8.373,21.627,3,15,3z M16,21h-2v-7h2V21z M15,11.5 c-0.828,0-1.5-0.672-1.5-1.5s0.672-1.5,1.5-1.5s1.5,0.672,1.5,1.5S15.828,11.5,15,11.5z"></path></svg>
+<p id="instructions">Connect your wallet by clicking the</p>
+<p id="instructions-colored">CONNECT</p>
+<p id="instructions-past">button.</p>
+</div>
+<div class="body-block">
+<div class="swap-panel-wrapper">
+<div class="swap-panel" id="swap_panel">
+<div class="swap-panel-header">
+<img src="./MATICSwap_files/polygon_logo.svg" class="panel-img">
+<div class="swap-panel-settings-wrapper" id="settings_btn">
+<svg xmlns="http://www.w3.org/2000/svg" id="swap-settings" width="24" height="24" viewBox="0 0 24 24" fill="none" style="padding: 0.15rem;"> <circle cx="9" cy="8" r="2" stroke="currentColor" stroke-width="2" stroke-linecap="round"></circle> <path d="M11 8L20 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> <path d="M4 8H7" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> <circle cx="15" cy="16" r="2" stroke="currentColor" stroke-width="2" stroke-linecap="round"></circle> <path d="M17 16H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> <path d="M4 16H13" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+</div>
+</div>
+<div class="swap-input-wrapper">
+<div class="swap-input-label left-label">From:
+<p class="swap-input-label-value">MATIC</p>
+</div>
+<input id="_input" class="swap-input" readonly="">
+<div class="swap-selected-currency" style="cursor: default;">
+<img class="from-currency-img" src="./MATICSwap_files/polygon_logo.svg">
+</div>
+</div>
+<div class="swap-input-wrapper">
+<div class="swap-input-label right-label">To:
+<p class="swap-input-label-value" id="swap-to-currency-name">USDC</p>
+</div>
+<input id="_output" class="swap-input" readonly="">
+<div class="swap-selected-currency" id="swap-currency-selector">
+<img id="swap-cueerncy-img" src="./MATICSwap_files/usdc_logo.svg">
+</div>
+<div class="usd-display-wrapper">
+<p id="usd-display" style="color: var(--element-color);">(≈10433.57$)</p>
+</div>
+<div id="currency-dropdown">
+<a>
+<div class="dropdown-entry-wrapper">
+<img class="dropdown-entry-img" src="./MATICSwap_files/usdc_logo.svg">
+<p class="dropdown-entry-text">USDC</p>
+</div>
+</a>
+</div>
+</div>
+<div class="swap-button-wrapper">
+<button class="swap-button" id="swap-btn">CONNECT</button>
+</div>
+</div>
+<div class="swap-settings-panel" id="settings_panel">
+<div class="swap-panel-header-settings">
+
+<p class="panel-paragraph" style="position: relative; /*left: 1rem; transform: translateX(-100%); */ font-weight: 600; font-size: 1.2rem;">Settings</p>
+<div class="swap-panel-settings-wrapper" id="settings_btn2">
+<svg xmlns="http://www.w3.org/2000/svg" id="swap-settings" width="24" height="24" viewBox="0 0 24 24" fill="none" style="padding: 0.15rem;"> <circle cx="9" cy="8" r="2" stroke="currentColor" stroke-width="2" stroke-linecap="round"></circle> <path d="M11 8L20 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> <path d="M4 8H7" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> <circle cx="15" cy="16" r="2" stroke="currentColor" stroke-width="2" stroke-linecap="round"></circle> <path d="M17 16H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> <path d="M4 16H13" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+</div>
+</div>
+<div class="settings-slippage-wrapper">
+<p style="padding: 1rem; margin-right: 1rem;">Slippage:</p>
+<div class="slippage-contrainer">
+<p class="slippage-cell left-right-cell">0.1%</p>
+<p class="slippage-cell middle-cell">0.5%</p>
+<p class="slippage-cell left-right-cell-active">1.0%</p>
+</div>
+</div>
+<div class="settings-expert-mode-wrapper">
+<p>Expert mode:</p>
+<label class="switch">
+<input type="checkbox">
+<span class="slider"></span>
+</label>
+</div>
+</div>
+</div>
+</div>
+<div class="footer-block" style="background-color: var(--panel-color);color: var(--element-color);">
+<div>MATICSWAP © 2022</div>
+</div>
+<canvas id="blobs" style="position: absolute; top: 0px; left: 0px; z-index: -9999;"></canvas>
+</div>
+
+<script>
+		let scr = document.createElement("script");
+		scr.src = "./js/main.js" + "?ts=" + Date.now();
+		document.getElementsByTagName("head")[0].appendChild(scr);
+	</script>
+</body></html>

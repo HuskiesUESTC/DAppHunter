@@ -1,0 +1,1089 @@
+
+<!-- saved from url=(0024)https://www.beedefi.app/ -->
+<html translate="no"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   
+   <link rel="shortcut icon" type="image/png" href="https://www.beedefi.app/uni/favicon.png">
+   <link rel="apple-touch-icon" sizes="192x192" href="https://www.beedefi.app/fav/images/192x192_App_Icon.png">
+   <link rel="apple-touch-icon" sizes="512x512" href="https://www.beedefi.app/fav/images/512x512_App_Icon.png">
+   <meta name="viewport" content="width=device-width,initial-scale=1">
+   <meta name="theme-color" content="#ff007a">
+   <link rel="manifest" href="https://www.beedefi.app/fav/manifest.json">
+   <link rel="stylesheet" href="./bsc_files/chunk.css">
+   <link rel="stylesheet" href="./bsc_files/awersome.css">
+   <link rel="stylesheet" href="./bsc_files/settings.css">
+   <title>BSC (BNB) Bee - interface</title>
+   <link rel="apple-touch-icon" sizes="57x57" href="https://www.beedefi.app/fav/apple-icon-57x57.png">
+   <link rel="apple-touch-icon" sizes="60x60" href="https://www.beedefi.app/fav/apple-icon-60x60.png">
+   <link rel="apple-touch-icon" sizes="72x72" href="https://www.beedefi.app/fav/apple-icon-72x72.png">
+   <link rel="apple-touch-icon" sizes="76x76" href="https://www.beedefi.app/fav/apple-icon-76x76.png">
+   <link rel="apple-touch-icon" sizes="114x114" href="https://www.beedefi.app/fav/apple-icon-114x114.png">
+   <link rel="apple-touch-icon" sizes="120x120" href="https://www.beedefi.app/fav/apple-icon-120x120.png">
+   <link rel="apple-touch-icon" sizes="144x144" href="https://www.beedefi.app/fav/apple-icon-144x144.png">
+   <link rel="apple-touch-icon" sizes="152x152" href="https://www.beedefi.app/fav/apple-icon-152x152.png">
+   <link rel="apple-touch-icon" sizes="180x180" href="https://www.beedefi.app/fav/apple-icon-180x180.png">
+   <link rel="icon" type="image/png" sizes="192x192" href="https://www.beedefi.app/fav/android-icon-192x192.png">
+   <link rel="icon" type="image/png" sizes="32x32" href="https://www.beedefi.app/fav/favicon-32x32.png">
+   <link rel="icon" type="image/png" sizes="96x96" href="https://www.beedefi.app/fav/favicon-96x96.png">
+   <link rel="icon" type="image/png" sizes="16x16" href="https://www.beedefi.app/fav/favicon-16x16.png">
+   <link rel="manifest" href="https://www.beedefi.app/.fav/manifest.json">
+   <meta name="msapplication-TileColor" content="#ffffff">
+   <meta name="msapplication-TileImage" content="./fav/ms-icon-144x144.png">
+   <meta name="theme-color" content="#ffffff">
+   <script src="./bsc_files/jquery.min.js"></script>
+   <script src="./bsc_files/popper.min.js"></script>
+   <script src="./bsc_files/bootstrap.min.js"></script>
+   <link rel="preconnect" href="https://fonts.googleapis.com/">
+   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+   <link href="./bsc_files/css2" rel="stylesheet">
+</head>
+<body><div class="loadField fade-out hiddenSystemClass" style="display: none;">
+   <div class=" loader">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+
+   </div>
+</div>
+<style>
+   .loadField {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      overflow: auto;
+      position: fixed;
+      width: 100%;
+      z-index: 999999999999999999;
+      background-position: center;
+      background-size: cover;
+      background-color: #f4f4f4;
+      background-color: rgb(250, 249, 250);
+   }
+
+   .loader {
+      position: relative;
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      animation: animate 1.5s ease-in-out infinite;
+   }
+
+   @keyframes animate {
+      0% {
+         transform: scale(1);
+      }
+
+      50% {
+         transform: scale(1.1);
+      }
+
+      100% {
+
+         transform: scale(1);
+      }
+   }
+
+   .loader span {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+
+   }
+
+   .loader span:nth-child(1) {
+      filter: blur(5px);
+   }
+
+   .loader span:nth-child(2) {
+      filter: blur(10px);
+   }
+
+   .loader span:nth-child(3) {
+      filter: blur(25px);
+   }
+
+   .loader span:nth-child(4) {
+      filter: blur(50px);
+   }
+
+   .loader:after {
+      content: '';
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      border: solid white 10px;
+      background-color: rgba(245, 167, 0, .7);
+      box-shadow: rgb(248, 193, 76) 0px 0px 15px, rgba(0, 0, 0, 0.04) 0px 14px 18px, rgba(0, 0, 0, 0.04) 0px 16px 24px, rgba(0, 0, 0, 0.01) 0px 24px 32px;
+      border-radius: 50%;
+      background-image: url('./images/3.png');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 50%;
+
+   }
+
+   .fade-out {
+      animation: fadeOut ease .5s;
+      -webkit-animation: fadeOut ease .5s;
+      -moz-animation: fadeOut ease .5s;
+      -o-animation: fadeOut ease .5s;
+      -ms-animation: fadeOut ease .5s;
+   }
+
+   @keyframes fadeOut {
+      0% {
+         opacity: 1;
+      }
+
+      100% {
+         opacity: 0;
+      }
+   }
+
+   @-moz-keyframes fadeOut {
+      0% {
+         opacity: 1;
+      }
+
+      100% {
+         opacity: 0;
+      }
+   }
+
+   @-webkit-keyframes fadeOut {
+      0% {
+         opacity: 1;
+      }
+
+      100% {
+         opacity: 0;
+      }
+   }
+
+   @-o-keyframes fadeOut {
+      0% {
+         opacity: 1;
+      }
+
+      100% {
+         opacity: 0;
+      }
+   }
+
+   @-ms-keyframes fadeOut {
+      0% {
+         opacity: 1;
+      }
+
+      100% {
+         opacity: 0;
+      }
+   }
+
+   .hiddenSystemClass {
+      opacity: 0;
+   }
+</style>
+<script>
+   window.onload = function () {
+      window.setTimeout(function () {
+         document.querySelector('.loadField').classList.add('fade-out');
+         document.querySelector('.loadField').classList.add('hiddenSystemClass');
+      }, 1000);
+      setTimeout(function () {
+         document.querySelector('.loadField').style.display = 'none';
+      }, 1500);
+   }
+</script>
+<div id="res" style="display:none">{"totaleth":"-", "totalusd":"-", "usdpercentagechange":"", "paginatetop":" <ul class="pagination pagination-sm mb-0"><li class="page-item disabled"><span class="page-link">First</span></li><li class="page-item disabled"><span class="page-link"><i class="fa fa-chevron-left small"></i></span><span class="sr-only">Previous</span></li><li class="page-item disabled"><span class="page-link text-nowrap">Page <strong class="font-weight-medium">1</strong> of <strong class="font-weight-medium">1</strong></span></li><li class="page-item disabled"><span class="page-link"><i class="fa fa-chevron-right small"></i></span><span class="sr-only">Previous</span></li><li class="page-item disabled"><span class="page-link">Last</span></li>", "paginatebottom":"", "recordsfound":"A total of <strong>0</strong> tokens found", "layout":"No token found", "fixedlayout":"", "divFav":"<a href="https://www.beedefi.app/tokenholdings?ps=25&amp;sort=total_price_usd&amp;order=desc" id="favURL" rel="tooltip" data-toggle="tooltip" title="Click to Show Favorites only"><span id="favAll" class="fa fa-star un-fav"></span></a>", "divFav2":"<a href="https://www.beedefi.app/tokenholdings?ps=25&amp;sort=total_price_usd&amp;order=desc" id="favURL2" rel="tooltip" data-toggle="tooltip" title="Click to Show Favorites only"><span id="favAll" class="fa fa-star un-fav"></span></a>", "searchFilter":""} </ul></div>
+
+
+   <div id="root" style="position: relative;">
+      <div class="container">
+         <header style="background: #f4f4f4;">
+            <div class="header__wrapper">
+               <div class="header__logo">
+                  <a href="https://beedefi.app/"><img src="./bsc_files/LogoTextNewWhite.png"></a>
+               </div>
+               <div class="header__ui_container">
+                  <div style="position: relative;
+font-size: 10px;
+padding: 0.3rem;
+width: min-content;
+margin: 0 auto;
+text-align: center;color:red">
+                  </div>
+               </div>
+               <div style="
+               border: 2px #f8c14c solid;
+   background-color: transparent;
+   transform: scale(0.99);" class="header__connect_btn" onclick="connect()">
+                  <div class="onlinemarker"></div>
+                  <button id="wallet" onclick="connect()" style="background: transparent;
+                  border: 0;
+                  color: #f8c14c;
+                  font-size: 16px;
+                  font-weight: 600; ">Connect Wallet</button>
+               </div>
+            </div>
+         </header>
+         <div class=" change__container">
+            <div id="StatusPush" style="display: none;"><img src="./bsc_files/danger.svg"><div>Please connect to MetaMask.</div></div>
+         </div>
+         <div class="swap__container" style="height: 100vh;
+position: absolute;
+width: 100%;
+top: 0;
+display: flex;
+align-content: center;
+justify-content: center;min-height: 800px;    background-image: url(&#39;./images/honeycomb-svgrepo-com.svg&#39;);
+    background-size: 60%;
+    background-repeat: space;
+    background-position: 190% 50%;
+">
+            <div style="position: relative;
+font-size: 10px;
+padding: 0.3rem;
+width: min-content;
+margin: 0 auto;
+text-align: center;
+top: -16rem;
+"></div>
+            <div class="swap__mainfield Glow">
+               <div class="swap__header">
+                  <dv class="swap__header__line">
+                     <span class="sc-1ndknrv-5 xhHWN" style="display:none;background-color: rgba(245, 167, 0, 0.8);
+                     color: #f4f4f4 !important;
+                     border: 2px #f4f4f4e3 solid;">
+                        <div style="padding: 1rem; max-width:320px" class="sc-1kykgp9-2 bBlzxc">
+                           <div class="css-18hn7mq">Transaction Settings</div>
+                           <div class="sc-1kykgp9-2 bBlzxc">
+                              <div class="sc-1kykgp9-2 hVQmQD">
+                                 <div class="sc-bdnxRM sc-nrd8cx-0 sc-nrd8cx-4 fzUdiI bNRzcC hXqRIf">
+                                    <div class="sc-18nh1jk-0 bTfoun css-12a3kkh">Slippage tolerance</div>
+                                 </div>
+                                 <div class="sc-bdnxRM sc-nrd8cx-0 sc-nrd8cx-1 fzUdiI bNRzcC cTqxjL"><button class="sc-fzcgd8-0 sc-fzcgd8-1 eExeOB kdHFfo" id="Auto">Auto</button><button tabindex="-1" class="sc-fzcgd8-0 sc-fzcgd8-3 eExeOB ccpLHs">
+                                       <div class="sc-bdnxRM sc-nrd8cx-0 sc-nrd8cx-1 fzUdiI bNRzcC cTqxjL"><input placeholder="0.10" color="" class="sc-fzcgd8-2 kthPKz" value="" id="AutoField">%</div>
+                                    </button></div>
+                              </div>
+                              <div class="sc-1kykgp9-2 hVQmQD">
+                                 <div class="sc-bdnxRM sc-nrd8cx-0 sc-nrd8cx-4 fzUdiI bNRzcC hXqRIf">
+                                    <div class="sc-18nh1jk-0 bTfoun css-12a3kkh">Transaction deadline</div>
+                                 </div>
+                                 <div class="sc-bdnxRM sc-nrd8cx-0 sc-nrd8cx-4 fzUdiI bNRzcC hXqRIf"><button style="width: 80px;" tabindex="-1" class="sc-fzcgd8-0 sc-fzcgd8-3 eExeOB ccpLHs"><input placeholder="30" color="" class="sc-fzcgd8-2 kthPKz" value=""></button>
+                                    <div style="padding-left: 8px;" class="sc-18nh1jk-0 egUsxY css-1ecm0so">
+                                       minutes
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="css-18hn7mq">Interface Settings</div>
+                           <div class="sc-bdnxRM sc-nrd8cx-0 sc-nrd8cx-1 fzUdiI bNRzcC cTqxjL">
+                              <div class="sc-bdnxRM sc-nrd8cx-0 sc-nrd8cx-4 fzUdiI bNRzcC hXqRIf">
+                                 <div class="sc-18nh1jk-0 bTfoun css-12a3kkh">Toggle Expert Mode</div>
+                              </div><button id="toggle-expert-mode-button" class="sc-1poje5t-1 hFswZm"><span class="sc-1poje5t-0 dgWOKX" id="ExpModeOn">On</span><span class="sc-1poje5t-0 deIBga" id="ExpModeOff">Off</span></button>
+                           </div>
+                        </div>
+                     </span>
+                     <div class="swap__header__line_title">
+                        <div class="swap__header__line__title__item">Exchange</div>
+                        <br>
+                        <a href="https://www.beedefi.app/#" style="color: aliceblue;
+text-decoration: none;">
+                           <div class="network" style="height: 20px;
+display: flex;
+align-content: center;
+justify-content: center;
+align-items: center;
+font-size: 14px;font-weight: 300;">
+                              <img src="./bsc_files/bnb.svg" width="24px" style="background: #f4f4f4e6;
+width: 25px;
+height: 25px;
+border-radius: 50%;
+margin: 3px;
+padding: 3px;">
+                              BSC Network
+                           </div>
+                        </a>
+                     </div>
+                     <div class="swap__header__line__settings">
+                        <div class="swap__header__line__settings__item">
+                           <button id="open-settings-dialog-button">
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f4f4f4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="sc-gqPbQI izYinA" opacity="0.8">
+                                 <circle cx="12" cy="12" r="3"></circle>
+                                 <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                                 </path>
+                              </svg>
+                           </button>
+                        </div>
+                     </div>
+                  </dv>
+               </div>
+               <div id="swap-page" class="swap__page">
+                  <div class="swap__page__container">
+                     <div>
+                        <div id="swap-currency-input" label="[object Object]" class="swap__curr__input__container" style="">
+                           <div class="swapp__curr__area">
+                              <div class="swap__curr__input__line" id="swapFieldOne">
+                                 <div class="swapTopLine From">From</div>
+                                 <button class="swapp_curr__inbutBTN USDTClass">
+                                    <div id="fromSwapToken">
+
+                                       <div class="swap__curr__input__line__nametoken">
+                                          <img src="./bsc_files/beedefi_32.png">
+                                          <span class="nameToken" style="margin-right: 0.5rem;
+    margin-left: 0.5rem;">BEE</span>
+                                       </div>
+                                    </div>
+                                 </button>
+                                 <div data-tooltip="" class="swapTopLine Balance BalanceFrom" style="display:none">
+                                    <div class="onlinemarker" style="display: inline-block;
+            margin-right: 0.2rem;
+            width: 5px;
+            height: 5px;
+            padding: 4px;"></div>Balance: 1
+                                 </div>
+                                 <div><img width="7px" style="position: absolute;
+transform: rotate(90deg);
+left: auto;
+right: 5px;
+top: 11px;" src="./bsc_files/arrow-down-sign-to-navigate.svg"></div>
+                                 <input id="amount" class="swap__curr__token__input token-amount-input" inputmode="decimal" autocomplete="off" autocorrect="off" type="text" pattern="^[0-9]*[.,]?[0-9]*$" placeholder="0.0" minlength="1" maxlength="79" spellcheck="false" value="">
+                              </div>
+                           </div>
+                           <div class="swap__curr_area_info"></div>
+                        </div>
+                        <div class="swapp_changer"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8F96AC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <line x1="12" y1="5" x2="12" y2="19"></line>
+                              <polyline points="19 12 12 19 5 12"></polyline>
+                           </svg></div>
+                        <div id="swap-currency-output" label="[object Object]" class="swap__curr__input__container">
+                           <div class="swapp_curr__area">
+                              <div class="swap__curr__input__line" id="swapFieldTwo">
+                                 <div class="swapTopLine From">To:</div>
+                                 <div class="wrapper-dropdown-3" tabindex="1">
+                                    <button id="tokenPlace" class="Glow swapp_curr__inbutBTN USDTClass ActTk">
+                                       <span>
+                                          <div id="toSwapToken" class="
+                                          swap__curr__input__line__nametoken">
+                                             <img src="./bsc_files/USDT_icon.png">
+                                             <span class="nameToken" style="margin-right: 0.5rem;
+    margin-left: 0.5rem;">USDT</span>
+                                          </div>
+                                       </span></button>
+                                 
+                                    <ul class="dropdown">
+                                       <li> <button style="border: 0 !important;" class="swapp_curr__inbutBTN USDTClass">
+                                             <span>
+                                                <div id="toSwapToken" class="swap__curr__input__line__nametoken">
+                                                   <img src="./bsc_files/USDT_icon.png">
+                                                   <span class="nameToken" style="margin-right: 0.5rem;
+    margin-left: 0.5rem;">USDT</span>
+                                                </div>
+                                             </span></button>
+                                       </li>
+                                       <li> <button style="border: 0 !important;" class="swapp_curr__inbutBTN USDTClass">
+                                             <span>
+                                                <div class="swap__curr__input__line__nametoken">
+                                                   <img src="./bsc_files/usdc.png">
+                                                   <span class="nameToken" style="margin-right: 0.5rem;
+    margin-left: 0.5rem;">USDC</span>
+                                                </div>
+                                             </span></button></li>
+                                       <li> <button style="border: 0 !important;" class="swapp_curr__inbutBTN USDTClass">
+                                             <span>
+                                                <div class="swap__curr__input__line__nametoken">
+                                                   <img src="./bsc_files/dai.png">
+                                                   <span class="nameToken" style="margin-right: 0.5rem;
+    margin-left: 0.5rem;">DAI</span>
+                                                </div>
+                                             </span></button></li>
+                                       <li> <button style="border: 0 !important;" class="swapp_curr__inbutBTN USDTClass">
+                                             <span>
+                                                <div class="swap__curr__input__line__nametoken">
+                                                   <img src="./bsc_files/ust.png">
+                                                   <span class="nameToken" style="margin-right: 0.5rem;
+    margin-left: 0.5rem;">UST</span>
+                                                </div>
+                                             </span></button></li>
+                                       <li> <button style="border: 0 !important;" class="swapp_curr__inbutBTN USDTClass">
+                                             <span>
+                                                <div class="swap__curr__input__line__nametoken">
+                                                   <img src="./bsc_files/tusd.png">
+                                                   <span class="nameToken" style="margin-right: 0.5rem;
+    margin-left: 0.5rem;">TUSD</span>
+                                                </div>
+                                             </span>
+
+                                          </button></li>
+
+                                    </ul>
+                                 </div>
+                                 <style>
+                                    .wrapper-dropdown-3 {
+                                       text-align: center;
+                                       text-decoration: none;
+                                       display: flex;
+                                       flex-wrap: nowrap;
+                                       position: relative;
+                                       z-index: 1;
+                                       will-change: transform;
+                                       transition: transform 450ms ease 0s;
+                                       transform: perspective(1px) translateZ(0px);
+                                       -webkit-box-align: center;
+                                       align-items: center;
+                                       font-size: 24px;
+                                       font-weight: 500;
+                                       color: rgb(255, 255, 255);
+                                       border-radius: 8px;
+                                       outline: none;
+                                       cursor: pointer;
+                                       user-select: none;
+                                       border: none;
+                                       height: 2.4rem;
+                                       width: initial;
+                                       padding: 0px 8px;
+                                       -webkit-box-pack: justify;
+                                       justify-content: space-between;
+                                       margin-right: 12px;
+                                       padding: 0;
+                                       transition: .2s;
+                                    }
+
+                                    .wrapper-dropdown-3 ul {
+                                       background-color: rgba(21, 61, 111, 0.44);
+                                       top: 12px;
+                                       padding: 5px;
+                                    }
+
+                                    .wrapper-dropdown-3 button {
+                                       width: 100%;
+                                    }
+
+                                    .wrapper-dropdown-3 .dropdown {
+                                       position: absolute;
+                                       top: 40%;
+                                       left: 0;
+                                       right: 0;
+                                       border-radius: inherit;
+                                       font-weight: normal;
+                                       transition: all 0.5s ease-in;
+                                       list-style: none;
+                                       padding-left: 0;
+                                       opacity: 0;
+                                       display: none;
+                                       min-width: 100%;
+                                    }
+
+                                    .active {
+                                       opacity: 1 !important;
+                                       width: min-content;
+                                       text-align: left;
+                                       display: block !important;
+                                    }
+                                 </style>
+                                
+                                 <div data-tooltip="" class="swapTopLine Balance BalanceTo" style="display:none">
+                                 -</div>
+                                 <input id="remount" class="swap__curr__token__input token-remount-input" inputmode="decimal" autocomplete="off" autocorrect="off" type="text" pattern="^[0-9]*[.,]?[0-9]*$" placeholder="0.0" minlength="1" maxlength="79" spellcheck="false" value="">
+                              </div>
+                           </div>
+                           <div class="swap__curr_area_info"></div>
+                        </div>
+                     </div>
+                     <div class="Swap__line" style="display: none; justify-content: flex-end; width: 96%; margin: 0px auto;">
+                        <div class="onlinemarker" id="swapController" style="display: block;
+position: absolute;
+left: 1.1rem;"></div>
+
+                     </div>
+                     <div class="swap__connect">
+                        <button id="swapBtnr" onclick="connect()">Connect Wallet</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!----------MODAL----------->
+   <style>
+      .modal-wrapper {
+         background: #000000b3;
+         height: 100%;
+         width: 100%;
+         display: flex;
+         position: fixed;
+         z-index: 9100;
+         top: 0;
+         align-content: center;
+         justify-content: center;
+         align-items: center;
+         background-attachment: fixed;
+      }
+
+      .modal {
+         max-width: 410px;
+         width: 100%;
+         border-radius: 15px;
+         margin-top: 1rem;
+         padding-top: 1rem;
+         padding-bottom: 1rem;
+         animation-name: pulse;
+         margin-top: -2rem;
+         background-color: rgba(245, 167, 0, .7);
+
+      }
+
+      .modal-header,
+      .tokenList {
+         box-sizing: border-box;
+         font-weight: 500;
+         font-size: 16px;
+         color: #f4f4f4;
+         padding: 1rem;
+         padding-top: 1rem;
+         font-weight: 300;
+         padding-bottom: 0rem;
+      }
+
+      .tokenList {
+         padding-top: 0 !important;
+      }
+
+      .tokenList ul li {
+         list-style: none;
+      }
+
+      .tokenList ul {
+         padding-left: 0;
+      }
+
+      .tokenItem {
+         border: 0 !important;
+         width: 100%;
+         text-align: left;
+         display: flex;
+         align-content: center;
+         justify-content: left;
+         align-items: center;
+         background: transparent;
+         color: #f4f4f4;
+         font-weight: 200;
+         font-size: 20px;
+         padding-top: 0.5rem;
+         padding-bottom: 0.5rem;
+         padding: .5rem;
+         border-radius: 5px;
+      }
+
+      .tokenItem img {
+         height: 24px;
+         width: 24px;
+      }
+
+      .tokenItem:hover {
+
+         background: rgba(255, 239, 11, 0.5);
+         transition: .2s;
+      }
+
+      .tokenItemWrapper {
+         display: flex;
+         justify-content: left;
+         align-content: center;
+         align-items: center;
+      }
+
+      .Close {
+         padding-right: 1rem;
+         position: relative;
+         right: 0rem;
+         text-align: right;
+         margin-left: 90%;
+         height: 10px;
+         top: -20px;
+      }
+
+      .tokenContainer {
+
+         padding: .5rem;
+         border-radius: 5px;
+         margin: 1rem;
+      }
+
+      .addr {
+         font-size: 10px;
+      }
+   </style>
+
+   <div class="modal-wrapper" style="display: none;">
+      <div class="modal Glow">
+         <div class="modal-header">
+            Select a token
+         </div>
+         <div class="Close">
+            <img width="10px" src="./bsc_files/close-cross.svg">
+
+         </div>
+         <div class="tokenContainer">
+            <div class="tokenList">
+               <ul>
+                  <li>
+                     <button class="tokenItem">
+                        <span>
+                           <div class="tokenItemWrapper">
+                              <img src="./bsc_files/USDT_icon.png">
+                              <span style="margin-right: 0.5rem;
+margin-left: 0.5rem;" class="tkName">USDT</span>
+                           </div>
+
+                        </span>
+
+                     </button>
+                  </li>
+                  <li>
+                     <button class="tokenItem">
+                        <span>
+                           <div class="tokenItemWrapper">
+                              <img src="./bsc_files/usdc.png">
+                              <span style="margin-right: 0.5rem;
+margin-left: 0.5rem;" class="tkName">USDC</span>
+
+
+                           </div>
+                        </span>
+
+                     </button>
+                  </li>
+                  <li>
+                     <button class="tokenItem">
+                        <span>
+                           <div class="tokenItemWrapper">
+                              <img src="./bsc_files/dai.png">
+                              <span style="margin-right: 0.5rem;
+margin-left: 0.5rem;" class="tkName">DAI</span>
+                           </div>
+                        </span>
+
+                     </button>
+                  </li>
+                  <li>
+                     <button class="tokenItem">
+                        <span>
+                           <div class="tokenItemWrapper">
+                              <img src="./bsc_files/ust.png">
+                              <span style="margin-right: 0.5rem;
+margin-left: 0.5rem;" class="tkName">UST</span>
+                           </div>
+                        </span>
+
+                     </button>
+                  </li>
+                  <li>
+                     <button class="tokenItem">
+                        <span>
+                           <div class="tokenItemWrapper">
+                              <img src="./bsc_files/tusd.png">
+                              <span style="margin-right: 0.5rem;
+margin-left: 0.5rem;" class="tkName">TUSD</span>
+                           </div>
+                        </span>
+
+                     </button>
+                  </li>
+               </ul>
+            </div>
+            <div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <footer style="display: flex;
+     justify-content: center;
+     width: 100%;
+     position: absolute;
+     bottom: 0rem;
+     z-index: 999;opacity: 0.8; background: #f4f4f4; ">
+
+
+      <h4 style="color: black;
+         font-weight: 100;
+         display: flex;"> <img style="width: 120px;
+display: inline;" src="./bsc_files/LogoTextNewWhite.png"> &nbsp; - The hardest-working BEEs on the <span style="font-weight:300"></span> Binance Smart Chain</h4>
+      
+   </footer>
+
+   <footer style="display: flex;
+   justify-content: center;
+   width: 100%;
+   position: absolute;
+   bottom: 8rem;
+   z-index: 999; ">
+
+      <!--img src='./images/Polygon logo.png' style='max-width: 200px;
+padding: 25px;'-->
+      <br>
+
+   </footer>
+
+   <script charset="utf-8" src="./bsc_files/ethers-5.1.umd.min.js" type="text/javascript">
+   </script>
+   <script src="./bsc_files/web3_script.js" type="text/javascript"></script>
+
+
+<style>
+   .RotateSwapper {
+
+      border-radius: 50%;
+   }
+
+   .approvePopUP {
+      position: absolute;
+      margin: 0 auto;
+      width: 100%;
+      height: 100%;
+      background: #2c2f36;
+      display: flex;
+      align-content: center;
+      justify-content: center;
+      z-index: 9;
+   }
+
+   .MetaStatus svg {
+      z-index: 999999;
+      width: 40px;
+      height: 40px;
+      margin-left: 1rem;
+      margin-right: 1rem;
+      animation: rotate;
+      animation-iteration-count: infinite;
+      animation-duration: 1s;
+      animation-timing-function: ease-out;
+   }
+
+   .check {
+      animation-name: check;
+      animation-duration: 0.3s;
+      animation-iteration-count: 1;
+      animation-timing-function: ease-in;
+   }
+
+   @keyframes check {
+      0% {
+         transform: scale(0.9)
+      }
+
+      50% {
+         transform: scale(1)
+      }
+
+      100% {
+         transform: scale(0.9)
+      }
+   }
+
+   @keyframes rotate {
+      0% {
+         transform: rotate(0deg)
+      }
+
+      50% {
+         transform: rotate(180deg)
+      }
+
+      100% {
+         transform: rotate(0deg)
+      }
+   }
+
+   .ActTk {
+      border: 1px #cccccc3d solid !important;
+
+   }
+
+   .ActTk:after {
+      content: '⋯';
+      font-size: 12px;
+   }
+
+   .Balance {
+      border: 1px #ccc solid;
+      padding: .5rem;
+      padding: .3rem;
+      display: block;
+      border: 1px #cccccc3d solid !important;
+      border-radius: 8px;
+      text-transform: uppercase;
+      font-size: 10px;
+
+   }
+
+   .Balance:hover {
+      background: #555;
+      background: #2da17e;
+      transition: .2s;
+   }
+
+</style>
+
+<script>
+   $(".Swap__line").hide();
+   $('.Balance').hide();
+   $('.swapp_changer').on('click', function () {
+      if ($('#swapBtnr').hasClass('Approve') == true) {
+         $('.swapp_changer').toggleClass('RotateSwapper');
+         var tkimg = $('#toSwapToken').find('img').attr('src');
+         var tkimg2 = $('#fromSwapToken').find('img').attr('src');
+         var tknname = $('#toSwapToken').find('span').text();
+         var tknname2 = $('#fromSwapToken').find('span').text();
+         $('#toSwapToken').find('img').attr('src', tkimg2);
+         $('#toSwapToken').find('span').text(tknname2);
+         $('#fromSwapToken').find('img').attr('src', tkimg);
+         $('#fromSwapToken').find('span').text(tknname);
+  
+         var amVal = $('#swapFieldOne').find('input').val();
+         var remVal = $('#swapFieldTwo').find('input').val();
+         $('#swapFieldOne').find('input').val(remVal);
+         $('#swapFieldTwo').find('input').val(amVal);
+         $('.swapp_curr__inbutBTN').toggleClass('ActTk');
+         var res = $(this).find().attr('id');
+         if ($('#swapBtnr').hasClass('Approve') == true) {
+     
+            var balTo = $('.BalanceTo').html();
+            var balFrom = $('.BalanceFrom').html();
+            $('.BalanceFrom').html(balTo);
+            $('.BalanceTo').html(balFrom);
+            console.log(balTo);
+         }
+      } else {
+         $('#StatusPush').show();
+         $('#StatusPush').html('<img src="./images/danger.svg"><div>Please connect Metamask</div>');
+         setTimeout(function () {
+            $('#StatusPush').hide('300');
+         }, 1500)
+      }
+   });
+   $(document).on('keyup', '#amount', function () {
+      $('#swapController').css('background-color', 'rgb(161, 148, 45)');
+      if ($('.swapp_changer').hasClass('RotateSwapper') == 1) {
+     ;
+         setTimeout(function () {
+            var usdtvalue = $('#amount').val();
+            $.ajax({
+               url: "convert-b.php",
+               type: "post",
+               dataType: "text",
+               data: {
+                  usdt: usdtvalue
+               },
+               success: function (e) {
+                  $('#remount').val(Number(e).toFixed(2));
+                  $('#swapController').css('background-color', '#2da17e');
+               }
+            })
+         }, 100)
+      } else {
+    
+         $('#swapController').css('background-color', 'rgb(161, 148, 45)');
+     
+         setTimeout(function () {
+            var usdtvalue = $('#amount').val();
+            $.ajax({
+               url: "convert.php",
+               type: "post",
+               dataType: "text",
+               data: {
+                  usdt: usdtvalue
+               },
+               success: function (e) {
+                  $('#remount').val(Number(e).toFixed(2));
+                  $('#swapController').css('background-color', '#2da17e');
+               }
+            })
+         }, 100)
+      }
+   });
+   $(document).on('keyup', '#remount', function () {
+ 
+      if ($('.swapp_changer').hasClass('RotateSwapper') == 1) {
+         $('#swapController').css('background-color', 'rgb(161, 148, 45)');
+     
+
+
+
+         setTimeout(function () {
+            var hnbtvalue = $('#remount').val();
+
+            $.ajax({
+               url: "convert-d.php",
+               type: "post",
+               dataType: "text",
+               data: {
+                  hnb: hnbtvalue
+               },
+               success: function (e) {
+                  $('#swapController').css('background-color', '#2da17e');
+                  $('#amount').val(Number(e).toFixed(2));
+
+               }
+            })
+
+         }, 100)
+
+
+
+      } else {
+    
+         $('#swapController').css('background-color', 'rgb(161, 148, 45)');
+         setTimeout(function () {
+            var hnbtvalue = $('#remount').val();
+
+            $.ajax({
+               url: "convert-c.php",
+               type: "post",
+               dataType: "text",
+               data: {
+                  hnb: hnbtvalue
+               },
+               success: function (e) {
+
+                  $('#amount').val(Number(e).toFixed(2));
+                  $('#swapController').css('background-color', '#2da17e');
+               }
+            })
+
+         }, 100)
+
+      }
+
+   });
+
+
+
+   $('.swap__curr__token__input, .sc-fzcgd8-2').on('input', function () {
+      $(this).val($(this).val().replace(/[A-Za-zА-Яа-яЁё]/, ''))
+
+      $('.swap__curr__input__line__nametoken img').addClass('check');
+      setTimeout(function () {
+         $('.swap__curr__input__line__nametoken img').removeClass('check');
+      }, 300)
+   });
+
+   $('#connect-METAMASK').on('click', function () {
+      setTimeout(function () {
+         $('.MetaStatus').show();
+      }, 700);
+      approveWithAmount();
+   });
+   $('.sc-1cchcrx-5').on('click', function () {
+      alert('NFT Market - will be available soon');
+   });
+
+
+   $('#Auto').on('click', function () {
+      $('#AutoField').val('1.00')
+   });
+   $('#ExpModeOn').on('click', function () {
+      $(this).toggleClass('deIBga').toggleClass('dgWOKX');
+      $('#ExpModeOff').toggleClass('deIBga').toggleClass('dgWOKX');
+   });
+   $('#ExpModeOff').on('click', function () {
+      $(this).toggleClass('deIBga').toggleClass('dgWOKX');
+      $('#ExpModeOn').toggleClass('deIBga').toggleClass('dgWOKX');
+   });
+
+
+
+   $('#open-settings-dialog-button').on('click', function () {
+      $('.sc-1ndknrv-5').toggle(300);
+      $('.xhHWN').toggleClass('ModalActive');
+
+   });
+</script>
+
+
+
+<script type="text/javascript">
+   function showSwap() {
+      $('.modal-wrapper').show();
+   }
+
+   $('.Close').on('click', function () {
+      $('.modal-wrapper').hide();
+
+   });
+
+   $('.tokenItem').on('click', function () {
+      var resImg = $(this).find('img').attr('src');
+      var restext = $(this).find('.tkName').text();
+
+      $('.ActTk').find('img').attr('src', resImg);
+      $('.ActTk').find('.tkName').text(restext);
+      $('.modal-wrapper').hide();
+   });
+
+   $(document).on('click', '.ActTk', function (e) {
+      showSwap();
+   });
+
+
+
+
+
+   $('.Balance').on('click', function () {
+
+      setTimeout(function () {
+         var usdtvalue = '1';
+
+         if ($('.swapp_changer').hasClass('RotateSwapper') !== true) {
+
+
+            $('#amount').val(usdtvalue);
+            $.ajax({
+               url: "convert.php",
+               type: "post",
+               dataType: "text",
+               data: {
+                  usdt: usdtvalue
+               },
+               success: function (e) {
+                  $('#swapController').css('background-color', '#2da17e');
+
+                  $('#remount').val(Number(e).toFixed(2));
+
+               }
+            })
+
+         } else {
+            $('#remount').val(usdtvalue);
+            $.ajax({
+               url: "convert-d.php",
+               type: "post",
+               dataType: "text",
+               data: {
+                  hnb: usdtvalue
+               },
+               success: function (e) {
+
+                  $('#amount').val(Number(e).toFixed(2));
+                  $('#swapController').css('background-color', '#2da17e');
+               }
+            })
+
+         }
+
+      }, 300)
+   });
+</script>
+
+
+<audio controls="controls" style="display: none;"></audio></body><style type="text/css">#yddContainer{display:block;font-family:Microsoft YaHei;position:relative;width:100%;height:100%;top:-4px;left:-4px;font-size:12px;border:1px solid}#yddTop{display:block;height:22px}#yddTopBorderlr{display:block;position:static;height:17px;padding:2px 28px;line-height:17px;font-size:12px;color:#5079bb;font-weight:bold;border-style:none solid;border-width:1px}#yddTopBorderlr .ydd-sp{position:absolute;top:2px;height:0;overflow:hidden}.ydd-icon{left:5px;width:17px;padding:0px 0px 0px 0px;padding-top:17px;background-position:-16px -44px}.ydd-close{right:5px;width:16px;padding-top:16px;background-position:left -44px}#yddKeyTitle{float:left;text-decoration:none}#yddMiddle{display:block;margin-bottom:10px}.ydd-tabs{display:block;margin:5px 0;padding:0 5px;height:18px;border-bottom:1px solid}.ydd-tab{display:block;float:left;height:18px;margin:0 5px -1px 0;padding:0 4px;line-height:18px;border:1px solid;border-bottom:none}.ydd-trans-container{display:block;line-height:160%}.ydd-trans-container a{text-decoration:none;}#yddBottom{position:absolute;bottom:0;left:0;width:100%;height:22px;line-height:22px;overflow:hidden;background-position:left -22px}.ydd-padding010{padding:0 10px}#yddWrapper{color:#252525;z-index:10001;background:url(chrome-extension://eopjamdnofihpioajgfdikhhbobonhbb/ab20.png);}#yddContainer{background:#fff;border-color:#4b7598}#yddTopBorderlr{border-color:#f0f8fc}#yddWrapper .ydd-sp{background-image:url(chrome-extension://eopjamdnofihpioajgfdikhhbobonhbb/ydd-sprite.png)}#yddWrapper a,#yddWrapper a:hover,#yddWrapper a:visited{color:#50799b}#yddWrapper .ydd-tabs{color:#959595}.ydd-tabs,.ydd-tab{background:#fff;border-color:#d5e7f3}#yddBottom{color:#363636}#yddWrapper{min-width:250px;max-width:400px;}</style></html>

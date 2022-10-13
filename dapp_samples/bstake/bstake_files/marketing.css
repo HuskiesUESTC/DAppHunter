@@ -1,0 +1,4789 @@
+/*
+* Balanced
+* Marketing CSS
+* Version 1.0
+* Last updated 12/4/21
+*/
+
+/* ==========================================================================
+	Landing specific styles (Layout styles: sizing, spacing, etc.)
+========================================================================== */
+
+html {
+	overflow-x: hidden;
+}
+body {
+	max-width: initial;
+	overflow-x: hidden;
+}
+.wrapper {
+	position: relative;
+	max-width: 1200px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* Header */
+
+.header .logo,
+.footer .logo {
+	width: 125px;
+}
+ul.links {
+	padding-left: 0;
+	text-align: right;
+	list-style-type: none;
+}
+ul.links li {
+	display: inline-block;
+	margin-left: 25px;
+	font-size: 18px;
+	cursor: pointer;
+}
+ul.links li .button {
+	font-size: 18px;
+	padding: 3px 20px;
+}
+header a,
+footer a {
+	font-size: 18px;
+	color: #ffffff;
+}
+
+/* HTML elements */
+
+h1 {
+	font-size: 60px;
+	line-height: 72px;
+	margin-bottom: 25px;
+}
+h2 {
+	font-size: 50px;
+	line-height: 70px;
+	margin-bottom: 25px;
+}
+p {
+	font-size: 20px;
+	color: rgba(255,255,255,0.75);
+	line-height: 35px;
+}
+a {
+	font-size: 20px;
+	line-height: 35px;
+}
+p + p {
+	margin-top: 15px;
+}
+.label {
+	font-size: 18px;
+	color: rgba(255,255,255,0.75);
+	line-height: 25px;
+}
+
+/* Footer */
+
+footer {
+	padding-top: 50px;
+	margin-top: 250px;
+	margin-bottom: 25px;
+}
+footer .bottom-row {
+	margin-top: 75px;
+}
+
+/* Modules */
+
+/* Citation */
+
+h2 sup {
+    position: absolute;
+    top: initial;
+    margin-top: 9px;
+}
+sup.citation a {
+    font-size: 12px;
+    letter-spacing: 1px;
+    padding-left: 6px;
+}
+p sup.citation a {
+    padding-left: 3px;
+}
+
+/* Other */
+
+.countdown-remaining {
+	position: absolute;
+	background: #0b284c;
+	top: 16px;
+	left: 125px;
+	border-radius: 10px;
+	font-size: 14px;
+	padding: 5px 15px;
+	z-index: 9;
+}
+.countdown-remaining p {
+	font-size: 14px;
+	color: #ffffff;
+}
+.opacity-half {
+	opacity: 0.5;
+}
+.text-gradient {
+	background: -webkit-linear-gradient(120deg, #2ca9b7, #1b648f);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+    background-size: 200% 200%;
+    -webkit-animation: AnimationName 5s ease infinite;
+    -moz-animation: AnimationName 5s ease infinite;
+    animation: AnimationName 5s ease infinite;
+}
+
+ @-webkit-keyframes AnimationName {
+    0%{background-position:0% 79%}
+    50%{background-position:100% 22%}
+    100%{background-position:0% 79%}
+}
+@-moz-keyframes AnimationName {
+    0%{background-position:0% 79%}
+    50%{background-position:100% 22%}
+    100%{background-position:0% 79%}
+}
+@keyframes AnimationName {
+    0%{background-position:0% 79%}
+    50%{background-position:100% 22%}
+    100%{background-position:0% 79%}
+}
+h2.separator::after,
+.separator::after {
+	content: '';
+	display: block;
+	margin-top: 25px;
+	width: 125px;
+	height: 5px;
+	border-radius: 2px;
+	background-image: -moz-linear-gradient(120deg, #2ca9b7, #1b648f);
+	background-image: -webkit-linear-gradient(120deg, #2ca9b7, #1b648f);
+	background-image: -ms-linear-gradient(120deg, #2ca9b7, #1b648f);
+}
+h2.separator-center::after {
+	margin-left: auto;
+	margin-right: auto;
+}
+.separator.text-center::after {
+	margin-left: auto;
+	margin-right: auto;
+}
+.center {
+	margin-left: auto;
+	margin-right: auto;
+}
+.eyebrow {
+	display: block;
+	font-size: 18px;
+	margin-bottom: 15px;
+	letter-spacing: 3px;
+	text-transform: uppercase;
+	color: rgba(255,255,255,0.75);
+}
+.animation-underline:after {
+	content: '';
+	display: block;
+	width: 0px;
+	height: 3px;
+	margin-top: 3px;
+	background-image: -moz-linear-gradient(120deg, #2ca9b7, #1b648f);
+	background-image: -webkit-linear-gradient(120deg, #2ca9b7, #1b648f);
+	background-image: -ms-linear-gradient(120deg, #2ca9b7, #1b648f);
+	border-radius: 3px;
+	transition: width 0.3s ease, background-color 0.3s ease;
+}
+.animation-underline:hover::after,
+.animation-underline.active::after {
+    width: 100%;
+	background-image: -moz-linear-gradient(120deg, #2ca9b7, #1b648f);
+	background-image: -webkit-linear-gradient(120deg, #2ca9b7, #1b648f);
+	background-image: -ms-linear-gradient(120deg, #2ca9b7, #1b648f);
+}
+
+/* Animations */
+
+/* Float animation 1 */
+
+.float-1 {
+	animation-name: float1;
+	animation: float1 5s ease-in-out infinite;
+}
+@keyframes float1 {
+	0%,
+	100% {
+		transform: translateY(0) translateX(0);
+	}
+	50% {
+		transform: translateY(5px) translateX(-5px);
+	}
+}
+
+/* Float animation 2 */
+
+.float-2 {
+	animation-name: float2;
+	animation: float2 12s ease-in-out infinite;
+}
+@keyframes float2 {
+    0%,
+    100% {
+        transform: translateY(0) translateX(0);
+    }
+    50% {
+        transform: translateY(-25px) translateX(10px);
+    }
+}
+
+/* Float animation 3 */
+
+.float-3 {
+	animation-name: float3;
+	animation: float3 7s ease-in-out infinite;
+}
+@keyframes float3 {
+    0%,
+    100% {
+        transform: translateY(0) translateX(0);
+    }
+    50% {
+        transform: translateY(-5px) translateX(25px);
+    }
+}
+
+/* Hero */
+
+.hero {
+	margin-top: 100px;
+	margin-bottom: 600px;
+}
+.hero p {
+	max-width: 450px;
+}
+.hero-image {
+	position: absolute;
+	width: 1100px;
+	top: 0px;
+	left: -50px;
+}
+.hero .bubble-1 {
+	background-image: url(../img/feature/bubble-1-image.png);
+	display: block;
+	height: 500px;
+	background-repeat: no-repeat;
+	position: absolute;
+	width: 500px;
+	margin-left: -50px;
+	margin-top: -125px;
+	z-index: -1;
+}
+.hero .bubble-2 {
+	background-image: url(../img/feature/bubble-2-image.png);
+	display: block;
+	height: 500px;
+	background-repeat: no-repeat;
+	position: absolute;
+	width: 500px;
+	margin-left: -900px;
+	margin-top: 250px;
+	z-index: -1;
+}
+.hero .bubble-3 {
+	background-image: url(../img/feature/bubble-3-image.png);
+	display: block;
+	height: 500px;
+	background-repeat: no-repeat;
+	position: absolute;
+	width: 500px;
+	margin-left: -350px;
+	margin-top: 550px;
+	z-index: -1;
+}
+
+/* TL;DR */
+
+.tldr {
+	margin-bottom: 125px;
+}
+.tldr h2 {
+	font-size: 20px;
+	margin-bottom: 10px;
+	line-height: 1;
+}
+.tldr p {
+	font-size: 18px;
+	line-height: 30px;
+}
+.tldr img {
+	height: 50px;
+	margin-bottom: 25px;
+}
+.tldr .grid-cell {
+	margin-right: 50px;
+}
+.tldr .grid-cell:last-of-type {
+	margin-right: 0;
+}
+
+/* Intro */
+
+.intro {
+	margin-bottom: 200px;
+}
+#intro h2 {
+	max-width: 500px;
+}
+.intro > .grid-cell:first-of-type {
+	min-width: 615px;
+	margin-right: 250px;
+}
+#intro figure {
+	margin-top: 35px;
+	margin-left: -75px;
+}
+#intro figure img {
+	position: absolute;
+	max-width: 500px;
+}
+#intro figure img:nth-of-type(1) {
+	max-width: 125px;
+	margin-left: 138px;
+	margin-top: 138px;
+}
+#intro figure img:nth-of-type(2) {
+	max-width: 250px;
+	margin-left: 75px;
+	margin-top: 75px;
+}
+#intro figure img:nth-of-type(3) {
+	width: 400px;
+}
+#intro figure img:nth-of-type(4) {
+    max-width: 25px;
+    margin-left: 188px;
+    margin-top: 188px;
+}
+.intro .swirl {
+	background-image: url(../img/feature/swirl-1.png);
+	display: block;
+	height: 700px;
+	background-repeat: no-repeat;
+	position: absolute;
+	width: 1000px;
+	margin-left: 500px;
+	margin-top: 850px;
+	z-index: -1;
+	background-size: contain;
+}
+.intro .bubble-1 {
+	background-image: url(../img/feature/bubble-3.png);
+	display: block;
+	height: 700px;
+	background-repeat: no-repeat;
+	position: absolute;
+	width: 1500px;
+	margin-left: 600px;
+	margin-top: -250px;
+	z-index: -1;
+}
+.intro .bubble-2 {
+	background-image: url(../img/feature/bubble-1.png);
+	display: block;
+	height: 700px;
+	background-repeat: no-repeat;
+	position: absolute;
+	width: 1500px;
+	margin-left: -1000px;
+	margin-top: 800px;
+	z-index: -1;
+}
+
+.spin {
+    animation-name: spin;
+    animation-duration: 40000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+.anti-spin {
+    animation-name: spin;
+    animation-duration: 40000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-direction: reverse;
+}
+@-moz-keyframes spin {
+    from { -moz-transform: rotate(0deg); }
+    to { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(360deg);}
+}
+
+/* Rewards */
+
+.rewards {
+	max-width: 700px;
+	margin: auto;
+	margin-bottom: 175px;
+}
+.rewards h2 {
+	margin-bottom: 75px;
+}
+.rewards > .grid-cell:first-of-type {
+	min-width: 600px;
+}
+.rewards-table {
+	font-size: 20px;
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 50px;
+}
+.rewards-table thead tr th {
+	padding-bottom: 25px;
+}
+.rewards-table thead tr th:last-of-type::before {
+	width: 220px;
+	height: 490px;
+	margin-top: -40px;
+	content: '';
+	display: block;
+	border: 5px solid #2ca9b7;
+	border-radius: 25px;
+	position: absolute;
+	margin-left: -20px;
+	background-image: -moz-linear-gradient( -90deg, rgb(22,84,121, 0.5) 0%, rgb(44,169,183, 0.5) 100%);
+	background-image: -webkit-linear-gradient( -90deg, rgb(22,84,121, 0.5) 0%, rgb(44,169,183, 0.5) 100%);
+	background-image: -ms-linear-gradient( -90deg, rgb(22,84,121, 0.5) 0%, rgb(44,169,183, 0.5) 100%);
+	z-index: -1;
+    background-size: 200% 200%;
+    -webkit-animation: AnimationName 5s ease infinite;
+    -moz-animation: AnimationName 5s ease infinite;
+    animation: AnimationName 5s ease infinite;
+}
+.Rounded_Rectangle_1193 {
+	border-radius: 10px;
+	position: absolute;
+	left: 1735px;
+	top: 2413px;
+	width: 239px;
+	height: 482px;
+	z-index: 1022;
+}
+.rewards-table th img {
+	height: 100px;
+}
+.rewards-table tbody img {
+	width: 23px;
+}
+.rewards-table tr td {
+	padding-top: 25px;
+	padding-bottom: 25px;
+}
+.rewards-table tr th:first-of-type,
+.rewards-table tr td:first-of-type {
+	font-family: 'tex-gyre-adventor-bold';
+	font-weight: normal;
+}
+.rewards-table tr th:nth-of-type(2),
+.rewards-table tr td:nth-of-type(2) {
+	padding-right: 75px;
+}
+.rewards-table tr td:nth-of-type(2),
+.rewards-table tr td:nth-of-type(3) {
+	text-align: center;
+}
+.rewards-table tr:not(:first-of-type) td:nth-of-type(3) {
+	color: #ffffff !important;
+}
+.rewards-table tbody tr {
+	border-bottom: 1px solid rgba(255,255,255,0.25);
+}
+.rewards-table tbody tr:last-of-type {
+	border-bottom: none;
+}
+#payments .highlight {
+    margin-left: -1250px;
+    margin-top: -500px;
+    background-image: url(../img/feature/highlight.png);
+	height: 2000px;
+	background-size: contain;
+	opacity: 0.35;
+    background-repeat: no-repeat;
+    position: absolute;
+    width: 800px;
+    z-index: -5;
+}
+.step .swirl {
+	background-image: url(../img/feature/swirl-1.png);
+	display: block;
+	height: 700px;
+	background-repeat: no-repeat;
+	position: absolute;
+	width: 800px;
+	margin-left: 300px;
+	margin-top: -540px;
+	z-index: -1;
+	background-size: contain;
+}
+
+/* Effortless */
+
+#effortless {
+	margin-bottom: 150px;
+}
+#effortless > .grid-cell:first-of-type {
+	margin-right: 75px;
+}
+#effortless > .grid-cell:first-of-type img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 25px;
+	width: 75px;
+}
+#effortless > .grid-cell:last-of-type img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 15px;
+	height: 75px;
+}
+#effortless .panel > p {
+	margin-top: 25px;
+}
+#effortless .border-right::before {
+    content: 'OR';
+    display: inline-block;
+    letter-spacing: 3px;
+    font-size: 14px;
+    position: absolute;
+    margin-left: 110px;
+    margin-top: 60px;
+    background-color: #0c2a4d;
+    z-index: 9;
+    padding: 3px 0;
+}
+
+
+/* Swap & supply */
+
+#swap-supply {
+	margin-bottom: 175px;
+}
+#swap-supply > .grid-cell:first-of-type {
+	margin-right: 75px;
+}
+#swap-supply > .grid-cell img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 25px;
+	width: 125px;
+}
+#swap-supply > .grid-cell:last-of-type img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 415px;
+}
+
+/* Payments */
+
+#payments {
+	margin-bottom: 200px;
+}
+#payments > div:nth-child(2) {
+	text-align: right;
+}
+#payments img {
+	width: 475px;
+	margin-top: 25px;
+}
+
+/* Fair */
+
+#fair {
+	margin-bottom: 200px;
+}
+#fair h2 {
+	max-width: 450px;
+}
+#fair img {
+	max-width: 600px;
+	float: right;
+}
+
+/* Trustworthy */
+
+#trustworthy {
+	margin-bottom: 250px;
+}
+.trustworthy-background {
+	background-image: url(../img/feature/audited.png);
+	display: block;
+	height: 700px;
+	background-repeat: no-repeat;
+	position: absolute;
+	width: 200%;
+	left: 0;
+	right: 0;
+	z-index: -1;
+	margin-top: -700px;
+	margin-left: -50%;
+	opacity: 0.5;
+	background-size: contain;
+}
+#trustworthy img {
+	width: 400px;
+}
+
+/* Coming soon */
+
+.coming-soon {
+	max-width: 700px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 250px;
+}
+.coming-soon .glow img {
+    width: 205%;
+    margin-left: -60%;
+    margin-bottom: -235px;
+    border-radius: 15px;
+}
+
+/* Coming soon 2 */
+
+#coming-soon-2 img {
+	width: 550px;
+	float: right;
+	margin: 0;
+	margin-top: 0px;
+	margin-top: 35px;
+}
+
+/* Coming soon */
+
+#coming-soon img {
+	max-width: 100%;
+}
+#coming-soon > .grid-cell:first-of-type {
+	margin-right: 100px;
+}
+
+/* Governance */
+
+#governance {
+	margin-top: -50px;
+	margin-bottom: 200px;
+}
+
+/* New collateral types */
+
+#collateral-types {
+	margin-bottom: 200px;
+}
+#collateral-types img {
+	width: 550px;
+	float: right;
+	margin: 0;
+	margin-top: 0px;
+	margin-top: 35px;
+}
+
+/* Multiple assets */
+
+#multiple-assets img {
+	width: 550px;
+	float: left;
+	margin: 0;
+	margin-top: 0px;
+	margin-top: 35px;
+}
+
+
+
+/* TL;DR */
+
+.call-to-actions {
+	margin-top: 175px;
+}
+.call-to-actions h3 {
+	font-size: 20px;
+	margin-bottom: 10px;
+	line-height: 1;
+	color: #ffffff;
+}
+.call-to-actions .panel p {
+	font-size: 18px;
+	line-height: 30px;
+}
+.call-to-actions img {
+	height: 50px;
+	margin-bottom: 25px;
+}
+.call-to-actions .grid-cell {
+	margin-right: 50px;
+}
+.call-to-actions .grid-cell:last-of-type {
+	margin-right: 0;
+}
+.call-to-actions a.grid-cell {
+	border: 3px solid #0c2a4d;
+	transition: border 0.2s ease;
+}
+.call-to-actions a.grid-cell:hover {
+	border: 3px solid #2ca9b7;
+	transition: border 0.2s ease;
+}
+
+/* Social links */
+
+.footer .social-links {
+    text-align: right;
+    margin: 0;
+}
+.footer .social-links li {
+    display: inline-block;
+    margin: 0 9px;
+}
+.footer .social-links li:first-of-type {
+    margin-left: 0;
+}
+.footer .social-links li:last-of-type {
+    margin-right: 0;
+}
+.footer .social-links a {
+    display: block;
+    width: 50px;
+    height: 50px;
+    border: 2px solid #0c2a4d;
+    background-color: #0c2a4d;
+    border-radius: 50%;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
+}
+.footer .social-links a:hover {
+	background-color: #2ca9b7;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+}
+.footer .social-links .svg path {
+    fill: #ffffff;
+    transition: fill 0.2s ease;
+}
+.footer .social-links a:hover .svg path,
+.no-touch .footer .social-links a:hover .svg path,
+.footer .social-links a:focus .svg path {
+    fill: #ffffff;
+    transition: fill 0.3s ease;
+}
+.footer .social-links .svg {
+    display: block;
+    height: 16px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15px;
+}
+.footer .social-links .social-reddit .svg {
+    height: 20px;
+    margin-top: 12px;
+}
+.footer .social-links a:hover,
+.no-touch .footer .social-links a:hover,
+.footer .social-links a:focus {
+	border: 2px solid #1a6f88;
+    background-color: #2ca9b7;
+    box-shadow: 0 0 0 10px rgba(44, 169, 183, 0.5), inset 0 0 0 0 #2ca9b7, 0 0 5px 2px #2ca9b7;
+}
+.footer .social-links .social-revue img {
+	height: 20px;
+	margin-top: 13px;
+}
+
+/* ==========================================================================
+	Stablecoin loan
+========================================================================== */
+
+/* Tracked on / Utilised by */
+
+#tracked-utilised {
+	margin-top: 50px;
+	margin-bottom: 150px;
+}
+#tracked-utilised h3 {
+	margin-bottom: 25px;
+	font-size: 35px;
+}
+#tracked-utilised .panel {
+	text-align: center;
+}
+#tracked-utilised .panel a {
+	margin: 0 20px;
+}
+#tracked-utilised > .grid-cell:last-of-type > .panel > .grid-cell:first-of-type a {
+	margin-left: 0;
+}
+#tracked-utilised > .grid-cell:last-of-type > .panel > .grid-cell:last-of-type a {
+	margin-right: 0;
+}
+#tracked-utilised img {
+	height: 50px;
+	display: inline-block;
+	margin: auto;
+	margin-bottom: 10px;
+}
+#tracked-utilised > .grid-cell:first-of-type .panel {
+	margin-right: 25px;
+}
+#tracked-utilised > .grid-cell:last-of-type .panel,
+#tracked-utilised > .grid-cell:last-of-type h3 {
+	margin-left: 25px;
+}
+#tracked-utilised > .grid-cell:last-of-type > .grid > .grid-cell:last-of-type img {
+	height: 30px;
+	margin-bottom: 13px;
+	margin-top: 17px;
+}
+
+/* Terms and conditions */
+
+#loan #terms h2 {
+	margin-bottom: 10px;
+}
+#loan #terms h2.separator::after {
+	margin-bottom: 0;
+}
+#loan #terms ul li {
+	line-height: 32px;
+	color: rgba(255,255,255,0.75);
+}
+#loan #terms ul li + li {
+	margin-top: 15px;
+}
+
+/* Rebalancing */
+
+#loan #rebalancing {
+	margin-bottom: 75px;
+}
+
+/* Rebalancing stats */
+
+#loan #rebalancing-stats {
+	margin-bottom: 200px;
+}
+#loan #rebalancing-stats h3 {
+	text-align: center;
+	font-size: 35px;
+	margin-bottom: 25px;
+}
+#loan #rebalancing-stats .metadata {
+	text-align: center;
+}
+#loan #rebalancing-stats .metadata dd {
+	font-size: 30px;
+	font-family: 'tex-gyre-adventor-bold';
+	font-weight: normal;
+}
+#loan #rebalancing-stats .panel > .grid:first-of-type {
+
+}
+
+/* Cheap vs expensive */
+
+#loan #rebalancing > .grid.grid-center > .grid-cell:first-of-type {
+	margin-right: 50px;
+}
+#loan #rebalancing #cheap-expensive {
+	margin-top: 75px;
+}
+#loan #rebalancing #cheap-expensive img {
+	margin-top: 30px;
+	margin-bottom: 20px;
+}
+#loan #rebalancing #cheap-expensive h3 {
+	margin-bottom: 0;
+	font-size: 35px;
+}
+#loan #rebalancing #cheap-expensive > .grid-cell:first-of-type {
+	margin-right: 50px;
+}
+
+/* Why Borrow */
+
+#loan #why-borrow {
+	margin-top: 200px;
+}
+#loan #why-borrow .call-outs > .grid > .grid-cell:first-of-type {
+
+}
+#loan #why-borrow h2 {
+	margin-bottom: 150px;
+}
+#loan #why-borrow h3 {
+	font-size: 35px;
+}
+#loan #why-borrow img {
+	max-width: 100%;
+}
+#loan #why-borrow .feature {
+	margin-bottom: 50px;
+}
+
+#loan #why-borrow .feature > .grid-cell:first-of-type {
+	margin-right: 25px;
+}
+#loan #why-borrow .feature > .grid-cell:last-of-type {
+	margin-left: 25px;
+}
+
+#loan #why-borrow .feature .call-outs .panel {
+	margin-bottom: 25px;
+	margin-right: 25px;
+}
+#loan #why-borrow .feature .call-outs .panel h3 {
+	font-size: 40px;
+}
+#loan #why-borrow .feature .call-outs .panel p {
+	color: #ffffff;
+}
+#loan #why-borrow .feature .call-outs > div:nth-child(2) > .grid-cell {
+	margin-bottom: 0;
+}
+
+#loan #why-borrow .feature .call-outs h3 {
+	margin-bottom: 0;
+}
+
+/* Terms */
+
+#loan #terms {
+	margin-top: 150px;
+	margin-bottom: 200px;
+}
+
+/* Open loan */
+
+#loan #open-loan h2 {
+	margin-bottom: 100px;
+}
+#loan #open-loan .steps h3 {
+	font-size: 35px;
+}
+#loan #open-loan .steps .one h3::after {
+	content: '1';
+	display: block;
+	font-size: 175px;
+	opacity: 0.15;
+	position: absolute;
+	top: -100px;
+	left: -50px;
+}
+#loan #open-loan .steps .two h3::after {
+	content: '2';
+	display: block;
+	font-size: 175px;
+	opacity: 0.15;
+	position: absolute;
+	top: -100px;
+	left: -50px;
+}
+#loan #open-loan .steps .three h3::after {
+	content: '3';
+	display: block;
+	font-size: 175px;
+	opacity: 0.15;
+	position: absolute;
+	top: -100px;
+	left: -50px;
+}
+#loan #open-loan .steps > .grid-cell {
+	margin-right: 50px;
+}
+#loan #open-loan .button {
+	font-size: 20px;
+}
+
+/* ==========================================================================
+	Why Balanced?
+========================================================================== */
+
+#why .hero {
+	margin-top: 50px;
+	margin-bottom: 275px;
+}
+#why .hero h1 {
+	margin-top: -25px;
+}
+#why .hero img {
+	margin-top: 10px;
+}
+#why .hero p {
+	max-width: 100%;
+	font-size: 20px;
+}
+#why .hero h2.separator::after,
+#why .hero .separator::after {
+	margin-left: auto;
+	margin-right: auto;
+}
+#why .hero-image {
+	max-width: 700px;
+	margin-left: -15px;
+	margin-top: -25px;
+}
+
+#why #icon-network {
+	margin-bottom: 200px;
+}
+#why #icon-network > .grid-cell:first-of-type {
+	margin-right: 50px;
+}
+#why #icon-network .panel img {
+	width: 100%;
+}
+#why #icon-network .panel {
+	margin-right: 25px;
+	padding: 25px;
+	margin-bottom: 0;
+}
+#why #icon-network .panel:last-of-type {
+	margin-right: 0;
+}
+#why #icon-network .panel h3 {
+	font-size: 35px;
+}
+#why #icon-network .panel p {
+	color: #ffffff;
+}
+#why #icon-network #transaction-speed {
+	margin-bottom: 25px;
+}
+#why #icon-network #transaction-speed h3 {
+	font-size: 25px;
+	margin-bottom: 15px;
+	text-align: center;
+}
+
+/* Herb quote */
+
+#why #quote p {
+	text-align: center;
+	font-size: 35px;
+	line-height: 1.5;
+	max-width: 880px;
+	margin-left: auto;
+	margin-right: auto;
+}
+#why #quote p .text-bold {
+	color: #ffffff;
+}
+#why #quote figure {
+	margin-bottom: 300px;
+}
+#why #quote figcaption {
+	margin-top: 25px;
+}
+
+/* Intro */
+
+#why #intro h2 {
+	max-width: initial;
+}
+#why #intro img {
+	position: absolute;
+	width: 950px;
+	top: -145px;
+	left: 50px;
+}
+#why .hero-background {
+	width: 100%;
+	display: block;
+	position: absolute;
+	top: -660px;
+	margin-left: 50%;
+	z-index: -9;
+}
+#why .hero-background figure {
+	margin-left: -1000px;
+	opacity: 0.25;
+}
+#why .hero-background figure img {
+	position: absolute;
+	max-width: 2500px;
+	z-index: -9;
+}
+#why .hero-background figure img:nth-of-type(1) {
+	width: 625px;
+	margin-left: 690px;
+	margin-top: 690px;
+}
+#why .hero-background figure img:nth-of-type(2) {
+	width: 1250px;
+	margin-left: 375px;
+	margin-top: 375px;
+}
+#why .hero-background figure img:nth-of-type(3) {
+	width: 2000px;
+}
+
+/* Quotes */
+
+#why #quotes-header {
+	margin-top: 75px;
+}
+#why .quotes .panel {
+	margin-right: 50px;
+}
+#why .quotes .panel p {
+	color: #ffffff;
+	font-style: italic;
+}
+#why .quotes .panel:last-of-type {
+	margin-right: 0;
+}
+#why .quotes {
+	margin-top: 50px;
+}
+#why .quotes + .quotes {
+	margin-top: 15px;
+	margin-bottom: 100px;
+}
+
+/* Outperform */
+
+#outperform > div:nth-child(1) {
+	max-width: 500px;
+}
+#outperform img {
+	width: 94%;
+	margin-left: 10%;
+	margin-top: 200px;
+}
+#why #outperform .legend {
+    padding-left: 0;
+    text-align: center;
+}
+#why #outperform .legend li {
+    display: inline-block;
+    margin: 0 18px;
+    color: #ffffff;
+}
+#why #outperform .legend li::before {
+    content: "";
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-right: 18px;
+    margin-bottom: -3px;
+    border-radius: 3px;
+    background-image: linear-gradient(120deg, #2ca9b7, #1b648f);
+}
+#why #outperform .legend li:last-of-type::before {
+    background-image: linear-gradient(120deg, #0e2c4f, #1e3c5f);
+}
+
+/* Maximise rewards */
+
+#why #maximise-rewards img {
+	width: 500px;
+	float: right;
+	margin-top: 50px;
+}
+
+/* Credits */
+
+#why #credits {
+	margin-top: 150px;
+}
+#why #credits .p-reps > .grid-cell {
+	margin-right: 35px;
+	margin-bottom: 35px;
+}
+#why #credits .p-reps a {
+	border: 3px solid #0c2a4d;
+	padding: 29px;
+	transition: border 0.3s ease;
+}
+#why #credits .p-reps a:hover {
+	border: 3px solid #2ca9b7;
+	transition: border 0.2s ease;
+}
+#why #credits .profile {
+	width: 100px;
+	height: 100px;
+	border-radius: 100px;
+	background-color: #144a68;
+	float: left;
+	margin-right: 30px;
+}
+#why #credits .profile img {
+	margin-top: 27px;
+	width: 75px;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+#why #credits .p-reps:first-of-type a:nth-of-type(1) .profile img {
+	margin-top: 27px;
+	width: 80px;
+}
+#why #credits .p-reps:first-of-type a:nth-of-type(3) .profile img {
+	margin-top: 25px;
+	width: 50px;
+}
+#why #credits .p-reps:first-of-type a:nth-of-type(2) .profile img {
+	margin-top: 0;
+	width: 101px;
+}
+#why #credits .p-reps:last-of-type a:nth-of-type(1) .profile img {
+	margin-top: 32px;
+	width: 64px;
+}
+#why #credits .p-reps:last-of-type a:nth-of-type(2) .profile img {
+	margin-top: 25px;
+	width: 62px;
+}
+#why #credits .p-reps:last-of-type a:nth-of-type(3) .profile img {
+	margin-top: 23px;
+	width: 50px;
+}
+#why #credits .profile + h3 {
+	margin-bottom: 10px;
+	color: #ffffff;
+}
+#why #credits .p-reps .panel:last-of-type {
+	margin-right: 0;
+}
+#why #credits .p-reps p {
+	line-height: 28px;
+}
+#why #credits h2 {
+	text-align: center;
+	max-width: 640px;
+	margin-left: auto;
+	margin-right: auto;
+}
+#why #credits h2::after {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* ==========================================================================
+	How it works
+========================================================================== */
+
+/* How it works */
+
+#how ol {
+	color: rgba(255,255,255,0.75);
+}
+#how ol li {
+	line-height: 30px;
+}
+#how ol li + li {
+	margin-top: 15px;
+}
+
+#how .hero .bubble-2 {
+	background-image: url(../img/feature/bubble-2.png);
+	width: 250px;
+	background-size: contain;
+	margin-left: -800px;
+	opacity: 0.5;
+}
+#how .hero .bubble-1 {
+    margin-left: -200px;
+    margin-top: 190px;
+    background-image: url(../img/feature/bubble-2.png);
+	width: 100px;
+	background-size: contain;
+	opacity: 0.5;
+}
+#how .hero .bubble-3 {
+    margin-left: -50px;
+    margin-top: -150px;
+    background-image: url(../img/feature/bubble-2.png);
+	width: 120px;
+	background-size: contain;
+	opacity: 0.75;
+}
+
+#how .hero-image {
+	max-width: 750px;
+	margin-left: 0;
+}
+#how-toggle {
+	padding-left: 0;
+	display: block;
+}
+#how-toggle li {
+	display: inline-block;
+	float: left;
+	padding: 10px 20px;
+	background-color: #0c2a4d;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+#how-toggle li:first-of-type {
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px; 
+}
+#how-toggle li:last-of-type {
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px; 
+}
+#how-toggle li.active,
+#how-toggle li:hover {
+	background-color: #2ca9b7;
+	transition: background-color 0.2s ease;
+}
+
+/* Hero */
+
+#how .hero-image {
+	max-width: 775px;
+	margin-left: -100px;
+	margin-top: 25px;
+}
+#how .step {
+	margin-top: 200px;
+}
+#how .step img {
+	float: right;
+}
+#how .step video {
+	width: 485px;
+	float: right;
+}
+#how footer {
+	margin-top: 150px;
+}
+
+/* Monitor and adjust */
+
+#how #monitor-and-adjust video {
+	float: none;
+	margin: auto;
+	display: block;
+	width: 850px;
+	border-radius: 10px;
+	margin-top: 100px;
+	margin-bottom: 135px; 
+}
+#how .video-tooltips {
+	position: absolute;
+	margin-top: 115px;
+}
+#how #monitor-and-adjust p {
+	max-width: 700px;
+	margin-left: auto;
+	margin-right: auto;
+}
+#how #monitor-and-adjust .video-tooltips .tooltip-content {
+	opacity: 1;
+	min-width: 235px;
+}
+#how #monitor-and-adjust .video-tooltips .tooltip-content p {
+	font-size: 16px;
+	line-height: 1.4;
+	color: #ffffff;
+}
+#how #monitor-and-adjust .video-tooltips .tooltip-content:nth-of-type(1) {
+	left: 355px;
+	bottom: 10px;
+	min-width: 265px;
+}
+#how #monitor-and-adjust .video-tooltips .tooltip-content:nth-of-type(2) {
+	left: 680px;
+	bottom: 10px;
+}
+#how #monitor-and-adjust .video-tooltips .tooltip-content:nth-of-type(3) {
+	left: 120px;
+	bottom: -204px;
+	min-width: 300px;
+}
+#how #monitor-and-adjust .video-tooltips .tooltip-content:nth-of-type(4) {
+	left: 760px;
+	bottom: -225px;
+	min-width: 335px;
+}
+#how #monitor-and-adjust .panel {
+	margin-top: 25px;
+	max-width: 700px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#how #participate-governance img {
+	max-width: 900px;
+	margin: 0 auto;
+	margin-bottom: 0px;
+	float: none;
+	display: block;
+	margin-bottom: 35px;
+}
+#how #participate-governance p {
+	max-width: 700px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#how .tooltip-1 {
+	left: 200px;
+	width: 320px;
+}
+#how .tooltip-2 {
+	left: 800px;
+}
+
+#how .tooltip-3,
+#how .tooltip-4 {
+	margin-top: 275px;
+}
+
+#how .tooltip h3 {
+	margin-bottom: 18px;
+}
+#how .tooltip-1::before {
+    content: "";
+    display: block;
+    width: 320px;
+    height: 2px;
+    background-color: #2ca9b7;
+    top: 40px;
+    position: absolute;
+}
+#how .tooltip-1::after {
+    content: "";
+    display: block;
+    width: 2px;
+    height: 115px;
+    background-color: #2ca9b7;
+    top: 40px;
+    left: 320px;
+    position: absolute;
+}
+
+#how .tooltip-2::before {
+    content: "";
+    display: block;
+    width: 355px;
+    height: 2px;
+    background-color: #2ca9b7;
+    top: 40px;
+    position: absolute;
+    margin-left: -35px;
+}
+#how .tooltip-2::after {
+    content: "";
+    display: block;
+    width: 2px;
+    height: 115px;
+    background-color: #2ca9b7;
+    top: 40px;
+    left: -35px;
+    position: absolute;
+}
+
+/* View and manage assets */
+
+#how #view-and-manage img {
+	width: 400px;
+	margin: 25px;
+}
+#how #view-and-manage p {
+	max-width: 700px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* Monitor and adjust */
+
+.tooltip {
+	position: absolute;
+	width: 350px;
+}
+
+/* Claim and stake */
+
+#claim-and-stake img {
+	width: 435px;
+	float: none !important;
+	margin: auto;
+	display: block;
+	margin-top: 130px;
+}
+
+/* Swap assets */
+
+#swap-assets img {
+	width: 375px;
+	float: none !important;
+	margin: auto;
+	display: block;
+}
+
+/* Return assets */
+
+#return-assets img {
+	width: 450px;
+	float: none !important;
+	margin: auto;
+	display: block;
+}
+
+/* Supply liquidity */
+
+#how #supply-liquidity video {
+	width: 1000px;
+	float: none;
+	margin: auto;
+	display: block;
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+#how #supply-liquidity p,
+#how #supply-liquidity ol {
+	max-width: 700px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* ==========================================================================
+	Brand specific styles (Layout styles: sizing, spacing, etc.)
+========================================================================== */
+
+#brand .hero h2 {
+	font-size: 35px;
+	margin-bottom: 0;
+}
+#brand .hero .bubble-2 {
+	margin-left: -600px;
+	margin-top: -150px;
+}
+
+/* Logo section */
+
+#brand section.logo > .grid-cell:last-of-type {
+	text-align: left;
+}
+#brand section.logo > .grid-cell:last-of-type img {
+	height: 135px;
+}
+
+/* Design system section */
+
+#brand section.feature > .grid-cell:last-of-type {
+	margin-left: 200px;
+}
+#brand section.feature > .grid-cell:last-of-type > .grid > .grid-cell:first-of-type {
+	margin-right: 75px;
+}
+#brand section.design-system > .grid-cell:last-of-type h3 {
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+#brand section.design-system > .grid-cell:last-of-type p {
+	margin: 0 !important;
+}
+
+/* Typography section */
+
+#brand section.typography > .grid-cell:last-of-type figure {
+	margin: 0;
+}
+#brand section.typography > .grid-cell:last-of-type figure h3 {
+	font-size: 50px;
+	margin-bottom: 15px;
+}
+#brand section.typography > .grid-cell:last-of-type figure p {
+	color: #ffffff;
+	font-size: 20px;
+}
+
+/* Color circles */
+
+.brand-circle {
+	width: 100px;
+	height: 100px;
+	border-radius: 100px;
+}
+.brand-circle.turqoise {
+	background-color: #2ca9b7;
+}
+.brand-circle.navy {
+	border: 3px solid #2ca9b7;
+	background-color: #01002a;
+}
+.brand-circle.turqoise {
+	background-color: #2ca9b7;
+}
+.brand-circle.light-grey {
+	background-color: #d5d7db;
+}
+.brand-circle.dark-grey {
+	background-color: #8695a6;
+}
+.brand-circle.white {
+	background-color: #ffffff;
+}
+.brand-circle.red {
+	background-color: #fb6a6a;
+}
+.brand-circle.color-panel {
+	background-color: #0c2a4d;
+}
+.brand-circle.color-parent-panel {
+	background-color: #144a68;
+}
+
+.color-container p {
+	margin: 0;
+}
+.color-container + .color-container {
+	margin-top: 25px;
+}
+#brand-design h3 + .color-container {
+	margin-top: 25px;
+}
+
+/* ==========================================================================
+	Color palette specific styles (Layout styles: sizing, spacing, etc.)
+========================================================================== */
+
+.color-container .grid > .grid-cell:first-of-type {
+	max-width: 135px;
+	margin-left: 100px;
+}
+
+#brand-color-palette .hero p {
+	max-width: 100%;
+}
+#brand-color-palette .hero {
+	margin-bottom: 50px;
+	margin-top: 50px;
+}
+#brand-color-palette .colors h3 {
+	margin-bottom: 25px;
+	margin-top: 35px;
+	margin-left: 100px;
+}
+#brand-color-palette .color-container h3 {
+	margin-bottom: 5px;
+	margin-top: 0;
+	margin-left: 0;
+	
+}
+#brand-color-palette .hero img {
+	position: absolute;
+	width: 700px;
+	margin-left: 100px;
+	margin-top: 75px;
+}
+#brand-color-palette .hero ul li {
+	font-size: 20px;
+	color: rgba(255,255,255,0.75);
+	line-height: 35px;
+}
+.breadcrumbs ol,
+.breadcrumbs a {
+	font-size: 20px;
+}
+
+/* ==========================================================================
+	Error
+========================================================================== */
+
+#page-not-found {
+	text-align: center;
+}
+#page-not-found h1 {
+	margin-bottom: 10px;
+}
+#page-not-found .button {
+	font-size: 16px;
+}
+#page-not-found .spin {
+	max-width: 300px;
+}
+#page-not-found > .grid {
+	height: 100vh;
+}
+#page-not-found .question {
+	position: absolute;
+	width: 100px;
+	margin-left: 100px;
+	margin-top: 63px;
+}
+
+/* ==========================================================================
+	Disclaimer specific styles (Layout styles: sizing, spacing, etc.)
+========================================================================== */
+
+#disclaimer .hero h1.separator::after {
+	margin-left: auto;
+	margin-right: auto;
+}
+#disclaimer .hero {
+	margin-bottom: 0px;
+}
+#disclaimer #disclaimer-content {
+	max-width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.subtle-links {
+	color: #ffffff;
+	font-size: 16px;
+}
+
+/* ==========================================================================
+	Statistics specific styles (Layout styles: sizing, spacing, etc.)
+========================================================================== */
+
+#statistics .hero {
+	margin-bottom: 35px;
+}
+#statistics table {
+	font-size: 16px;
+}
+#statistics #tokens a {
+	line-height: 1.4;
+	position: relative;
+	color: #fff;
+	font-size: 16px;
+}
+#statistics #tokens .label {
+	font-size: 16px;
+}
+#statistics #tokens a::after {
+	content: '';
+	display: block;
+	position: absolute;
+	background-image: url("../img/icon/arrow.svg");
+	height: 10px;
+	width: 20px;
+	background-repeat: no-repeat;
+	top: 11px;
+	right: -25px;
+	transition: right 0.3s ease;
+}
+#statistics #tokens a:hover::after {
+	right: -35px;
+	transition: right 0.2s ease;
+}
+#statistics #tokens table tbody tr td:first-of-type {
+	padding-left: 55px;
+	background-size: 40px;
+	background-position: 0px 25px;
+}
+#statistics #tokens table tbody tr.bnusd td:first-of-type {
+	padding-left: 55px;
+	background-size: 21px;
+	background-position: 9px 22px;
+}
+#statistics #pools table tbody tr td:first-of-type {
+	padding-left: 100px;
+	background-size: 85px;
+	background-position: 0px 12px;
+}
+#statistics #pools table tbody tr.total td {
+	font-family: 'tex-gyre-adventor-bold';
+}
+
+#statistics #pools .list td {
+	padding-top: 25px;
+	padding-bottom: 25px;
+}
+#statistics .list tbody tr.bnusd td:first-of-type {
+	background-size: 18px;
+}
+#statistics table thead tr th:nth-of-type(2),
+#statistics table thead tr th:nth-of-type(3),
+#statistics table thead tr th:nth-of-type(4),
+#statistics table thead tr th:nth-of-type(5),
+#statistics table thead tr th:nth-of-type(6),
+#statistics table tbody tr td:nth-of-type(2),
+#statistics table tbody tr td:nth-of-type(3),
+#statistics table tbody tr td:nth-of-type(4),
+#statistics table tbody tr td:nth-of-type(5),
+#statistics table tbody tr td:nth-of-type(6) {
+	text-align: right;
+}
+#statistics h2 {
+	font-size: 25px;
+	line-height: 1.4;
+}
+#statistics .list tbody tr.sicx td:first-of-type {
+	background-position: 0px 25px;
+}
+#statistics .list tbody tr.bnusd td:first-of-type {
+	background-position: 8px center;
+}
+
+/* Overview */
+
+#statistics .overview .metadata {
+	display: inline-block;
+	margin: 0;
+	margin-left: 15px;
+	text-align: left;
+}
+#statistics .overview .metadata dd {
+	font-size: 20px;
+}
+#statistics .overview > .grid-cell > .grid > .grid-cell {
+	border-right: 1px solid #304a68;
+	text-align: center;
+}
+#statistics .overview > .grid-cell > .grid > .grid-cell:last-of-type {
+	border-right: none;
+}
+#statistics .overview img {
+	height: 55px;
+	margin-top: -35px;
+}
+#statistics .overview > .grid-cell > .grid > .grid-cell:nth-of-type(3) img {
+	height: 57px;
+}
+#statistics #pools .tooltip-item::after {
+	left: 0;
+}
+#statistics .side-by-side .metadata {
+	text-align: center;
+	border-right: 1px solid #304a68;
+}
+#statistics .dropdown {
+	font-size: 14px;
+	margin-left: 3px;
+}
+#statistics div.panel:nth-child(1) > div:nth-child(4) > div:nth-child(3) > dl:nth-child(1),
+#statistics div.grid:nth-child(3) > div:nth-child(2) > div:nth-child(4) > div:nth-child(3) > dl:nth-child(1) {
+	border-right: none;
+}
+#statistics .side-by-side h2 {
+	margin-bottom: 5px;
+}
+#statistics .side-by-side h3 {
+	font-family: 'tex-gyre-adventor-regular';
+	position: absolute;
+	z-index: 2;
+	height: 20px;
+}
+#statistics .side-by-side h3 span {
+	font-size: 16px;
+}
+#statistics .tv-lightweight-charts,
+#statistics .tv-lightweight-charts > table {
+	width: 100% !important;
+}
+
+/* Overview */
+
+#statistics #governance .metadata {
+	display: inline-block;
+	margin: 0;
+	margin-left: 15px;
+	text-align: left;
+}
+#statistics #governance .metadata dd {
+	font-size: 20px;
+}
+#statistics .metadata dt {
+	font-size: 16px;
+}
+#statistics #governance > .grid-cell > .grid > .grid-cell {
+	border-right: 1px solid #304a68;
+	text-align: center;
+}
+#statistics #governance > .grid-cell > .grid > .grid-cell:last-of-type {
+	border-right: none;
+}
+#statistics #governance img {
+	height: 55px;
+	margin-top: -35px;
+}
+#statistics #governance > .grid-cell > .grid > .grid-cell:nth-of-type(3) img {
+	height: 60px;
+}
+#statistics #governance {
+	margin: 0;
+}
+#statistics #governance h2 {
+	display: inline-block;
+}
+#statistics #governance a {
+	margin-left: 15px;
+	font-size: 16px;
+	position: relative;
+	cursor: pointer !important;
+	transform: translateY(-1px);
+	display: inline-block;
+}
+#statistics #governance a::after {
+	content: '';
+	display: block;
+	position: absolute;
+	background-image: url("../img/icon/arrow.svg");
+	height: 10px;
+	width: 20px;
+	background-repeat: no-repeat;
+	top: 14px;
+	right: -25px;
+	transition: right 0.3s ease;
+}
+#statistics #governance a:hover::after {
+	right: -30px;
+	transition: right 0.2s ease;
+}
+
+/* Financial statements */
+
+#statistics #income-statement {
+	margin-top: 50px;
+}
+#statistics #income-statement table thead tr th:nth-of-type(2),
+#statistics #income-statement table thead tr th:nth-of-type(3) {
+	text-align: right;
+}
+#statistics table .total {
+	font-family: 'tex-gyre-adventor-bold';
+	font-weight: normal;
+}
+#statistics #income-statement table.list + table.list {
+	margin-top: 15px;
+}
+#statistics #income-statement .list tbody tr.total td:first-of-type {
+	background-image: none;
+}
+#statistics #income-statement .list tbody tr.total {
+	border-top: 1px solid #304a68;
+	border-bottom: 1px solid #304a68;
+}
+#statistics #income-statement .list tbody tr.total td {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+.financial-statements table .label {
+	font-size: 16px;
+}
+
+/* Sub style */
+
+#statistics #income-statement tr.sub {
+	font-size: 16px;
+	border-bottom: none;
+}
+#statistics #income-statement tr.sub + tr.sub-heading td {
+	padding-top: 0px;
+}
+#statistics #income-statement tr.sub-heading {
+	font-family: 'tex-gyre-adventor-bold';
+	font-weight: normal;
+	border-bottom: none;
+}
+#statistics #income-statement tr.sub-heading td {
+	padding-bottom: 10px;
+}
+#statistics #income-statement tr.sub-heading td:first-of-type {
+	padding-left: 25px;
+}
+#statistics #income-statement tr.sub td {
+	padding-top: 0px;
+	color: rgba(255,255,255,0.75);
+	padding-bottom: 15px;
+}
+#statistics #income-statement tr.sub + tr.sub td {
+	padding-top: 0;
+	padding-bottom: 15px;
+}
+#statistics #income-statement tr.sub td:first-of-type {
+	padding-left: 50px;
+}
+#statistics #income-statement .panel-parent {
+	max-width: 100%;
+	margin: 0;
+	margin-bottom: 25px;
+}
+#statistics .period-selector p {
+	text-align: right;
+	color: #ffffff;
+	font-size: 16px;
+}
+#statistics .period-selector .dropdown {
+	margin-right: 5px;
+	font-size: 16px;
+}
+#statistics #income-statement .list:last-of-type .total {
+	border-bottom: none;
+}
+#statistics #income-statement .list:last-of-type .total td {
+	padding-bottom: 0;
+}
+.header .logo {
+	margin-left: 0;
+}
+body.financial-statements .hero {
+	margin-top: 50px;
+}
+#statistics #balance-sheet tr td:first-of-type {
+	padding-left: 50px;
+	background-size: 35px;
+}
+#statistics #balance-sheet tr.total td:first-of-type {
+	background-image: none;
+}
+#statistics #balance-sheet tr.bnusd td:first-of-type {
+	background-size: 20px;
+}
+
+/* ==========================================================================
+	Stats / wiki / info
+========================================================================== */
+
+body.asset-info .hero {
+	margin-top: 50px;
+	margin-bottom: 0;
+}
+body.asset-info .hero img {
+	width: 75px;
+	margin-top: -25px;
+	line-height: 1;
+	margin-right: 20px;
+}
+body.asset-info  {
+	margin-bottom: 35px;
+}
+body.asset-info .asset-info-content > .grid-cell:first-of-type {
+	flex: 2;
+	margin-right: 50px;
+}
+body.asset-info .asset-info-content .metadata dt {
+	font-size: 16px;
+}
+body.asset-info .asset-info-content .metadata dd {
+	font-size: 20px;
+}
+
+/* breadcrumbs */
+
+.breadcrumbs ol li {
+	display: inline-block;
+}
+.breadcrumbs ol {
+	padding-left: 0;
+	margin-bottom: 50px;
+}
+
+.asset-info-content .panel.panel-parent {
+	max-width: 400px;
+}
+.asset-info-content .panel.panel-parent > .grid .grid-cell:nth-of-type(1) {
+	margin-right: 50px;
+}
+
+/* ==========================================================================
+	Wallpapers
+========================================================================== */
+
+.wallpaper img {
+	max-width: 100%;
+	border-radius: 15px;
+	box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+				0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+				0 12.5px 10px rgba(0, 0, 0, 0.06),
+				0 22.3px 17.9px rgba(0, 0, 0, 0.072),
+				0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+				0 100px 80px rgba(0, 0, 0, 0.12);
+}
+.wallpaper .metadata {
+	display: inline-block;
+	margin-right: 35px;
+}
+.wallpaper .metadata:last-of-type {
+	margin-right: 0;
+}
+.wallpaper div.grid:nth-child(3) > div:nth-child(1) {
+	flex: 2;
+}
+
+/* ==========================================================================
+	Responsive styles
+========================================================================== */
+
+/* 1600px and above */
+
+@media (min-width: 1600px) {
+
+	/* ==========================================================================
+		Modules: 1600px and above
+	========================================================================== */
+
+	/* HTML Elements */
+
+	h2 {
+		line-height: 67px;
+	}
+	ol {
+		font-size: 20px;
+	}
+
+	/* Footer */
+
+	footer {
+		margin-top: 150px;
+		margin-bottom: 50px;
+	}
+
+	/* ==========================================================================
+		Landing: 1600px and above
+	========================================================================== */
+
+	/* Hero */
+
+	.landing .hero > .grid-cell:first-of-type {
+		min-width: 615px;
+	}
+	.landing .hero p {
+	  max-width: 475px;
+	}
+	.landing .hero-image {
+		left: -60px;
+	}
+
+	/* Intro */
+
+	.landing #intro .panel {
+		margin-top: 25px;
+		margin-bottom: 0;
+		padding: 25px;
+	}
+	.landing #intro .panel .label {
+		line-height: 30px;
+	}
+	.landing #intro .asterisk {
+		font-size: 30px;
+	}
+	.landing #intro figure {
+		margin-top: 90px;
+		margin-left: -155px;
+	}
+	.landing #intro figure img:nth-of-type(1) {
+  		max-width: 225px;
+  		width: 200px;
+	}
+	.landing #intro figure img:nth-of-type(2) {
+  		max-width: 350px;
+  		width: 325px;
+	}
+	.landing #intro figure img:nth-of-type(3) {
+		max-width: 500px;
+		width: 475px;
+	}
+	.landing #intro figure img:nth-of-type(4) {
+		max-width: 40px;
+		margin-left: 220px;
+		margin-top: 220px;
+	}
+
+	/* Balanced rewards */
+
+	.landing #rewards .rewards-table thead tr th:last-of-type::before {
+		width: 196px;
+		height: 565px;
+		margin-left: -15px;
+	}
+	.landing #rewards .panel {
+		margin-top: 25px;
+		margin-bottom: 0;
+		padding: 25px;
+	}
+	.landing #rewards .panel .label {
+		line-height: 30px;
+	}
+
+	/* Swap and Supply */
+
+	.landing #swap-supply > .grid-cell:last-of-type img {
+		width: 465px;
+	}
+
+	/* Receive a fair share from launch */
+
+	.landing #fair img {
+		float: right;
+		max-width: 600px;
+		margin-top: 25px;
+	}
+
+	/* Calls to action */
+
+	.landing .call-to-actions img {
+		height: 60px;
+	}
+
+	/* ==========================================================================
+		Why: 1600px and above
+	========================================================================== */
+
+	/* Hero */
+
+	#why .hero img {
+		margin-top: 50px;
+		width: 700px;
+	}
+	#why .hero-background figure img:nth-of-type(1) {
+		width: 1025px;
+		margin-left: 690px;
+		margin-top: 690px;
+	}
+	#why .hero-background figure img:nth-of-type(2) {
+		width: 1650px;
+		margin-left: 375px;
+		margin-top: 375px;
+	}
+	#why .hero-background figure img:nth-of-type(3) {
+		width: 2400px;
+	}
+	#why .hero-background figure {
+		margin-left: -1200px;
+	}
+	#why .hero p {
+		font-size: 22px;
+	}
+	#why #quote figure {
+		margin-top: 90px;
+	}
+
+	/* Intro */
+
+	#why #intro {
+		margin-bottom: 200px;
+	}
+	#why #intro img {
+		position: absolute;
+		width: 950px;
+		top: -120px;
+		left: 50px;
+	}
+
+	/* ICON performs better */
+
+	#why #icon-network > .grid-cell:first-of-type {
+		margin-right: 100px;
+	}
+	#why #icon-network > div:nth-child(2) {
+		margin-bottom: 25px;
+	}
+
+	/* Outperform */
+
+	#why #outperform h2 {
+		min-width: 620px;
+	}
+	#why #outperform > div:nth-child(1) {
+		max-width: initial;
+	}
+	#why #outperform img {
+		width: 115%;
+		margin-left: 7%;
+		margin-top: 200px;
+	}
+	#why .quotes + .quotes {
+		margin-top: 15px;
+		margin-bottom: 125px;
+	}
+
+	/* Maximize rewards */
+
+	#why #maximise-rewards img {
+	    width: 525px;
+	    margin-top: 170px;
+	}
+
+	/* Call to actions */
+
+	#why .call-to-actions img {
+		height: initial;
+		width: 500px;
+		margin-top: -50px;
+		margin-left: 75px;
+	}
+	#why .call-to-actions a.grid-cell {
+		margin-top: 35px;
+	}
+	#why .call-to-actions > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) {
+		margin: 0;
+	}
+
+	/* ==========================================================================
+		How: 1600px and above
+	========================================================================== */
+
+	/* Hero */
+
+	#how .hero {
+		margin-bottom: 350px;
+	}
+	#how .hero-image {
+		max-width: 750px;
+		margin-left: -60px;
+		margin-top: -60px;
+	}
+	#how .hero .bubble-2 {
+		background-image: url(../img/feature/bubble-2.png);
+		width: 250px;
+		background-size: contain;
+		margin-left: -1000px;
+		opacity: 0.5;
+	}
+	#how .hero .bubble-1 {
+	    margin-left: -250px;
+	    margin-top: 320px;
+	    background-image: url(../img/feature/bubble-2.png);
+		width: 100px;
+		background-size: contain;
+		opacity: 0.5;
+	}
+	#how .hero .bubble-3 {
+	    margin-left: -50px;
+	    margin-top: -150px;
+	    background-image: url(../img/feature/bubble-2.png);
+		width: 120px;
+		background-size: contain;
+		opacity: 0.75;
+	}
+	#how .hero .bubble-4 {
+		margin-left: 580px;
+		margin-top: 500px;
+		background-image: url(../img/feature/bubble-2.png);
+		width: 120px;
+		background-size: contain;
+		opacity: 0.5;
+		position: absolute;
+		display: block;
+		height: 500px;
+		background-repeat: no-repeat;
+	}
+
+
+	#how #get-started {
+		max-width: 800px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	#how .step video {
+		width: 515px;
+	}
+	#how #monitor-and-adjust video {
+		width: 1100px;
+		margin-top: 25px;
+		margin-bottom: 25px;
+	}
+	#how #view-and-manage img {
+		width: 475px;
+	}
+	#how #swap-assets img {
+		width: 425px;
+	}
+	#return-assets img {
+		width: 500px;
+		margin-right: 0;
+	}
+	#how #supply-liquidity video {
+		width: 1100px;
+	}
+	#how #liquidate img {
+		width: 400px;
+	}
+	#claim-and-stake img {
+		width: 500px;
+	}
+
+	/* ==========================================================================
+		Airdrip: 1600px and above
+	========================================================================== */
+
+	#airdrip #hero-background {
+		height: 100%;
+	}
+	#airdrip #what-are-balance-tokens img {
+		width: 800px;
+		top: -90px;
+		left: -190px;
+	}
+	#airdrip #want-more > div:nth-child(1) > div:nth-child(1) > p:nth-child(2) {
+		max-width: 700px;
+	}
+
+	/* ==========================================================================
+		Brand: 1600px and above
+	========================================================================== */
+
+	#brand .hero {
+		margin-bottom: 100px;
+	}
+	#brand .hero img {
+		width: 600px;
+	}
+	#brand #branding-kit img {
+	    max-width: 470px;
+	    float: right;
+	    margin-top: 0;
+	}
+	#brand section {
+		margin-bottom: 175px;
+	}
+	#brand .hero .bubble-1 {
+	    margin-left: -250px;
+	    margin-top: -90px;
+	    background-image: url(../img/feature/bubble-2.png);
+		width: 100px;
+		background-size: contain;
+		opacity: 0.5;
+	}
+	#brand .hero .bubble-2 {
+		background-image: url(../img/feature/bubble-2.png);
+		width: 250px;
+		background-size: contain;
+		margin-left: -1000px;
+		opacity: 0.5;
+	}
+	#brand .hero .bubble-3 {
+	    margin-left: -50px;
+	    margin-top: -600px;
+	    background-image: url(../img/feature/bubble-2.png);
+		width: 120px;
+		background-size: contain;
+		opacity: 0.75;
+	}
+
+	/* ==========================================================================
+		Loan: 1600px and above
+	========================================================================== */
+
+	#loan #tracked-utilised .panel a {
+		margin-bottom: -20px;
+	}
+
+	/* Terms and conditions */
+
+	#loan #terms {
+		margin-top: 150px;
+		margin-bottom: 150px;
+	}
+	#loan #terms ul li {
+		font-size: 20px;
+	}
+	#loan #terms ul li + li {
+		margin-top: 20px;
+	}
+
+	/* Rebalancing */
+
+	#loan #rebalancing #cheap-expensive > .grid-cell:first-of-type {
+		margin-right: 50px;
+	}
+
+	/* Why borrow */
+
+	#loan #why-borrow h2 {
+		margin-bottom: 75px;
+	}
+	#loan #why-borrow h3 {
+		margin-bottom: 20px;
+	}
+	#loan #why-borrow .feature {
+		margin-bottom: 100px;
+	}
+
+	/* Open your stablecoin loan */
+
+	#loan #open-loan .steps h3 {
+		font-size: 30px;
+		margin-bottom: 5px;
+	}
+	#loan #open-loan .button {
+		margin-top: 75px;
+	}
+}
+
+/* 1600px and below */
+
+@media (max-width: 1600px) {
+
+	/* ==========================================================================
+		Modules: 1600px and below
+	========================================================================== */
+
+	/* HTML elements */
+
+	html {
+		font-size: 18px;
+		overflow-x: hidden;
+		position: relative;
+	}
+	h1 {
+		font-size: 58px;
+		line-height: 72px;
+		margin-bottom: 0;
+	}
+	h2 {
+		line-height: 65px;
+	}
+	h2.separator::after,
+	.separator::after {
+		margin-top: 20px;
+		margin-bottom: 15px;
+	}
+	a {
+		font-size: 18px;
+		line-height: 32px;
+	}
+	p {
+		font-size: 18px;
+		line-height: 32px;
+	}
+	p + p {
+		margin-top: 15px;
+	}
+
+	/* Modules */
+
+	.animation-underline:after {
+		margin-top: 0;
+	}
+	.eyebrow {
+		margin-bottom: 0;
+	}
+
+	/* Header & Footer */
+
+	header a,
+	footer a,
+	.label {
+		font-size: 16px;
+	}
+	ul.links li .button {
+		font-size: 16px;
+		padding: 3px 20px;
+	}
+
+	/* Header */
+
+	.header .logo {
+		width: 100px;
+		margin-left: 0;
+		margin-right: 0;
+	}
+
+	/* Footer */
+
+	footer {
+		padding-top: 50px;
+		margin-bottom: 50px;
+	}
+	footer .bottom-row {
+		margin-top: 75px;
+	}
+	.footer .logo {
+		width: 100px;
+	}
+
+	/* ==========================================================================
+		Landing: 1600px and below
+	========================================================================== */
+
+	/* Hero */
+
+	.landing .hero {
+		margin-top: 75px;
+		margin-bottom: 450px;
+	}
+	.hero .content {
+		min-width: 615px;
+	}
+
+	.landing .hero p {
+		font-size: 18px;
+		line-height: 32px;
+		max-width: 450px;
+	}
+	.landing .hero-image {
+		width: 900px;
+		top: 15px;
+		left: -45px;
+	}
+	.landing .hero .bubble-1 {
+	    margin-left: -150px;
+	    margin-top: -160px;
+	}
+	.landing .hero .bubble-3 {
+		margin-top: 400px;
+	}
+
+	/* TL;DR */
+
+	.landing .tldr {
+		margin-bottom: 100px;
+	}
+	.landing .tldr h2 {
+		font-size: 20px;
+		margin-bottom: 10px;
+		line-height: 1;
+	}
+	.landing .tldr p {
+		font-size: 16px;
+		line-height: 30px;
+	}
+	.landing .tldr img {
+		height: 50px;
+		margin-bottom: 25px;
+	}
+	.landing .tldr .grid-cell {
+		margin-right: 25px;
+	}
+	.landing .tldr .grid-cell:last-of-type {
+		margin-right: 0;
+	}
+
+	/* Intro */
+
+	.landing #intro {
+		margin-bottom: 175px;
+	}
+	.landing #intro h2 {
+		max-width: 450px;
+	}
+	.landing #intro .swirl {
+		margin-top: 1150px;
+		margin-left: 175px;
+		width: 800px;
+	}
+	.landing #intro figure {
+		margin-top: 90px;
+		margin-left: -125px;
+	}
+	.landing #intro figure img {
+		position: absolute;
+		width: 500px;
+	}
+	.landing #intro figure img:nth-of-type(1) {
+		width: 125px;
+		margin-left: 138px;
+		margin-top: 138px;
+	}
+	.landing #intro figure img:nth-of-type(2) {
+		width: 250px;
+		margin-left: 75px;
+		margin-top: 75px;
+	}
+	.landing #intro figure img:nth-of-type(3) {
+		width: 400px;
+	}
+	.landing #intro figure img:nth-of-type(4) {
+	    width: 25px;
+	    margin-left: 189px;
+	    margin-top: 187px;
+	}
+	.landing #intro .panel {
+		margin-top: 25px;
+		margin-bottom: 0;
+		padding: 25px;
+	}
+	.landing #intro .panel .label {
+		line-height: 30px;
+	}
+
+	/* Balanced rewards */
+
+	.landing .rewards-table thead tr th {
+		padding-bottom: 0;
+	}
+	.landing .rewards-table thead tr th:last-of-type::before {
+		height: 535px;
+		margin-top: -32px;
+		margin-left: -11px;
+		width: 194px;
+	}
+	.landing #rewards .panel {
+		margin-top: 25px;
+		margin-bottom: 0;
+		padding: 25px;
+	}
+	.landing #rewards .panel .label {
+		line-height: 30px;
+	}
+
+	/* Payments */
+
+	.landing #payments {
+		margin-bottom: 175px;
+	}
+	.landing #payments img {
+		width: 495px;
+		margin-top: 0;
+	}
+
+	/* Swap / Supply */
+
+	.landing #swap-supply {
+		margin-bottom: 175px;
+	}
+	.landing #swap-supply .panel {
+		margin-bottom: 0;
+	}
+	.landing #swap-supply p {
+		max-width: 700px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.landing #swap-supply > .grid-cell:last-of-type img {
+		width: 455px;
+	}
+
+	/* Fair */
+
+	.landing #fair img {
+		max-width: 550px;
+		margin-top: 0px;
+	}
+
+	/* Trustworthy */
+
+	.trustworthy-background {
+		background-image: url(../img/feature/audited.png);
+		display: block;
+		height: 1000px;
+		background-repeat: no-repeat;
+		position: absolute;
+		width: 170%;
+		left: 0;
+		right: 0;
+		z-index: -1;
+		margin-top: -625px;
+		margin-left: -25%;
+		opacity: 0.75;
+		background-size: contain;
+	}
+
+	.coming-soon .glow img {
+		width: 200%;
+		margin-left: -55%;
+		margin-bottom: -230px;
+	}
+
+	#coming-soon-2 img {
+		width: 500px;
+	}
+
+	/* ==========================================================================
+		Why Balanced: 1600px and below
+	========================================================================== */
+
+	#why .hero img {
+		margin-top: -50px;
+		width: 500px;
+	}
+	#why #icon-network {
+		margin-bottom: 175px;
+	}
+	#why #outperform img {
+		width: 100%;
+	}
+	#why #credits .profile + h3 {
+		margin-top: 3px;
+		margin-bottom: 5px;
+		line-height: 1.4;
+	}
+	#why #credits .p-reps p {
+		line-height: 25px;
+	}
+	#why .call-to-actions a.grid-cell {
+		margin-top: 35px;
+	}
+	#why .call-to-actions > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) {
+		margin-right: 0;
+	}
+	#why .future-direction {
+		width: 475px;
+		height: initial;
+		margin-top: -115px;
+		margin-left: 100px;
+	}
+	#why #outperform img {
+		width: 100%;
+		margin-top: 180px;
+	}
+	#why #maximise-rewards img {
+		margin-top: 175px;
+	}
+
+	/* ==========================================================================
+		How it works: 1600px and below
+	========================================================================== */
+
+	/* Hero */
+
+	#how .hero {
+		margin-bottom: 315px;
+	}
+	#how .hero-image {
+		max-width: 640px;
+		margin-left: 0;
+		margin-top: -25px;
+	}
+	#how .hero .bubble-1 {
+	    margin-top: 300px;
+	}
+
+	#how .step {
+		margin-top: 200px;
+	}
+	#how .step img {
+		float: right;
+	}
+	#how .step video {
+		width: 485px;
+		float: right;
+	}
+	#how #monitor-and-adjust .video-tooltips .tooltip-content p {
+		font-size: 15px;
+	}
+	#how #liquidate img {
+		width: 350px;
+		margin: auto;
+		float: none;
+		display: block;
+	}
+	#how #return-assets img {
+		width: 400px;
+	}
+	#how #monitor-and-adjust video {
+		width: 950px;
+		margin-top: 25px;
+		margin-bottom: 25px;
+	}
+	#how #get-started {
+		max-width: 750px;
+		margin: auto;
+	}
+	#how footer {
+		margin-top: 150px;
+	}
+
+	/* ==========================================================================
+		Brand resources: 1600px and below
+	========================================================================== */
+
+	#brand .hero {
+		margin-bottom: 100px;
+	}
+	#brand .hero img {
+		width: 535px;
+	}
+	#brand #branding-kit img {
+	    max-width: 400px;
+	    float: right;
+	    margin-top: 5px;
+	}
+	#brand section {
+		margin-bottom: 150px;
+	}
+	#brand section.feature p:last-of-type {
+		margin-top: 15px;
+	}
+	#brand #branding-kit {
+		max-width: 975px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	#brand .hero .bubble-1 {
+	    margin-left: -700px;
+	    margin-top: -190px;
+	    background-image: url(../img/feature/bubble-2.png);
+	    width: 100px;
+	    background-size: contain;
+	    opacity: 0.5;
+	}
+	#brand .hero .bubble-2 {
+		background-image: url(../img/feature/bubble-2.png);
+		width: 200px;
+		background-size: contain;
+		margin-left: -300px;
+		opacity: 0.5;
+	}
+	#brand .hero .bubble-3 {
+	    margin-left: 450px;
+	    margin-top: -450px;
+	    background-image: url(../img/feature/bubble-2.png);
+		width: 120px;
+		background-size: contain;
+		opacity: 0.75;
+	}
+
+	/* ==========================================================================
+		Airdrip: 1600px and below
+	========================================================================== */
+
+	#want-more > div:nth-child(1) > div:nth-child(1) > p:nth-child(2) {
+		max-width: 640px;
+	}
+	#airdrip #what-are-balance-tokens img {
+		top: -75px;
+	}
+
+}
+
+/* 1300px and below */
+
+@media (max-width: 1300px) {
+
+	/* ==========================================================================
+		Modules: 1300px and below
+	========================================================================== */
+
+	/* Modules */
+
+	html {
+		font-size: 18px;
+	}
+	h1 {
+		font-size: 50px;
+		line-height: 65px;
+	}
+	p {
+		font-size: 18px;
+	}
+	p + p {
+		margin-top: 20px;
+	}
+
+	/* Layout */
+
+	.wrapper {
+		max-width: 1000px;
+	}
+
+	.header .logo,
+	.footer .logo
+
+	/* Layout */
+
+	.header > div:nth-child(1) > div:nth-child(1) {
+		max-width: 300px;
+	}
+
+	/* ==========================================================================
+		Landing: 1300px and below
+	========================================================================== */
+
+	/* Hero */
+
+	.landing .hero {
+		margin-top: 50px;
+		margin-bottom: 325px;
+	}
+	.landing .hero-image {
+		width: 750px;
+		top: 20px;
+		left: -130px;
+	}
+	.landing .hero .bubble-1 {
+		margin-left: -275px;
+		margin-top: -160px;
+	}
+	.landing .hero .bubble-1 {
+		margin-left: -275px;
+		margin-top: -160px;
+	}
+	.landing .hero .bubble-3 {
+		margin-left: -450px;
+		margin-top: 275px;
+	}
+
+	/* Overview */
+
+	.landing .tldr {
+		margin-top: 35px;
+	}
+	.landing .tldr h2 {
+		line-height: 30px;
+	}
+	.landing .tldr img {
+		height: 35px;
+		margin-bottom: 15px;
+	}
+	.landing .tldr .panel {
+		padding: 25px;
+	}
+
+	/* Intro */
+
+	.landing #intro > .grid-cell:first-of-type {
+		min-width: 470px;
+	}
+	.landing #intro figure {
+		margin-top: 75px;
+		margin-left: -125px;
+	}
+	.landing #intro .bubble-1 {
+		display: none;
+	}
+	.landing .hero .bubble-3 {
+		width: 200px;
+		background-size: contain;
+	}
+	.landing #intro .swirl {
+		display: none;
+	}
+
+	/* Auto-claim / Auto-stake */
+
+	.landing #effortless h2 {
+		font-size: 48px;
+		max-width: 290px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.landing #effortless .border-right::before {
+	    margin-left: 85px;
+	}
+
+	/* Mint a stable currency on the ICON Network. */
+
+	.landing #payments img {
+		margin-top: 145px;
+		width: 400px;
+	}
+
+	/* Swap & supply */
+
+	.landing #swap-supply > .grid-cell:last-of-type img {
+		width: 110%;
+		margin-left: -8%;
+	}
+
+	/* Receive a fair share from launch. */
+
+	.landing #fair img {
+		max-width: 450px;
+		margin-top: 85px;
+		transform: translateX(0px);
+	}
+
+	/* Audited for your security */
+
+	.landing .landing #trustworthy img {
+		width: 315px;
+		display: block;
+		margin-left: 50px;
+	}
+	.landing .landing .trustworthy-background {
+		width: 200%;
+	}
+
+	/* Coming soon */
+
+	.landing .landing .coming-soon .glow img {
+		width: 200%;
+		margin-left: -56%;
+	}
+	.landing .landing #coming-soon-2 img {
+		width: 450px;
+		margin-top: 110px;
+	}
+
+	/* ==========================================================================
+		Why Balanced: 1300px and below
+	========================================================================== */
+
+	/* Hero */
+
+	#why .hero {
+		margin-top: 60px;
+	}
+	#why #quote p {
+		max-width: 700px;
+	}
+
+	/* Built on the ICON Network: a foundation that scales. */
+
+	#why #icon-network h2 {
+		width: 125%;
+	}
+	#why #icon-network > div:nth-child(2) {
+		margin-bottom: 60px;
+	}
+
+	/* Calculated to minimize risk and maximize participation. */
+
+	#why #maximise-rewards h2 {
+		width: 560px;
+	}
+	#why #maximise-rewards > div:nth-child(1) {
+		max-width: 450px;
+	}
+	#why #maximise-rewards img {
+		width: 425px;
+		margin-top: 100px;
+	}
+
+	/* Designed to outperform its peers by at least 228%. */
+
+	#why #outperform img {
+		width: 105%;
+		margin-left: 15px;
+	}
+
+	/* Made by some of the best in the ICON ecosystem. */
+
+	#why #credits .profile + h3 {
+		width: 100%;
+		margin-top: 15px;
+		float: left;
+		display: block;
+	}
+	#why #credits .p-reps p {
+		float: left;
+		width: 100%;
+		display: block;
+	}
+
+	/* Influence the future of finance. */
+
+	#why .future-direction {
+		margin-top: -35px;
+	}
+
+	/* ==========================================================================
+		How it works: 1300px and below
+	========================================================================== */
+
+	/* Hero */
+
+	#how .hero {
+		margin-bottom: 225px;
+	}
+	#how .hero-image {
+		max-width: 550px;
+	}
+	#how .step {
+		margin-top: 150px;
+	}
+}
+
+/* 1100px and below */
+
+@media (max-width: 1100px) {
+
+	/* ==========================================================================
+		Modules: 1100px and below
+	========================================================================== */
+
+	/* Layout */
+
+	.wrapper {
+		max-width: 900px;
+	}
+	.hero p {
+		max-width: 400px;
+	}
+	#intro > .grid-cell:first-of-type {
+		margin-right: 150px;
+	}
+	.call-to-actions h3 {
+		line-height: 1.3;
+	}
+
+	/* header */
+
+	.header > div:nth-child(1) > div:nth-child(1) {
+		max-width: 250px;
+	}
+
+	/* Footer */
+
+	.footer > div:nth-child(1) > div:nth-child(1) {
+		max-width: 250px;
+	}
+
+	/* ==========================================================================
+		Landing: 1100px and below
+	========================================================================== */
+
+	/* Receive a fair share from launch */
+
+	.landing #fair img {
+		max-width: 450px;
+		margin-top: 150px;
+		transform: translateX(35px);
+	}
+
+	/* ==========================================================================
+		Why: 1100px and below
+	========================================================================== */
+
+	/* Hero */
+
+	#why .hero {
+		margin-top: 75px;
+	}
+
+	/* Intro */
+
+	#why #intro img {
+		position: absolute;
+		width: 950px;
+		top: -120px;
+		left: -125px;
+	}
+
+	/* Calculated to minimize risk and maximize participation. */
+
+	#why #maximise-rewards img {
+		width: 385px;
+	}
+
+	/* Influence the future of finance. */
+
+	#why .future-direction {
+		width: 325px;
+		margin-top: 25px;
+	}
+
+	/* ==========================================================================
+		How: 1100px and below
+	========================================================================== */
+
+	#how .step video {
+		width: 420px;
+	}
+
+	/* Monitor and adjust */
+
+	#how #monitor-and-adjust video {
+		width: 100%;
+	}
+
+	/* Claim and stake */
+
+	#how #claim-and-stake img {
+		width: 400px;
+	}
+
+	/* Claim and stake */
+
+	#how #supply-liquidity video {
+		width: 100%;
+	}
+
+	/* ==========================================================================
+		Brand: 1100px and below
+	========================================================================== */
+
+	#brand .hero img {
+		width: 450px;
+	}
+	#brand #branding-kit img {
+		margin-top: 30px;
+	}
+	#brand section.feature > .grid-cell:last-of-type {
+		margin-left: 100px;
+	}
+
+}
+
+/* 1000px and below */
+
+@media (max-width: 1000px) {
+
+	/* ==========================================================================
+		Modules: 1000px and below
+	========================================================================== */
+
+	/* Layout */
+
+	.wrapper {
+		max-width: 800px;
+	}
+
+	/* Header */
+
+	.header > .grid.grid-center > .grid-cell:nth-of-type(2) {
+		display: block;
+	}
+
+	/* ==========================================================================
+		Landing: 1000px and below
+	========================================================================== */
+
+	/* Hero */
+
+	.landing .hero-image {
+	  width: 700px;
+	  top: 35px;
+	  left: -150px;
+	}
+	.landing .hero {
+		margin-bottom: 275px;
+	}
+	.landing .hero .bubble-1 {
+		margin-left: -440px;
+		margin-top: -105px;
+	}
+	.landing .hero .bubble-2 {
+		margin-left: -875px;
+		margin-top: 290px;
+	}
+	.landing .hero .bubble-3 {
+		margin-left: -450px;
+		margin-top: 275px;
+	}
+
+	/* Intro */
+
+	.landing #intro > .grid-cell:first-of-type {
+		margin-right: 150px;
+		min-width: 428px;
+	}
+
+	/* Auto-claim / Auto-stake */
+
+	.landing #effortless .border-right::before {
+	    margin-left: 62px;
+	}
+
+	/* Mint a stable currency on the ICON Network. */
+
+	.landing #payments img {
+		margin-top: 320px;
+		width: 350px;
+	}
+
+	/* Receive a fair share from launch */
+
+	.landing #fair img {
+		margin-top: 170px;
+		transform: translateX(10px);
+	}
+
+	/* ==========================================================================
+		Why Balanced: 1000px and below
+	========================================================================== */
+
+	/* Intro */
+
+	#why #intro img {
+		position: absolute;
+		width: 950px;
+		top: -120px;
+		left: -150px;
+	}
+
+	/* ICON performs better */
+
+	#why #icon-network {
+		flex-direction: column;
+	}
+	#why #icon-network h2 {
+		width: 170%;
+	}
+	#why #icon-network > div:nth-child(2) {
+		margin-bottom: 0;
+		margin-top: 35px;
+	}
+
+	/* Maximise rewards and minimise risk */
+
+	#why #maximise-rewards img {
+	    width: 350px;
+	    margin-left: 50px;
+	}
+
+	/* ==========================================================================
+		How: 1000px and below
+	========================================================================== */
+
+	#how .hero-image {
+		max-width: 550px;
+		margin-left: 75px;
+		margin-top: -70px;
+	}
+
+	/* ==========================================================================
+		Statisitcs: 1000px and below
+	========================================================================== */
+
+	#statistics .overview img,
+	#statistics #governance img {
+		display: block;
+		margin: 0 auto;
+		margin-bottom: 15px;
+	}
+	#statistics .overview .metadata,
+	#statistics #governance .metadata {
+		margin: 0;
+		text-align: center;
+	}
+	#statistics .overview .metadata dd,
+	#statistics #governance .metadata dd {
+		font-size: 18px;
+	}
+
+	/* Table */
+
+	#statistics table.list {
+		width: 100%;
+		max-width: 100%;
+		overflow-x: scroll;
+		display: block;
+	}
+	#statistics table.list td {
+		min-width: 175px;
+	}
+	#statistics table.list tbody tr td:nth-of-type(2) {
+		min-width: 100px;
+	}
+
+	#how #participate-governance img {
+		max-width: 100%;
+	}
+
+}
+
+/* 800px and below */
+
+@media (max-width: 800px) {
+
+	/* ==========================================================================
+		Modules: 800px and below
+	========================================================================== */
+
+	/* HTML elements */
+
+	html {
+		font-size: 16px;
+	}
+	h1 {
+		font-size: 45px;
+		line-height: 1.2;
+	}
+
+	/* Layout */
+
+	.wrapper {
+		padding-left: 5%;
+		overflow-x: hidden;
+		padding-right: 5%;
+	}
+	.hero {
+		margin-top: 0;
+		flex-direction: column-reverse;
+		margin-bottom: 75px;
+	}
+
+	/* Header */
+
+	.header {
+		margin-bottom: 25px;
+	}
+	.header .logo {
+		width: 85px;
+	}
+	.bottom-row > div:nth-child(1) > div:nth-child(1) > p:nth-child(1) {
+		text-align: center;
+	}
+	.header ul.links {
+		display: none;
+	}
+	header a, footer a {
+		font-size: 14px;
+	}
+	.header > div:nth-child(1) > div:nth-child(1) {
+		max-width: 100px;
+	}
+
+    /* Display mobile 'Menu' button */
+
+    .header .menu {
+        float: right;
+    }
+    .header .menu #show-menu-label {
+        display: block;
+        float: right;
+        padding: 3px 12px;
+        font-size: 14px;
+        color: #ffffff;
+        background-color: #0c2a4d;
+        border: 1px solid #2ca9b7;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: border 0.2s ease;
+    }
+    .no-touch .header .menu #show-menu-label:hover {
+        background-color: #2ca9b7;
+        transition: background-color 0.3s ease;
+    }
+    .header .menu input[type="checkbox"]:checked + #show-menu-label {
+        background-color: #2ca9b7;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Show "hidden" links when menu is active */
+
+    .header .menu .menu-items {
+        position: absolute;
+        left: 0;
+        right: 0;
+        border-top: 1px solid transparent;
+        border-bottom: 1px solid transparent;
+        transform: translateX(-100%);
+    }
+    .header .menu .menu-items li {
+        opacity: 0;
+        transform: translateX(-18px);
+        transition: transform 0.3s ease, opacity 0.6s ease;
+    }
+
+    .header .menu li .animation-underline:hover::after {
+    	width: 50%;
+    	margin: auto;
+    }
+
+    /* Menu list styles */
+
+	.header ul.links::after {
+		content: '';
+		position: absolute;
+		left: 50%;
+		top: initial;
+		bottom: -24px;
+		border: solid transparent;
+		height: 0;
+		width: 0;
+		pointer-events: none;
+		border-color: transparent;
+		border-top-color: #2ca9b7;
+		transform: initial;;
+		border-width: 12px;
+		margin-left: -12px;
+		left: 90%;
+		top: -25px;
+		border-bottom-color: #2ca9b7;
+		border-top-color: transparent;
+	}
+
+    .header .menu input[type="checkbox"]:checked ~ .links {
+		position: absolute;
+		top: 30px;
+		right: 0;
+		padding: 25px;
+		background-color: #0c2a4d;
+		transform: translateX(0);
+		z-index: 1;
+		transition: opacity 0.6s ease;
+		display: block;
+		border: 2px solid #2ca9b7;
+		box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
+    }
+    .header .menu ul,
+    .footer .menu ul {
+        min-width: initial;
+    }
+
+    .header .menu .links li,
+    .header .menu .links li a {
+        width: 100%;
+        text-align: center;
+    }
+    .header .menu .animation-underline.active::after {
+        width: 50px;
+		margin-left: auto;
+		margin-right: auto;
+    }
+	.header .menu .links {
+		width: 240px;
+		float: right;
+		right: 0;
+		border-radius: 20px;
+		padding: 25px;
+		display: none;
+	}
+	.header .menu .links li {
+		margin-left: 0;
+		margin-bottom: 15px;
+	}
+	.header .menu .links li:last-of-type {
+		margin-bottom: 0;
+	}
+
+	/* Calls to action */
+
+	.call-to-actions h2 + .grid {
+		flex-direction: column;
+	}
+	.call-to-actions a.grid-cell {
+		margin-bottom: 25px;
+	}
+
+	/* ==========================================================================
+		Landing: 800px and below
+	========================================================================== */
+
+	/* Hero */
+
+	.landing .hero {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	.landing .hero > .grid-cell:first-of-type {
+		min-width: initial;
+	}
+	.landing .hero p {
+		max-width: 100%;
+		font-size: 16px;
+		line-height: 28px;
+	}
+	.landing .hero-image {
+		position: relative;
+		top: 0;
+		left: 0;
+		margin-bottom: 0;
+		width: 100%;
+	}
+	.landing .hero .bubble-1 {
+		margin-left: 185px;
+		margin-top: -95%;
+	}
+	.landing .hero .bubble-2 {
+		margin-left: -275px;
+		margin-top: -210px;
+	}
+	.landing .hero .bubble-3 {
+		margin-left: 85%;
+		margin-top: 75px;
+	}
+
+	/* TL;DR */
+
+	.landing .tldr {
+		flex-direction: column;
+	}
+	.landing .tldr .grid-cell {
+		margin-right: 0;
+	}
+
+	/* Intro */
+
+	.landing #intro {
+		flex-direction: column-reverse;
+	}
+	.landing #intro > .grid-cell:first-of-type {
+		min-width: initial;
+		margin-right: initial;
+	}
+	.landing #intro figure {
+		margin-top: 0;
+		margin-left: 0;
+		height: 300px;
+		margin: 0;
+		display: block;
+		position: relative;
+	}
+	.landing #intro figure img:nth-of-type(1) {
+		width: 85px;
+		margin-left: 110px;
+		margin-top: 108px;
+	}
+	.landing #intro figure img:nth-of-type(2) {
+		max-width: 180px;
+		margin-left: 61px;
+		margin-top: 61px;
+	}
+	.landing #intro figure img:nth-of-type(3) {
+		width: 300px;
+	}
+	.landing #intro figure img:nth-of-type(4) {
+	    width: 20px;
+	    margin-left: 143px;
+	    margin-top: 140px;
+	}
+	.landing #intro figure img:nth-of-type(4) {
+	    width: 20px;
+	    margin-left: 143px;
+	    margin-top: 141px;
+	}
+	.landing #intro .swirl {
+		display: none;
+	}
+
+	/* Rewards */
+
+	.landing .rewards h2 {
+		text-align: left;
+	}
+	.landing .rewards-table th img {
+		height: initial;
+		width: 75px;
+		margin-bottom: 35px;
+	}
+	.landing .rewards-table tbody img {
+		width: 23px;
+	}
+	.landing .rewards-table tr th:first-of-type,
+	.landing .rewards-table tr td:first-of-type {
+		max-width: 75px;
+	}
+	.landing .rewards-table {
+		font-size: 16px;
+	}
+	.landing .rewards-table thead tr th:last-of-type::before {
+		width: 36%;
+		margin-left: 0;
+		height: 385px;
+		margin-top: 97px;
+		right: 0;
+	}
+	.landing .rewards-table thead {
+		margin-bottom: 100px;
+	}
+	.landing .rewards-table > thead:nth-child(1) > tr:nth-child(1) > th:nth-child(3) > img:nth-child(1) {
+		width: 100px;
+	}
+	.landing .rewards-table tr th:nth-of-type(2), .rewards-table tr td:nth-of-type(2) {
+		padding-right: 35px;
+	}
+	.landing div.grid:nth-child(4) > div:nth-child(1) {
+		margin-right: initial;
+	}
+
+	/* Auto claim & stake */
+
+	.landing #effortless {
+		flex-direction: column;
+	}
+	.landing #effortless h2 {
+		max-width: 100%;
+	}
+	.landing #effortless > .grid-cell:first-of-type {
+		margin-right: 0;
+	}
+	.landing #effortless .border-right::before {
+	    margin-left: 46%;
+	}
+
+	.landing #fair {
+		flex-direction: column;
+		margin-bottom: 125px;
+	}
+	.landing #fair img {
+		max-width: 450px;
+		margin-left: auto;
+		margin-right: auto;
+		display: block;
+		float: none;
+		margin-top: 35px;
+		transform: initial;
+	}
+
+	/* Payments */
+
+	.landing #payments {
+		flex-direction: column;
+	}
+	.landing #payments img {
+		width: 100%;
+		margin-top: 0;
+		max-width: 500px;
+		margin-left: auto;
+		margin-right: auto;
+		display: block;
+	}
+
+	/* Swap and supply */
+
+	.landing #swap-supply > .grid-cell:last-of-type {
+		margin-top: 50px;
+	}
+	.landing #swap-supply > .grid-cell:last-of-type img {
+		width: 100%;
+		margin-left: 0;
+	}
+	.landing #swap-supply {
+		flex-direction: column;
+	}
+	.landing #swap-supply > .grid-cell:first-of-type {
+		margin-right: 0;
+	}
+
+	/* Governance */
+
+	.landing .coming-soon .glow img {
+		width: 200%;
+		margin-left: -73%;
+		margin-bottom: -230px;
+	}
+	.landing #governance h2 {
+		text-align: left;
+	}
+
+	/* Audit */
+
+	.landing #trustworthy {
+		flex-direction: column-reverse;
+	}
+	.landing #trustworthy img {
+		margin-top: 50px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	/* Coming soon */
+
+	.landing #coming-soon {
+		flex-direction: column;
+	}
+	.landing #coming-soon > .grid-cell:first-of-type {
+		margin-right: 0;
+		margin-bottom: 100px;
+	}
+
+	/* Call to actions */
+
+	.landing .call-to-actions {
+		flex-direction: column;
+	}
+	.call-to-actions .grid-cell {
+		margin-right: 0;
+	}
+
+	/* Footer */
+
+	footer > .grid {
+		flex-direction: column;
+	}
+	footer > .grid:last-of-type {
+		flex-direction: column-reverse;
+		margin-top: 15px;
+	}
+	.footer .social-links {
+		padding-left: 0;
+		margin-bottom: 15px;
+	}
+	footer ul.links.secondary {
+		margin-top: 0;
+	}
+	ul.links li .button {
+		margin-top: 5px;
+	}
+	footer ul.links {
+		text-align: center;
+	}
+	footer ul.links li {
+		margin: 0;
+		margin-top: 15px;
+		margin-bottom: 15px;
+		display: block;
+	}
+	footer .label,
+	footer ul.links li .button {
+		font-size: 14px;
+	}
+
+	/* ==========================================================================
+		Why specific styles (Layout styles: sizing, spacing, etc.)
+	========================================================================== */
+
+	/* Intro */
+
+	#why .hero {
+		margin-bottom: 200px;
+	}
+	#why #quote {
+		margin-bottom: 150px;
+	}
+	#why #intro {
+		flex-direction: column;
+	}
+	#why #intro > .grid-cell:first-of-type {
+		margin-right: 0;
+	}
+	#why #intro img {
+		position: relative;
+		width: 120%;
+		top: 0;
+		left: 0;
+		display: block;
+		height: 275px;
+		margin: 0;
+		margin-top: 50px;
+	}
+	#why #outperform {
+		flex-direction: column;
+	}
+	#why #outperform img {
+		margin-top: 35px;
+	}
+	#why #outperform > div:nth-child(1) {
+		max-width: 100%;
+	}
+	#why .quotes {
+		flex-direction: column;
+	}
+	#why .quotes .panel {
+		margin-right: 0;
+	}
+	#why #outperform h2 {
+		width: 100%;
+		min-width: initial;
+	}
+	#why #credits .grid-cell .p-reps {
+		flex-direction: column;
+	}
+	#why #credits .p-reps > .grid-cell {
+		margin-right: 0;
+	}
+
+	/* Quote */
+
+	#why #quote figure {
+		margin: 0;
+	}
+	#why #quote blockquote {
+		margin: 0;
+	}
+
+	/* Built on the ICON Network */
+
+	#why #icon-network h2 {
+		width: 100%;
+	}
+	#why #icon-network > .grid-cell:first-of-type {
+		margin-right: 0;
+	}
+	#why #icon-network .panel h3 {
+		font-size: 20px;
+	}
+	#why #icon-network .panel p {
+		font-size: 16px;
+	}
+	#why #icon-network .panel {
+		padding: 15px;
+		margin-right: 15px;
+	}
+	#why #icon-network #transaction-speed {
+		margin-bottom: 15px;
+		margin-top: 35px;
+	}
+
+	/* Outperform */
+
+	#outperform img {
+		width: 106%;
+		margin-left: -3%;
+		margin-top: 25px;
+	}
+
+	/* Maximise rewards */
+
+	#why #maximise-rewards > div:nth-child(1) {
+		max-width: 100%;
+	}
+	#why #maximise-rewards {
+		flex-direction: column;
+	}
+	#why #maximise-rewards h2 {
+		min-width: initial;
+		width: initial;
+	}
+	#why #maximise-rewards img {
+		width: 80%;
+		float: left;
+		left: 10%;
+		position: relative;
+	}
+
+	#why #credits h2 {
+		text-align: left;
+	}
+	#why #credits h2::after {
+		margin-left: initial;
+		margin-right: auto;
+	}
+
+	/* Why */
+
+	#why .future-direction {
+		width: 100%;
+		margin: 0;
+		margin-top: 50px;
+	}
+
+	/* ==========================================================================
+		How specific styles (Layout styles: sizing, spacing, etc.)
+	========================================================================== */
+
+	/* Hero */
+
+	#how .hero {
+		margin-bottom: 25px;	
+	}
+	#how .hero p {
+		max-width: 100%;
+	}
+	#how .hero-image {
+		position: relative;
+		top: 0;
+		left: 0;
+		width: 125%;
+		margin-left: 0;
+	}
+	#how .hero .bubble-3 {
+		margin-left: -50px;
+		margin-top: -400px;
+		width: 120px;
+	}
+
+	/* Get started */
+
+	#how #get-started p {
+		text-align: left;
+	}
+
+	/* Step */
+
+	#how .step {
+		margin-top: 125px;
+		flex-direction: column;
+	}
+	#how .step video {
+		width: 100%;
+		margin-top: 25px;
+	}
+	#how #claim-and-stake img {
+		width: 100%;
+	}
+
+	/* Payments */
+
+	#how #monitor-and-adjust video {
+		width: 100%;
+		margin: 0;
+	}
+	#how .video-tooltips {
+		display: none;
+	}
+
+	/* Payments */
+
+	#how div.grid:nth-child(4) {
+		flex-direction: column;
+	}
+
+	#how #supply-liquidity video {
+		width: 100%;
+	}
+
+	/* ==========================================================================
+		Airdrip specific styles (Layout styles: sizing, spacing, etc.)
+	========================================================================== */
+
+	/* Hero */
+
+	#airdrip-controls h3 {
+		font-size: 16px;
+	}
+	#airdrip-controls p {
+		font-size: 16px;
+	}
+	#airdrip-controls .border-right {
+		max-width: 140px;
+	}
+
+	/* Background */
+
+	#airdrip #hero-background {
+		height: 685px;
+	}
+
+	/* How to catch? */
+
+	#airdrip #how-to-catch h2 {
+		text-align: left;
+	}
+	#airdrip #how-to-catch h2::after {
+		margin-left: initial;
+	}
+	#airdrip #how-to-catch > .grid {
+		flex-direction: column;
+	}
+	#airdrip #how-to-catch .panel:first-of-type {
+		margin-right: 0;
+	}
+
+	/* What are? */
+
+	#airdrip #what-are-balance-tokens > .grid {
+		flex-direction: column-reverse;
+	}
+	#airdrip #what-are-balance-tokens img {
+		top: -200px;
+		opacity: 0.25;
+		left: initial;
+		right: 0;
+	}
+
+	/* Want more? */
+
+	#airdrip #want-more {
+
+	}
+	#airdrip #want-more h2 {
+		text-align: left;
+	}
+	#airdrip #want-more h2::after {
+		margin-left: initial;
+	}
+
+	/* More how? */
+
+	#airdrip #more-how > .grid {
+		flex-direction: column;
+	}
+	#airdrip #more-how .grid-cell {
+		margin-right: 0;
+	}
+
+	/* ==========================================================================
+		Brand resources specific styles (Layout styles: sizing, spacing, etc.)
+	========================================================================== */
+
+	/* Hero */
+
+	#brand .hero {
+		flex-direction: column;
+	}
+	#brand .hero .panel {
+		margin-top: 25px;
+		margin-bottom: 0;
+	}
+	#brand .hero img {
+		width: 450px;
+	}
+	#brand .hero h2 {
+		font-size: 30px;
+	}
+	#brand #branding-kit img {
+		max-width: 100%;
+		width: 100%;
+		margin-top: 25px;
+	}
+	#brand section.feature > .grid-cell:last-of-type {
+		width: 100%;
+		margin-top: 25px;
+	}
+	#brand section {
+		margin-bottom: 100px;
+	}
+	#brand section.feature.logo > .grid-cell:last-of-type {
+		margin-top: 0;
+	}
+	#brand section.logo > .grid-cell:last-of-type img {
+		margin-top: 0;
+	}
+	#brand section.feature.logo > .grid-cell:last-of-type > .grid > .grid-cell:first-of-type,
+	#brand section.grid:nth-child(3) > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) {
+		width: 50%;
+	}
+
+	/* Logo */
+
+	#brand .feature.logo {
+		flex-direction: column;
+	}
+
+	/* Design system */
+
+	#brand .feature.design-system {
+		flex-direction: column;
+	}
+
+	/* Typography */
+
+	#brand .feature.typography {
+		flex-direction: column;
+	}
+
+	/* Other */
+
+	#brand section.feature > .grid-cell:last-of-type > .grid > .grid-cell:first-of-type {
+		margin-right: 50px;
+	}
+	#brand section.grid:nth-child(3) > div:nth-child(1) {
+		margin-bottom: 25px;
+	}
+	#brand section.feature > .grid-cell:last-of-type {
+		margin-left: 0;
+	}
+	#brand section.logo > .grid-cell:last-of-type img {
+		width: initial;
+		margin-left: 10%;
+		margin-top: 0;
+		height: 115px;
+	}
+
+	/* ==========================================================================
+		Stablecoin loan
+	========================================================================== */
+
+	/* Tracked on / Utilised by */
+
+	#tracked-utilised {
+		flex-direction: column;
+	}
+	#tracked-utilised > .grid-cell:first-of-type .panel {
+		margin-right: 0;
+	}
+	#tracked-utilised .grid.panel {
+
+	}
+	#tracked-utilised > .grid-cell:first-of-type .panel {
+		
+	}
+
+	#cheap-expensive {
+		flex-direction: column;
+	}
+
+	/* Why Borrow */
+
+	#loan #why-borrow h2 {
+		margin-bottom: 50px;
+		text-align: left;
+	}
+	#loan #why-borrow img {
+		max-width: 75%;
+	}
+	#loan #why-borrow .feature {
+		flex-direction: column-reverse;
+		align-items: initial;
+	}
+	#loan #why-borrow .feature > .grid-cell:last-of-type {
+		margin-left: 0;
+	}
+	#loan #why-borrow .feature > .grid-cell:first-of-type {
+		margin-right: 0;
+	}
+	#loan #why-borrow .feature > .grid-cell:last-of-type {
+		margin-bottom: 25px;
+	}
+
+	/* Terms and conditions */
+
+	#loan #terms h2 {
+		text-align: center;
+		margin-left: auto;
+		margin-right: auto;
+		max-width: 300px;
+	}
+	#loan #terms > .grid-cell >.grid {
+		flex-direction: column;
+	}
+
+	/* Open your stablecoin loan */
+
+	#open-loan .steps {
+		flex-direction: column;
+	}
+	#loan #open-loan .steps > .grid-cell {
+
+	}
+
+}
+
+/* 600px and below */
+
+@media (max-width: 600px) {
+
+	/* ==========================================================================
+		Modules: 600px and below
+	========================================================================== */	
+
+	h2 {
+		font-size: 38px;
+		line-height: 1.3;
+	}
+
+	/* ==========================================================================
+		Landing: 600px and below
+	========================================================================== */
+
+	.header .logo {
+		width: 80px;
+	}
+	.landing .hero .bubble-1 {
+		margin-left: 170px;
+		margin-top: -475px;
+	}
+
+	/* Intro */
+
+	.landing #intro {
+		margin-bottom: 150px;
+	}
+	.landing #intro h2 {
+		max-width: 100%;
+	}
+	.landing #intro > .grid-cell:first-of-type {
+		min-width: initial;
+		margin-right: 0;
+	}
+	.landing #intro figure {
+		height: 300px;
+		margin-bottom: 25px;
+	}
+	.landing #intro .swirl {
+		margin-top: 1575px;
+		margin-left: 75px;
+	}
+
+	/* TL;DR */
+
+	.landing .tldr .grid-cell:last-of-type {
+		margin-bottom: 0;
+	}
+
+	/* Rewards */
+
+	.landing .rewards {
+		max-width: 100%;
+		margin-bottom: 135px;
+	}
+	.landing .rewards h2 {
+		max-width: 100%;
+		margin-bottom: 25px;
+	}
+	.landing .rewards-table {
+		margin-bottom: 25px;
+	}
+	.landing .rewards-table th img {
+		margin-bottom: 25px;
+	}
+	.landing .rewards-table > thead:nth-child(1) > tr:nth-child(1) > th:nth-child(3) > img:nth-child(1) {
+		width: 100px;
+	}
+	.landing .rewards > .grid-cell:first-of-type {
+		min-width: initial;
+	}
+	.landing .rewards-table thead tr th:last-of-type::before {
+		width: 36%;
+		margin-left: 0;
+		height: 385px;
+		margin-top: 97px;
+		right: 0;
+	}
+
+	/* Effortless */
+
+	.landing #effortless {
+		flex-direction: column;
+		margin-bottom: 125px;
+	}
+	.landing #effortless > div:nth-child(1) > h2:nth-child(1) {
+		max-width: 280px;
+	}
+	.landing #effortless .border-right::before {
+		margin-top: 50px;
+	}
+	.landing #effortless > .grid-cell:first-of-type {
+		margin-right: 0;
+	}
+	.landing #effortless .border-right::before {
+	    margin-left: 43%;
+	}
+	.landing #effortless .panel > p {
+		margin-top: 15px;
+	}
+	.landing #effortless > .grid-cell:first-of-type img {
+		width: 60px;
+	}
+	.landing #effortless > .grid-cell:last-of-type img {
+		height: 55px;
+	}
+
+	/* Trustworthy */
+
+	.landing #trustworthy {
+		margin-bottom: 200px;
+	}
+	.landing .trustworthy-background {
+		height: 500px;
+		width: 500%;
+		margin-top: -550px;
+		margin-left: -50%;
+	}
+	.landing #trustworthy img {
+		width: 250px;
+	}
+
+	/* Payments */
+
+	.landing #payments {
+		flex-direction: column;
+	}
+	.landing #payments img {
+		width: 100%;
+		margin-top: 25px;
+	}
+
+	.landing #swap-supply {
+		flex-direction: column;
+	}
+	.landing #swap-supply > .grid-cell:first-of-type {
+		margin-right: 0;
+	}
+
+	/* Fair */
+
+	.landing #fair {
+		flex-direction: column;
+		margin-bottom: 125px;
+	}
+	.landing #fair img {
+		max-width: 100%;
+	}
+
+	/* Coming soon */
+
+	.landing .coming-soon {
+		margin-bottom: 200px;
+	}
+
+	/* ==========================================================================
+		Why Balanced: 600px and below
+	========================================================================== */
+
+	#why .hero img {
+		margin-top: 0px;
+		width: 400px;
+	}
+	#why #intro img {
+		position: relative;
+		width: 175%;
+		display: block;
+		top: 0;
+		left: 0;
+		height: 290px;
+		margin-top: 0;
+	}
+
+	#why .quotes {
+		margin-top: 25px;
+	}
+	#why .quotes .panel {
+		margin-bottom: 25px;
+	}
+	#why .quotes + .quotes {
+		margin-top: 0;
+	}
+	#why #maximise-rewards img {
+		width: 100%;
+		left: 0;
+		margin-top: 50px;
+		margin-left: 0;
+	}
+	#why .future-direction {
+		margin-top: 35px;
+		width: 100%;
+		margin-left: initial;
+	}
+	#why #outperform img {
+		width: 105%;
+		margin-top: 35px;
+		margin-left: 0;
+	}
+
+	/* ==========================================================================
+		How it works: 600px and below
+	========================================================================== */
+
+	#how .hero-image {
+		width: 125%;
+		top: 0;
+		left: 0;
+		position: relative;
+		margin-bottom: -35px;
+	}
+
+	/* Hero */
+
+	#how .hero {
+		margin-top: 75px;
+		margin-bottom: 35px;
+	}
+	#how .hero-image {
+		max-width: 100%;
+		margin-bottom: 0;
+	}
+	#how .hero .bubble-1 {
+		margin-top: -50px;
+		margin-left: 315px;
+	}
+	#how .hero .bubble-2 {
+		margin-top: -300px;
+		margin-left: -90px;
+		width: 100px;
+	}
+	#how .hero .bubble-3 {
+		margin-left: 150px;
+		margin-top: -405px;
+		width: 80px;
+	}
+
+	/* Get started */
+
+	#how #get-started p {
+		text-align: left;
+	}
+
+	/* Claim and stake */
+
+	#how #claim-and-stake img {
+		margin-top: 35px;
+	}
+
+	/* Monitor and adjust */
+
+	#how #monitor-and-adjust video {
+		width: 180%;
+		margin: 0;
+		margin-left: -70%;
+		margin-top: 25px;
+		margin-bottom: 25px;
+	}
+
+	/* View and manage */
+
+	#how #view-and-manage img {
+		width: 100%;
+		margin: 0;
+		margin-top: 25px;
+	}
+	#how #swap-assets img {
+		width: 100%;
+	}
+	#how #return-assets img {
+		width: 100%;
+	}
+	#how #supply-liquidity video {
+		width: 250%;
+	}
+	#how #liquidate img {
+		width: 250px;
+	}
+
+	/* ==========================================================================
+		Brand: 600px and below
+	========================================================================== */
+
+	/* Typography */
+
+	#brand section.grid:nth-child(3) > div:nth-child(2) > div:nth-child(1) {
+
+	}
+	#brand section.feature > .grid-cell:last-of-type > .grid > .grid-cell:first-of-type {
+		margin-right: 0;
+		margin-bottom: 25px;
+	}
+	#brand section.feature > .grid-cell:last-of-type {
+		width: 100%;
+	}
+
+	/* ==========================================================================
+		Airdrip: 600px and below
+	========================================================================== */
+
+	#airdrip #hero-background {
+		height: 100%;
+	}
+	#airdrip-controls > div:nth-child(1) {
+		flex-direction: column;
+	}
+	#airdrip-controls > div:nth-child(1) > div:nth-child(1) {
+		border-right: none;
+		margin-bottom: 0;
+		padding-bottom: 0;
+	}
+
+	/* ==========================================================================
+		Statisitcs: 600px and below
+	========================================================================== */
+
+	#statistics .overview > div:nth-child(1) > div:nth-child(1),
+	#statistics #governance > div:nth-child(1) > div:nth-child(2) {
+		flex-wrap: wrap;
+	}
+	#statistics .overview > .grid-cell > .grid > .grid-cell,
+	#statistics #governance > .grid-cell > .grid > .grid-cell {
+		padding: 15px;
+		border: none;
+	}
+
+	/* ==========================================================================
+		Error: 600px and below
+	========================================================================== */
+
+	#page-not-found > .grid {
+		height: initial;
+		margin-top: 75px;
+	}
+	#page-not-found .question {
+		position: absolute;
+		width: 85px;
+		margin-left: 106px;
+		margin-top: 77px;
+	}
+	#page-not-found h1 + p {
+		max-width: 240px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+}
+
+/* 550px and below */
+
+@media (max-width: 550px) {
+
+	.landing .rewards-table thead tr th:last-of-type::before {
+		height: 430px;
+	}
+
+}
+
+/* 500px and below */
+
+@media (max-width: 500px) {
+
+	.landing .rewards-table thead tr th:last-of-type::before {
+		height: 450px;
+	}
+	.landing .coming-soon .glow img {
+		margin-bottom: -105px;
+		margin-left: -67%;
+	}
+}
+
+/* 430px and below */
+
+@media (max-width: 430px) {
+
+	.landing .rewards-table thead tr th:last-of-type::before {
+		height: 475px;
+	}
+
+}
+
+/* 400px and below */
+
+@media (max-width: 400px) {
+
+	/* ==========================================================================
+		Modules: 400px and below
+	========================================================================== */
+
+	/* HTML elements */
+
+	h1 {
+		font-size: 40px;
+	}
+
+	/* Footer */
+
+	.footer .social-links {
+		text-align: center;
+	}
+	.footer .social-links li {
+		margin: 0 9px !important;
+		margin-bottom: 10px !important;
+	}
+
+	/* ==========================================================================
+		Landing: 400px and below
+	========================================================================== */
+
+	/* Hero */
+
+	.landing .hero-image {
+		margin-top: 10px;
+		margin-bottom: 0;
+	}
+	.landing .hero .bubble-3 {
+		margin-left: 70%;
+		margin-top: 70px;
+		width: 100px;
+	}
+
+	/* Intro */
+
+	.landing #intro figure {
+		margin-bottom: 25px;
+		width: 300px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	/* Balanced rewards */
+
+	.landing .rewards h2 {
+		margin-bottom: 50px;
+	}
+	.rewards-table th img {
+		margin-bottom: 0;
+	}
+	.landing .rewards-table thead tr th:last-of-type::before {
+		height: 585px;
+		margin-top: -25px;
+		width: 130px;
+	}
+
+	/* ==========================================================================
+		Error: 400px and below
+	========================================================================== */
+
+	#page-not-found > .grid {
+		height: initial;
+		margin-top: 75px;
+	}
+	#page-not-found .question {
+		position: absolute;
+		width: 85px;
+		margin-left: 88px;
+		margin-top: 58px;
+	}
+	#page-not-found h1 + p {
+		max-width: 240px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	/* ==========================================================================
+		Statistics: 400px and below
+	========================================================================== */
+
+	#statistics .overview > .grid-cell > .grid > .grid-cell {
+		padding: 10px;
+	}
+
+}

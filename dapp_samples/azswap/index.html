@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<!-- saved from url=(0018)https://azswap.io/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#000000"><meta name="description" content="Web site created using create-react-app"><link rel="apple-touch-icon" href="https://azswap.io/favicon.ico?v=2"><!--link rel="manifest" href="https://azswap.io/manifest.json"--><link rel="stylesheet" href="./azswap_files/default.css"><link rel="stylesheet" href="./azswap_files/layout.css"><link rel="stylesheet" href="./azswap_files/media-queries.css"><link rel="stylesheet" href="./azswap_files/magnific-popup.css"><title>AZ Swap</title><script defer="defer" src="./azswap_files/main.1c872374.js"></script><link href="./azswap_files/main.b91af698.css" rel="stylesheet"><style></style><style>.flexible-modal {
+  position: absolute;
+  z-index: 1;
+  border: 1px solid #ccc;
+  background: white;
+}
+
+/* Animation */
+
+.modal-anim-enter {
+  opacity: 0.00;
+  transform: scale(0.7);
+  transition: all 0.2s;
+}
+
+.modal-anim-enter.modal-anim-enter-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.modal-anim-leave {
+  opacity: 1;
+  transform: scale(1);
+  transition: all 0.2s;
+}
+
+.modal-anim-leave.modal-anim-leave-active {
+  opacity: 0.00;
+  transform: scale(0.7);
+}
+
+.flexible-modal-mask {
+  position: fixed;
+  height: 100%;
+  background: rgba(55, 55, 55, 0.6);
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+}
+
+.flexible-modal-resizer {
+  position:absolute;
+  right:0;
+  bottom:0;
+  cursor:se-resize;
+  margin:5px;
+  border-bottom: solid 2px #333;
+  border-right: solid 2px #333;
+}
+
+.flexible-modal-drag-area{
+  background: rgba(22, 22, 333, 0.2);
+  height: 50px;
+  position:absolute;
+  right:0;
+  top:0;
+  cursor:move;
+}
+
+.flexible-modal-rebound-btn{
+    position: absolute;
+    z-index: 1000;
+    bottom: 0;
+    width: 50px;
+    height: 30px;
+}
+
+.flexible-modal-hidden{
+    position: absolute;
+    z-index: 1;
+    border: 1px solid #ccc;
+    background: white;
+    animation-fill-mode: forwards;
+    -webkit-animation-name: modalHidden; /* Safari 4.0 - 8.0 */
+    -webkit-animation-duration: 1s; /* Safari 4.0 - 8.0 */
+    animation-name: modalHidden;
+    animation-duration: 1s;
+}
+
+.flexible-modal-rebound-btn-hidden{
+    display: none
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes modalHidden {
+    from   {}
+    to  {left:0; top:800px; width: 50px; visibility: hidden}
+}
+
+/* Standard syntax */
+@keyframes modalHidden {
+    from   {}
+    to  {left:0; top:800px; width: 50px; visibility: hidden}
+}
+
+.minimise-enter {
+    opacity: 0.01;
+    transform: scale(0.9) translateY(50%);
+}
+.minimise-enter-active {
+    opacity: 1;
+    transform: scale(1) translateY(0%);
+    transition: all 300ms ease-out;
+}
+.minimise-exit {
+    opacity: 1;
+    transform: scale(1) translateY(0%);
+}
+.minimise-exit-active {
+    opacity: 0.01;
+    transform: scale(0.9) translateY(50%);
+    transition: all 300ms ease-out;
+}</style><link rel="shortcut icon" href="https://azswap.io/logo192.png" data-react-helmet="true"><link rel="icon" href="https://azswap.io/logo192.png" data-react-helmet="true"></head><body style="width: 1188px;"><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"><div><div class="App"><header id="home" style="height: 964px;"><canvas class="particles-bg-canvas-self" width="1188" height="964" style="width: 100%; height: 100%; position: absolute; z-index: -1; top: 0px; left: 0px; background-color: black;"></canvas><div class="row banner"><div class="banner-text"><h1 id="logoInput" class="react-reveal" style="animation-fill-mode: both; animation-duration: 1000ms; animation-delay: 0ms; animation-iteration-count: 1; opacity: 1; animation-name: react-reveal-397242480826463-1;">AZ Swap</h1><h3 class="react-reveal" style="animation-fill-mode: both; animation-duration: 1000ms; animation-delay: 0ms; animation-iteration-count: 1; opacity: 1; animation-name: react-reveal-397242480826463-1;">The idea behind AZSwap.io is the more efficient use of capital in AMM-based pools (strategies). Liquidity providers collect rewards on assets locked in pools and extra yield farming rewards in AZSwap tokens.</h3><ul class="react-reveal social" style="animation-fill-mode: both; animation-duration: 1000ms; animation-delay: 0ms; animation-iteration-count: 1; opacity: 1; animation-name: react-reveal-397242480826463-1;"><a class="button btn project-btn">Swap For Free</a></ul></div></div><!--a href="https://azswap.io/#" class="react-reveal" style="animation-fill-mode: both; animation-duration: 1000ms; animation-delay: 0ms; animation-iteration-count: 1; opacity: 1; animation-name: react-reveal-397242480826463-1;"><div class="topCorner "--><img width="100px" src="./azswap_files/0fees.png"></div><div class="bottomLeftCorner"><img width="50px" src="./azswap_files/openzeppelin.png"><img width="50px" src="./azswap_files/certik.png"><p>Audit By Certik</p></div><div class="bottomLeftCorner2"><p>Audit By OpenZeppelin</p></div><div class="bottomRightCorner2"><img width="20px" src="data:image/png;base64,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" style="margin: 5px;"><img width="20px" src="data:image/png;base64,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" style="margin: 5px;"><img width="20px" src="data:image/png;base64,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" style="margin: 5px;"><img width="20px" src="https://azswap.io/" style="margin: 5px;"></div><div class="bottomRightCorner"><p>2022 Copyright AZSwap. All rights reserved!</p><br></div></a><div></div></header></div></div></div><script src="./azswap_files/jquery.min.js"></script><script>window.jQuery||document.write('<script src="js/jquery-1.10.2.min.js"><\/script>')</script><script type="text/javascript" src="./azswap_files/jquery-migrate-1.2.1.min.js"></script><script src="./azswap_files/jquery.flexslider.js"></script><script src="./azswap_files/waypoints.js"></script><script src="./azswap_files/jquery.fittext.js"></script><script src="./azswap_files/magnific-popup.js"></script><script src="./azswap_files/init.js"></script></body></html>

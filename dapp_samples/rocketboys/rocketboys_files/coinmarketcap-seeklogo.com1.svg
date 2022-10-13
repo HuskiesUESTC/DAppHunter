@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="295"
+   height="295"
+   viewBox="0 0 295 295"
+   version="1.1"
+   id="svg108"
+   sodipodi:docname="coinmarketcap-seeklogo.com1.svg"
+   inkscape:version="1.1.1 (eb90963e84, 2021-10-02)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <metadata
+     id="metadata114">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs112" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1848"
+     inkscape:window-height="1016"
+     id="namedview110"
+     showgrid="false"
+     inkscape:zoom="1.0043313"
+     inkscape:cx="-14.437466"
+     inkscape:cy="144.87251"
+     inkscape:window-x="1512"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="coingecko"
+     inkscape:pagecheckerboard="0" />
+  <g
+     id="coingecko"
+     transform="translate(9.499 10.501)"
+     fill="#008a81">
+    <path
+       class="st0"
+       d="m 243.6862,166.29807 c -5.02221,2.98679 -11.049,3.98098 -15.06675,0.99679 -6.02678,-2.98678 -9.04037,-10.94854 -9.04037,-20.9013 v -31.84965 c 0,-14.929236 -6.02677,-25.877386 -16.07117,-28.863471 -17.07587,-4.976378 -30.13389,15.924931 -35.15621,23.887091 l -30.1339,48.76958 V 98.619384 c 0,-13.93434 -5.02221,-21.896405 -13.05801,-23.887096 -6.02679,-1.989994 -14.06269,-0.996887 -22.0981,10.948151 L 35.76255,193.17235 C 26.72218,176.25242 21.69997,157.34171 21.69997,137.436 c 0,-64.694501 52.23199,-117.445059 116.51783,-117.445059 64.28555,0 116.5175,53.745953 116.5175,118.440059 v 0 0 c 1.00596,12.93893 -3.0144,22.89209 -11.0491,27.86857 z m 37.16524,-27.86857 v 0 0 c 0,-79.623331 -64.28555,-143.3225361 -142.63364,-143.3225361 -78.348125,0 -142.63397,64.6945001 -142.63397,143.3225361 0,78.62844 64.285845,143.32254 142.63397,143.32254 36.16068,0 70.31228,-13.93383 97.43299,-38.81632 5.02222,-4.97638 6.02679,-12.93894 1.00608,-18.91072 -5.02273,-4.97637 -13.05813,-5.97177 -18.08034,-0.99678 v 0 c -21.09389,19.90601 -50.22332,31.84956 -79.35265,31.84956 -34.15206,0 -65.29001,-14.92964 -87.3885,-38.81673 l 61.27235,-97.53865 v 44.78809 c 0,21.8963 8.03581,28.86348 15.06715,30.85416 7.03084,1.99 18.08034,0.99689 29.12933,-17.91532 l 33.14709,-53.74595 c 1.00607,-1.98989 2.00832,-2.98678 3.01429,-4.97637 v 26.87277 c 0,19.90601 8.03591,35.83064 22.09846,43.7931 13.05771,6.96717 29.12933,6.96717 42.18745,-1.98989 16.07131,-6.96717 24.10711,-25.87788 23.10255,-47.77419 z"
+       id="path11"
+       style="stroke-width:9.99867;fill:#ffffff"
+       sodipodi:nodetypes="ccsscccscccssscsccccssssccsssccsscccscccc" />
+  </g>
+  <style
+     type="text/css"
+     id="style9">
+		.st0 {
+			fill-rule: evenodd;
+			clip-rule: evenodd;
+		}
+	</style>
+</svg>
