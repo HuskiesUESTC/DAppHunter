@@ -2,6 +2,8 @@ import time
 
 from util.environment import EnvKey, env
 
+INTENTIONS = ['approve', 'swap', 'withdraw', 'deposit', 'claim', 'mint', 'transfer']
+
 
 def err_msg(msg: str):
     def wrapper(func):
@@ -21,14 +23,17 @@ def has_error(data: {}) -> bool:
 
 
 def analyze():
+    print(env.data)
+    intention_path = env.get(EnvKey.INTENTION_PATH, [])
+    for intention in intention_path:
+        if intention in INTENTIONS:
+            env.set(EnvKey.TX_TYPE, intention)
     page_state = analyze_page_state()
     wallet_state = analyze_wallet_state()
     blockchain_state = analyze_blockchain_state()
     print("page state: ", page_state)
     print("wallet state: ", wallet_state)
     print("blockchain state: ", blockchain_state)
-
-    print(env.data)
 
     if any(map(lambda state: has_error(state), [page_state, wallet_state, blockchain_state])):
         print('States parse error!')
@@ -90,13 +95,13 @@ def analyze():
 def analyze_page_state():
     # 获取当前环境变量
     chain_type = env.get(EnvKey.CHAIN_TYPE, 'bnb')
-    tx_type = env.get(EnvKey.TX_TYPE, 'swap')
+    tx_type = env.get(EnvKey.TX_TYPE, '')
     retry_count = 20
     cur_count = 0
     while cur_count < retry_count:
         page_state = env.get(EnvKey.PAGE_STATE, {})
         # 根据交易类型，获取相关交易信息
-        if tx_type in ['swap']:
+        if tx_type == 'swap':
             currencies = page_state.get('currency', [])
             from_currency = 'ETH' if currencies[0].lower() == chain_type.lower() else currencies[0].upper()
             amounts = page_state.get('amount', [])
@@ -111,6 +116,22 @@ def analyze_page_state():
                         'amount': int(float(amounts[1]) * (10 ** 18))
                     }
                 }
+        elif tx_type == 'approve':
+            currencies = page_state.get('currency', [])
+            currency = currencies[0].upper() if currencies else ''
+            amounts = page_state.get('amount', [])
+            amount = amounts[0] if amounts else ''
+            spender = 'unknown'
+            return {
+                'type': 'approve',
+                'currency': currency,
+                'amount': amount,
+                'spender': 'unknown'
+            }
+        elif tx_type == 'transfer':
+            pass
+        elif tx_type == 'mint':
+            pass
         time.sleep(1)
         cur_count += 1
     return {}
@@ -119,26 +140,26 @@ def analyze_page_state():
 def analyze_wallet_state():
     retry_count = 20
     cur_count = 0
-    while cur_count < retry_count:
-        wallet_state = env.get(EnvKey.WALLET_STATE, {})
-        if 'transaction' in wallet_state:
-            tx_info = wallet_state['transaction']
-            return {
-                'from': {
-                    'currency': tx_info['asset_out'],
-                    'amount': int(tx_info['amount_out'] * (10 ** 18)),
-                    'address': tx_info['depositor'],
-                },
-                'to': {
-                    'currency': tx_info['asset_in'],
-                    'amount': int(tx_info['amount_in'] * (10 ** 18)),
-                    'address': tx_info['sender']
-                }
-            }
-        elif wallet_state.get('has_error', False):
-            return {'has_error': True}
-        time.sleep(1)
-        cur_count += 1
+    # while cur_count < retry_count:
+    #     wallet_state = env.get(EnvKey.WALLET_STATE, {})
+    #     if 'transaction' in wallet_state:
+    #         tx_info = wallet_state['transaction']
+    #         return {
+    #             'from': {
+    #                 'currency': tx_info['asset_out'],
+    #                 'amount': int(tx_info['amount_out'] * (10 ** 18)),
+    #                 'address': tx_info['depositor'],
+    #             },
+    #             'to': {
+    #                 'currency': tx_info['asset_in'],
+    #                 'amount': int(tx_info['amount_in'] * (10 ** 18)),
+    #                 'address': tx_info['sender']
+    #             }
+    #         }
+    #     elif wallet_state.get('has_error', False):
+    #         return {'has_error': True}
+    #     time.sleep(1)
+    #     cur_count += 1
     return {}
 
 
@@ -162,6 +183,13 @@ def analyze_blockchain_state():
             }
             if blockchain_state['method_name'] in ['swapETHForExactTokens']:
                 result['to']['amount'] = blockchain_state['params'][0]['uint256']
+            if blockchain_state['method_name'] == 'transfer':
+                result = {
+                    'type': 'transfer',
+                    'from': blockchain_state['from'],
+                    'to': blockchain_state['to'],
+                    'value': blockchain_state['value']
+                }
             return result
         time.sleep(1)
         cur_count += 1

@@ -44,6 +44,9 @@ class Parser:
             # 判断是否满足当前关系成立的条件
             execute_real_step_result = self.execute_real_step(cur_node)
             if execute_real_step_result:
+                intention_path = env.get(EnvKey.INTENTION_PATH, [])
+                intention_path.append(cur_node.get('name'))
+                env.set(EnvKey.INTENTION_PATH, intention_path)
                 current_detect_node = cur_node
                 current_detect_status = True
                 break
@@ -226,8 +229,13 @@ class Parser:
                                                                                                           sort)
         # 根据operation类型进行相关处理
         if operation == 'exist':
-            keywords = self.get_exist_keywords(node.get('extra_data', 'account'))
-            result = keywords and self.execute_exist(keywords, node)
+            key = node.get('extra_data', 'account')
+            if key == 'account':
+                account = self.driver.execute_script('return window.ethereum.selectedAddress')
+                result = account is not None
+            else:
+                keywords = self.get_exist_keywords(node.get('extra_data', 'account'))
+                result = keywords and self.execute_exist(keywords, node)
         elif operation == 'click':
             result = len(executable_elements) > 0 and self.execute_click(executable_elements, node)
         elif operation == 'input':
@@ -242,6 +250,8 @@ class Parser:
     def execute_click(self, element_info_list: [{}], node: Node) -> bool:
         # 执行之前记录页面html
         self.chrome.record_page_html()
+        # 记录窗口数量
+        self.chrome.record_window_handles()
 
         def find_suitable_element(cur_executable_element, cur_xpath):
             if cur_xpath.endswith('/button') or '/button/' not in cur_xpath:
@@ -282,6 +292,11 @@ class Parser:
                 wait_time = node.get('wait-time', config['dapp']['wait-time'])
                 retry_count = 0
                 value = None
+                disabled = executable_element.get_attribute('disabled')
+                if disabled:
+                    placeholder = executable_element.get_attribute('placeholder')
+                    if placeholder:
+                        value = placeholder
                 while retry_count < wait_time and not value:
                     value = executable_element.get_attribute('value')
                     if not value or value in ['0', '0.0']:
@@ -293,7 +308,11 @@ class Parser:
             else:
                 result += list(html_element.itertext())
         page_state = env.get(EnvKey.PAGE_STATE, {})
-        page_state[key] = result
+        stripped = []
+        for r in result:
+            if r.strip():
+                stripped.append(r.strip())
+        page_state[key] = stripped
         env.set(EnvKey.PAGE_STATE, page_state)
         return True
 

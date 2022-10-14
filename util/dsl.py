@@ -40,8 +40,8 @@ def parse_single_intention(intention_file_path: str) -> {}:
         'name': intention_data['name'],
         'actions': intention_data['actions'],
         'action_paths': action_paths,
-        'pre_requirements': intention_data['pre-requirements'],
-        'after_requirements': intention_data['after-requirements'],
+        'pre_requirements': intention_data.get('pre-requirements', ''),
+        'after_requirements': intention_data.get('after-requirements', ''),
         'bias': intention_data['bias']
     }
 
@@ -231,6 +231,7 @@ def load_graph_from_pattern():
     except RuntimeError as err:
         print(err)
         graph.rollback(tx)
+    print('Training case loaded')
 
 
 if __name__ == '__main__':

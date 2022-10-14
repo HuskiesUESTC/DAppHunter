@@ -2,6 +2,7 @@ import enum
 
 
 class EnvKey(enum.Enum):
+    INTENTION_PATH = 'intention_path'
     PAGE_STATE = 'front_end_page_state',
     WALLET_STATE = 'wallet_state'
     BLOCKCHAIN_STATE = 'blockchain_state'

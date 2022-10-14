@@ -24,6 +24,7 @@ class Chrome:
     def __init__(self):
         self._url = None
         self._recent_page_html = None
+        self._recent_window_handles = None
         # 配置selenium自动化测试框架
         options = webdriver.ChromeOptions()
         options.add_argument('--user-data-dir=' + config['chrome']['profile']['dir'])
@@ -106,8 +107,8 @@ class Chrome:
 
         # 按照相似度进行排序并返回
         return sorted([change_similarity(item) for item in suitable_elements],
-                        key=functools.cmp_to_key(sort),
-                        reverse=reverse)
+                      key=functools.cmp_to_key(sort),
+                      reverse=reverse)
 
     # 获取指定xpath的可执行元素
     def get_target_executable_elements_by_xpath(self, xpath: str) -> ([{}], bool):
@@ -122,7 +123,6 @@ class Chrome:
     def get_target_executable_elements_by_keywords(self, keywords: [str], tags: [str], sort: str = 'asc') -> (
             [{}], bool):
         def _get_current_page_target_executable_elements():
-
             def __convert_element(item):
                 item['web_element'] = self.get_executable_element(item['xpath'])
                 return item
@@ -306,9 +306,12 @@ class Chrome:
     def record_page_html(self):
         self._recent_page_html = self.html
 
+    def record_window_handles(self):
+        self._recent_window_handles = self.driver.window_handles
+
     @property
     def is_page_change(self):
-        return self.html != self._recent_page_html
+        return self.html != self._recent_page_html or len(self.driver.window_handles) != len(self._recent_window_handles)
 
     @property
     def html(self):

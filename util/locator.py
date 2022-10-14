@@ -142,7 +142,7 @@ def match_attr_constraint(element: _Element, keyword_stem_word_list: [list]) -> 
 HARD_CONSTRAINTS = [
     skip_tags_constraint,
     limit_text_length_constraint,
-    skip_url_attr_tag_constraint,
+    # skip_url_attr_tag_constraint,
 ]
 
 SOFT_CONSTRAINTS = {
