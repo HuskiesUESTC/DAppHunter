@@ -1,4 +1,5 @@
-# DAppHunter deployment
+# DAppHunter
+This is the repo of DAppHunter, which is a prototype system for identifying inconsistent behaviors of DApps. We will clean up the code, and make a demo video as soon as possible.
 
 ---
 
