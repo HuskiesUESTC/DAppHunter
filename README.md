@@ -2,30 +2,44 @@
 
 ---
 
-### 1. install the Python dependencies
+### 1. Install the Python dependencies
+`pip3 install -r requirements.txt`
 
-### 2. install ganache
+### 2. Install ganache and fork the Ethereum Mainnet and BSC Mainnet as the local node
+Install ganache
 
-### 3. compile and install the crafted MetaMask
+`npm install ganache --global`
 
-- 在Chrome地址栏中，输入chrome://version
-- 在个人资料路径一行，可得到Chrome配置文件所在路径 ，例如：
+Fork the mainnet and unlock the big whale accounts, you can also unlock your account here
+
+`ganache --chain.chainId 1 --f your fork rpc provider --verbose --unlock 0x686667d62d19d1e259aFf5966Eb39c93A5ca8c6C --unlock 0x8894E0a0c962CB723c1976a4421c95949bE2D4E3 --unlock 0x0d53966B549D66f3800C8Dc51461c9Ad4974b079 --unlock 0xf977814e90da44bfa03b6295a0616a897441acec`
+
+`ganache --chain.chainId 56 --f your fork rpc provider --verbose --unlock 0x686667d62d19d1e259aFf5966Eb39c93A5ca8c6C --unlock 0x8894E0a0c962CB723c1976a4421c95949bE2D4E3 --unlock 0x0d53966B549D66f3800C8Dc51461c9Ad4974b079 --port 8546`
+
+### 3. Compile the crafted MetaMask
+See https://github.com/HuskiesUESTC/metamask-extension to build and install the crafted MetaMask
+`git clone https://github.com/HuskiesUESTC/metamask-extension`
+
+### 4. Configure the profile of Chrome
+
+- Visit chrome://version in your Chrome browser
+- You will see the profile files in the "Profile Path", for example：
 
 ```
 /Users/jiangtianxing/Library/Application Support/Google/Chrome/Profile 1
 ```
 
-- 记录除最后一级的文件夹路径复制下来(`Profile 1`不需要)，例如：
+- Copy the profile path(exclude `Profile 1`)，e.g.：
 
 ```
 /Users/jiangtianxing/Library/Application Support/Google/Chrome
 ```
 
-### 4. [下载 Chrome Driver 并将其部署至全局环境](https://chromedriver.chromium.org/downloads)
+### 5. Download Chrome Driver and add it to path (https://chromedriver.chromium.org/downloads)
 
-### 5. 在自动化测试环境下打开浏览器，安装 MetaMask 钱包
+### 6. Install the crafted MetaMask
 
-- 通过以下脚本在自动化测试环境下打开 Chrome 浏览器
+- You can use the scripts below to open Chrome and test the previous steps
 
 ```Python
 from selenium import webdriver
@@ -33,49 +47,44 @@ from selenium import webdriver
 if __name__ == '__main__':
     option = webdriver.ChromeOptions()
     option.add_argument('--headless')
-    # 此处的地址设置为 用户Profile 文件夹地址
+    # This is your Profile path
     option.add_argument('--user-data-dir=/Users/jiangtianxing/Desktop/Chrome')
     driver = webdriver.Chrome(options=option)
 ```
 
-- 安装MetaMask钱包插件，并记录其浏览器插件id
-- 创建钱包账户，并导入私钥（该地址是以太坊本地节点coinbase的地址）
+- Install MetaMask，and record its extension id
+- Create an empty wallet
 
-```
-e6a6c3d551247545f311d8a7080d92df990b08d93c95b8393f3b7c260252b2e2
-```
+### 6. Configure the config.yml
 
-### 6. 配置文件 config.yml
-
-- 需要将 **chrome.profile.dir** 修改为 **用户Profile 文件夹地址；**
-- 需要将 **chrome.metamask.id** 修改为 自动化测试环境下 **MetaMask钱包插件id.**
+- Set **chrome.profile.dir** to your  **Profile path.**
+- Set **chrome.metamask.id** to your **MetaMask extension id.**
 
 ```YAML
-# 目录
+# Directories
 dirs:
   base: &base-dir /Users/jiangtianxing/code/ScamHunter
   webdriver: &webdriver-path /Users/jiangtianxing/code/webdriver/chromedriver
   pattern: !join [ *base-dir, /pattern ]
   chrome-profile: &chrome-profile-dir /Users/jiangtianxing/Library/Application Support/Google/Chrome
 
-# chrome 环境配置
+# Chrome config 
 chrome:
-  # webdriver 路径
+  # webdriver path
   webdriver: *webdriver-path
-  # 获取元素默认等待相应时间，显示等待
+  # Wait time for a front-end action
   wait-time: 10
-  # 配置了 MetaMask 钱包插件的谷歌浏览器 Profile 目录
+  # Profile path
   profile:
     dir: *chrome-profile-dir
-  # MeatMask 钱包插件配置
+  # MeatMask config
   metamask:
-    # 浏览器插件ID
-    id: oekdeaoojbdgoagdfkglpkifcinoojph
-    # 钱包密码
-    password: jiangtianxing
-    # 钱包助记词（项目中未使用，此处仅为方便记忆）
+    # Extension id
+    id: Your MetaMask extension id
+    password: Your password
+    # Wallet phrase（not used）
     phrase: rigid pool noise wasp toast entry entire jump visual invite avocado hotel
-    # 钱包倒入私钥（项目中未使用，此处仅为方便记忆）
+    # Wallet private key（not used）
     secret: e6a6c3d551247545f311d8a7080d92df990b08d93c95b8393f3b7c260252b2e2
 
 ali-ocr:
@@ -124,20 +133,19 @@ rpc:
   erc20-list-abi-filepath: !join [ *base-dir, /api/erc20_list_abi.json ]
   default-eth-balance: ffffffe1626510267400
 
-# 是否为调试模式
+# Debug mode config
 debug:
-  # 是否显示当前页面的dom树
+  # Show dom tree
   display-dom-tree: False
-  # 是否显示当前页面的检测路径
+  # Show action path
   display-detect-path: True
-  # 是否需要对节点进行调试
   debug-node:
     status: True
     names:
       - select-currency
-  # 检测是否输出exception信息
+  # Show exceptions
   display-exception: True
-  # 显示操作元素的xpath
+  # Show xpath
   display-element-xpath: True
 ```
 
