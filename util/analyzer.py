@@ -1,5 +1,4 @@
 import time
-
 from util.environment import EnvKey, env
 
 INTENTIONS = ['approve', 'swap', 'withdraw', 'deposit', 'claim', 'mint', 'transfer']

@@ -27,11 +27,12 @@ class Environment:
 
     # 设置key
     def set(self, key, value):
-        self.data[key] = value
+        self.data[key.value] = value
 
     # 获取key
     def get(self, key, default_value=None):
-        return self.data.get(key, default_value)
+        value = self.data.get(key.value)
+        return value if value else default_value
 
     # 清除key，keys参数可为多个
     # 如果keys为空，则清空所有
