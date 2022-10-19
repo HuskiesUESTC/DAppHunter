@@ -1,7 +1,7 @@
 一、启动服务端
 ```bash
 # 进入服务端目录
-cd {PWD}/Malicious-DeFi/dapp-api
+cd {PWD}/dapp-api
 # 清空编译文件
 mvn clean
 # 编译打包
@@ -11,13 +11,12 @@ cd ./target
 java -jar ./dapp-api-0.0.1-SNAPSHOT.jar
 ```
 
-二、配置Nginx反向代理
+二、Configure Nginx to start a DApp locally
 ```bash
 # 安装nginx进入nginx文件夹
 # 可能为 /etc/nginx 或 /usr/local/etc/nginx
-cd /etc/nginx
 # 编辑配置文件 nginx.conf
-vim ./nginx.conf
+vim path/to/your/nginx.conf
 # 在 server 结构体中添加如下配置
 location /myapi/t2 {
     proxy_pass http://localhost:8080/apporve;

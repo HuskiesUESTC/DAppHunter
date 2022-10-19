@@ -150,16 +150,33 @@ debug:
   display-element-xpath: True
 ```
 
-### 7. run DAppHunter on a inconsistent DApp demo
+### 7. Install neo4j and redis
 
+### 8. Run DAppHunter on a inconsistent DApp demo
+See how to deploy the DApp demo `https://github.com/HuskiesUESTC/DAppHunter/tree/main/demo/README.md`
+
+Specify the name, url and protocol of the dapp
 ```Bash
-cd ~/path/ScamHunter
-python3 main.py -url http://localhost/apporve/
+python3 dapphunter.py ukr8 http://localhost/ukr8/ bnb
+```
+
+A transaction type inconsistency will be reported in ukr8_report.json
+
+```json
+{
+    "dapp_name": "ukr8",
+    "dapp_url": "http://localhost/ukr8/",
+    "protocol": "bnb",
+    "expected_behavior": "approve{'asset': 'UKR8', 'amount': '990000', 'spender': 'unknown'}",
+    "transaction_behavior": "transfer{'from': '0x8894e0a0c962cb723c1976a4421c95949be2d4e3', 'to': '0xc6f95170690faf5fe5364e20d8337d5f74c8d485', 'asset': 'ETH', 'value': 99.999}",
+    "smart_contract_behavior": "transfer{'from': '0x8894e0a0c962cb723c1976a4421c95949be2d4e3', 'to': '0xc6f95170690faf5fe5364e20d8337d5f74c8d485', 'asset': 'ETH', 'value': 99.999}",
+    "inconsistency": "Transaction Type Inconsistent"
+}
 ```
 
 ### Results
 
-Inconsistent DApps
+Detected inconsistent DApps as of July 2022
 
 | Symbol        | Name          | Address                            | Website       |
 | ------------- | ------------- | ---------------------------------- | ------------- |

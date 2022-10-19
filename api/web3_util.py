@@ -52,7 +52,7 @@ class Method:
 
     def decode_transaction(self, raw_data: str) -> (bool, {}):
         tx = {
-            'method_name': self._method_name,
+            'method': self._method_name,
             'params': {},
         }
         success = False
