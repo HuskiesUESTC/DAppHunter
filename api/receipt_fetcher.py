@@ -64,7 +64,7 @@ def parse_approval_data(log) -> {}:
     return data
 
 
-def parse_transaction_data(tx) -> {}:
+def parse_swap(tx) -> {}:
     tx_params = ['type', 'sender', 'receiver', 'depositor', 'asset_out', 'amount_out', 'asset_in', 'amount_in']
     tx_data = dict(zip(tx_params, [''] * len(tx_params)))
     for log in tx['logs'][::-1]:
@@ -115,18 +115,17 @@ def get_receipts(tx_hash) -> {}:
     }
     response_body = requests.post(GANACHE_URL, json=request_body).json()
     # 交易信息
-    transaction_data = parse_transaction_data(response_body['result'])
+    # transaction_data = parse_swap(response_body['result'])
     # 日志信息
-    handlers = {
-        ERC20_APPROVAL_EVENT: parse_approval_data,
-        ERC20_TRANSFER_EVENT: parse_transfer_data,
-    }
+    # handlers = {
+    #     ERC20_APPROVAL_EVENT: parse_approval_data,
+    #     ERC20_TRANSFER_EVENT: parse_transfer_data,
+    # }
     event_info = []
-    for log in response_body['result']['logs']:
-        event_sig = log['topics'][0]
-        if event_sig in handlers:
-            event_info.append(handlers.get(event_sig)(log))
+    # for log in response_body['result']['logs']:
+    #     event_sig = log['topics'][0]
+    #     if event_sig in handlers:
+    #         event_info.append(handlers.get(event_sig)(log))
     return {
-        'transaction': transaction_data,
-        'events': event_info
+        'transaction': response_body['result'],
     }

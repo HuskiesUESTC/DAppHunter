@@ -8,6 +8,9 @@ class EnvKey(enum.Enum):
     BLOCKCHAIN_STATE = 'blockchain_state'
     TX_TYPE = 'transaction_type',
     CHAIN_TYPE = 'chain_type',
+    DAPP_NAME = 'dapp_name',
+    DAPP_URL = 'dapp_url',
+    PROTOCOL = 'protocol'
 
 
 class TxType(enum.Enum):
