@@ -214,3 +214,4 @@ Detected inconsistent DApps as of July 2022
 | MMdex.io | MMdex.io | 0xdc4cb4c3587532409a4545aa79a15d967bed1c08 | DEAD
 |ALPINECARS.IO | Alpinecars.io | 0xf53f0e1e271693382c1bd3e774b9c2f644b3add0 | DEAD
 | BSTAKE | bstake.net | | DEAD
+|0Fees| 0fees.online| 0xcfa18ee4c639bc1f058a25da5dba26d8a4c895be | DEAD |
