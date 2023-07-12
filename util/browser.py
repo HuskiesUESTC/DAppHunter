@@ -1,7 +1,6 @@
 import functools
 import time
 from io import StringIO
-
 from lxml import etree
 from lxml.html import HtmlElement
 

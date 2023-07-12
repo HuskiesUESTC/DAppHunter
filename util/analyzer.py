@@ -1,9 +1,9 @@
 import json
 import time
+
 from datetime import datetime
 from api.receipt_fetcher import get_token_symbol, get_token_decimals
 from api import web3_util
-
 from util.environment import EnvKey, env
 
 INTENTIONS = ['approve', 'swap', 'withdraw', 'deposit', 'claim', 'mint', 'transfer']

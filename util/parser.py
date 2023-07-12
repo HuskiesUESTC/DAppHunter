@@ -1,4 +1,5 @@
 import time
+from typing import Any
 
 from selenium.common.exceptions import NoSuchElementException, JavascriptException
 from selenium.webdriver.common.by import By
@@ -35,27 +36,51 @@ class Parser:
     def execute_abstract_step(self, prev_node: Node) -> bool:
         # 遍历每一条关系
         r_type = 'next'
-        current_detect_status = False
-        current_detect_node = None
         next_intention_nodes = sorted([next_rel.end_node for next_rel in
                                        self.relationship_matcher.match((prev_node, None), r_type=r_type).all()],
                                       key=lambda x: x.get('bias') or 100, reverse=True)
-        for cur_node in next_intention_nodes:
-            # 判断是否满足当前关系成立的条件
-            execute_real_step_result = self.execute_real_step(cur_node)
-            if execute_real_step_result:
-                intention_path = env.get(EnvKey.INTENTION_PATH, [])
-                intention_path.append(cur_node.get('name'))
-                env.set(EnvKey.INTENTION_PATH, intention_path)
-                current_detect_node = cur_node
-                current_detect_status = True
-                break
-        # 如果检测失败，则直接退出
-        if not current_detect_status or current_detect_node is None:
-            return False
-        if current_detect_node.get('name') == 'end':
+        # 如果下一步意图只有一个节点，并且节点为end，则直接返回True
+        if len(next_intention_nodes) == 1 and next_intention_nodes[0].get('name') == 'end':
             return True
-        # 如果检测成功，当前节点不为end则继续执行
+
+        def get_start_action_node(intention_node):
+            impl_r_type = 'impl'
+            impl_relationship = self.relationship_matcher.match((intention_node, None), r_type=impl_r_type).first()
+            # 如果开始节点为空，则直接返回True
+            if impl_relationship is None or impl_relationship.end_node is None:
+                return True
+            return impl_relationship.end_node
+
+        def get_first_action_nodes(intention_node):
+            # 获取start节点
+            start_node = get_start_action_node(intention_node)
+            # 获取与start相连的所有节点
+            return sorted([next_rel.end_node for next_rel in
+                           self.relationship_matcher.match((start_node, None), r_type='next').all()],
+                          key=lambda x: x.get('bias') or 100, reverse=True)
+
+        # 获取下一步意图节点与第一步实际操作之间的映射
+        action_intention_map = {}
+        for cur_intention_node in next_intention_nodes:
+            for concrete_action_node in get_first_action_nodes(cur_intention_node):
+                action_intention_map[concrete_action_node] = cur_intention_node
+        print("list is :", list(action_intention_map.keys()))
+        # 获取下一步可执行操作
+        current_operate_node = self.wait_elements(list(action_intention_map.keys()))
+        print("current operation is ", current_operate_node)
+        if not current_operate_node:
+            return False
+        # 获取下一步意图节点
+        current_detect_node = action_intention_map[current_operate_node]
+        # 执行下一步意图
+        execute_real_step_result = self.execute_real_step(current_detect_node)
+        if not execute_real_step_result:
+            return False
+        # 记录意图路径
+        intention_path = env.get(EnvKey.INTENTION_PATH, [])
+        intention_path.append(current_detect_node.get('name'))
+        env.set(EnvKey.INTENTION_PATH, intention_path)
+        # 继续执行
         return self.execute_abstract_step(current_detect_node)
 
     # 执行具体的检测步骤
@@ -73,22 +98,14 @@ class Parser:
     # 执行Action
     def execute_basic_step(self, prev_node: Node) -> bool:
         # 遍历每一条关系
-        current_operate_status = False
-        current_operate_node = None
         next_r_type = 'next'
         next_nodes = sorted([next_rel.end_node for next_rel in
                              self.relationship_matcher.match((prev_node, None), r_type=next_r_type).all()],
                             key=lambda x: x.get('bias') or 100, reverse=True)
-        self.wait_elements(next_nodes)
-        for cur_node in next_nodes:
-            # 判断是否满足当前关系成立的条件
-            execute_operation_status = self.execute_operation(cur_node)
-            if execute_operation_status:
-                current_operate_node = cur_node
-                current_operate_status = True
-                break
-        # 如果执行失败，则直接退出
-        if not current_operate_status or current_operate_node is None:
+        print("list is ", next_nodes)
+        current_operate_node = self.wait_elements(next_nodes)
+        # 如果下一步没有可执行节点，获取执行结果为False，直接返回False
+        if not current_operate_node or not self.execute_operation(current_operate_node):
             return False
         # 如果检测成功，且当前节点为end
         if current_operate_node.get('name') == 'end':
@@ -97,10 +114,10 @@ class Parser:
         return self.execute_basic_step(current_operate_node)
 
     # 循环检查页面是否准备就绪
-    def wait_elements(self, next_nodes):
+    def wait_elements(self, next_nodes: [Node]) -> Any | None:
         # 如果当前是start、end，直接返回
         if len(next_nodes) == 1 and next_nodes[0].get('operation') in ['start', 'end']:
-            return True
+            return next_nodes[0]
         count = 0
 
         origin_window_handle = self.driver.current_window_handle
@@ -126,7 +143,12 @@ class Parser:
                 if operation in ['start', 'end']:
                     continue
                 if operation in ['exist']:
-                    keywords = self.get_exist_keywords(next_node.get('extra_data', 'account'))
+                    key = next_node.get('extra_data', 'account')
+                    if key == 'account':
+                        account = self.driver.execute_script('return window.ethereum.selectedAddress')
+                        if account:
+                            return next_node
+                        continue
 
                 if xpath:
                     try:
@@ -144,9 +166,11 @@ class Parser:
                     self.chrome.driver.switch_to.window(origin_window_handle)
 
                 if find_elements:
-                    return
+                    return next_node
             time.sleep(1)
             count += 1
+
+        return None
 
     def get_exist_keywords(self, extra_data):
         keywords = []

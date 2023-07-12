@@ -33,7 +33,7 @@ def parse_args(argv):
 def main(argv):
     # 解析 DApp 的 name、url
     # name, url, chain = parse_args(argv)
-    name, url, chain = 'test', 'https://www.pandaswap.xyz/#/swap', 'bnb'
+    name, url, chain = 'test', 'https://dex.knightswap.financial/#/swap', 'bnb'
     # 启动服务
     api_server = start_api_server(port=8546, chain=chain)
     try:
